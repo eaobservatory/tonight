@@ -20,7 +20,7 @@ function TabJCMT() {
   };
 
   return (
-    <div>
+    <div className="figure-container">
       {Object.entries(figures).map(([key, values], index) => (
         <Figure title={key} src={values.src} key={index} />
       ))}

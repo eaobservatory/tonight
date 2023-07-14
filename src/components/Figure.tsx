@@ -5,9 +5,9 @@ interface Props {
 
 function Figure({ title, src }: Props) {
   return (
-    <div className="figure">
+    <div className="figure img-fluid">
       <a href={src} target="_blank">
-        <img src={src} alt={title} className="img-fluid figure-image" />
+        <img src={src} alt={title} className="img-fluid" />
       </a>
       <span>{title}</span>
     </div>

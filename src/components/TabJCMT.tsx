@@ -11,6 +11,9 @@ function TabJCMT() {
     "MK Opacity": {
       src: "http://www.eao.hawaii.edu/weather/images/mkopac.png",
     },
+    "JCMT Temperature": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmttemp.png",
+    },
     "JCMT Camera": {
       src: "http://www.eao.hawaii.edu/weather/images/jcmt.jpg",
     },
@@ -19,9 +22,6 @@ function TabJCMT() {
     },
     "UKIRT Dome": {
       src: "http://www.eao.hawaii.edu/weather/images/ukirtdome.jpg",
-    },
-    "JCMT Temperature": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmttemp.png",
     },
     "JCMT Position": {
       src: "https://www.eao.hawaii.edu/monitoring/images/jcmtposn.png",
