@@ -32,6 +32,27 @@ function TabJCMT() {
     "JCMT SMU (EW)": {
       src: "https://www.eao.hawaii.edu/monitoring/secondary/jcmt/jcmtsmu_ew.png",
     },
+    "HARP Instrument Status": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtharp.png",
+    },
+    "Namakanui Instrument Status": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtnamakanui.png",
+    },
+    "SCUBA-2 Instrument Status": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2.png",
+    },
+    "SCUBA-2 Data Reduction Pipeline FCFs": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perffcf.png",
+    },
+    "SCUBA-2 Data Reduction Pipeline NEFDs": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfnefd.png",
+    },
+    "SCUBA-2 Data Reduction Pipeline Flats": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfflat.png",
+    },
+    "SCUBA-2 Data Reduction Pipeline Noise": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfnoise.png",
+    },
   };
 
   return (

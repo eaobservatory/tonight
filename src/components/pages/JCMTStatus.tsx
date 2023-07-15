@@ -1,12 +1,15 @@
-import Figure from "./Figure";
+import Figure from "../Figure";
 
-function TabACSIS() {
+function JCMTStatus() {
   const figures = {
     "HARP Instrument Status": {
       src: "https://www.eao.hawaii.edu/monitoring/images/jcmtharp.png",
     },
     "Namakanui Instrument Status": {
       src: "https://www.eao.hawaii.edu/monitoring/images/jcmtnamakanui.png",
+    },
+    "SCUBA-2 Instrument Status": {
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2.png",
     },
   };
 
@@ -19,4 +22,4 @@ function TabACSIS() {
   );
 }
 
-export default TabACSIS;
+export default JCMTStatus;

@@ -1,10 +1,7 @@
-import Figure from "./Figure";
+import Figure from "../Figure";
 
-function TabJCMT() {
+function SCUBA2Pipeline() {
   const figures = {
-    "SCUBA-2 Instrument Status": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2.png",
-    },
     "SCUBA-2 Data Reduction Pipeline FCFs": {
       src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perffcf.png",
     },
@@ -28,4 +25,4 @@ function TabJCMT() {
   );
 }
 
-export default TabJCMT;
+export default SCUBA2Pipeline;

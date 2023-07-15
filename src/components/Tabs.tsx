@@ -1,46 +1,130 @@
 import { useState } from "react";
-import TabJCMT from "./TabJCMT";
-import TabACSIS from "./TabACSIS";
-import TabSCUBA2 from "./TabSCUBA2";
+import { useNavigate } from "react-router-dom";
 
 function Tabs() {
   const [activeTab, setActiveTab] = useState(0);
+  const navigate = useNavigate();
 
-  const handleClick = (index: number) => {
-    setActiveTab(index);
+  const handleClick = (tab: number, path: string) => {
+    setActiveTab(tab);
+    navigate(path);
   };
 
   return (
     <>
       <ul className="nav nav-tabs nav-justified sticky-top bg-white">
-        <li className="nav-item tab">
+        <li className="nav-item dropdown">
           <a
-            className={`nav-link ${activeTab === 0 ? "active" : ""}`}
-            onClick={() => handleClick(0)}
+            className={`nav-link dropdown-toggle ${
+              activeTab === 0 ? "active" : ""
+            }`}
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-expanded="false"
           >
             JCMT
           </a>
+          <ul className="dropdown-menu">
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => {
+                  handleClick(0, "/jcmtconditions");
+                }}
+              >
+                Conditions
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(0, "/jcmtstatus")}
+              >
+                Instrument Status
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(0, "/jcmtcameras")}
+              >
+                Cameras
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(0, "/jcmtcomments")}
+              >
+                Operator Comments
+              </a>
+            </li>
+          </ul>
         </li>
-        <li className="nav-item tab">
+        <li className="nav-item dropdown">
           <a
-            className={`nav-link ${activeTab === 1 ? "active" : ""}`}
-            onClick={() => handleClick(1)}
+            className={`nav-link dropdown-toggle ${
+              activeTab === 1 ? "active" : ""
+            }`}
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-expanded="false"
           >
             ACSIS
           </a>
+          <ul className="dropdown-menu">
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(1, "/acsisobserving")}
+              >
+                Observing
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(1, "/acsiscalibrations")}
+              >
+                Calibrations
+              </a>
+            </li>
+          </ul>
         </li>
-        <li className="nav-item tab">
+        <li className="nav-item dropdown">
           <a
-            className={`nav-link ${activeTab === 2 ? "active" : ""}`}
-            onClick={() => handleClick(2)}
+            className={`nav-link dropdown-toggle ${
+              activeTab === 2 ? "active" : ""
+            }`}
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-expanded="false"
           >
-            SCUBA-2
+            SCUBA
           </a>
+          <ul className="dropdown-menu">
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(2, "/scuba2observing")}
+              >
+                Observing
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                onClick={() => handleClick(2, "/scuba2pipeline")}
+              >
+                Data Reduction Pipeline
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
-      {activeTab === 0 && <TabJCMT />}
-      {activeTab === 1 && <TabACSIS />}
-      {activeTab === 2 && <TabSCUBA2 />}
     </>
   );
 }
