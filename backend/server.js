@@ -12,4 +12,4 @@ app.get("/test", (req, res) => {
   res.status(200).send({ message: "Test" });
 });
 
-app.listen(3001, () => console.log(`server running on port ${port}`));
+app.listen(port, () => console.log(`Server running on port ${port}`));
