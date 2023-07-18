@@ -8,7 +8,7 @@ import JCMTComments from "./components/pages/JCMTComments";
 import ACSISObserving from "./components/pages/ACSISObserving";
 import ACSISCalibrations from "./components/pages/ACSISCalibrations";
 import SCUBA2Observing from "./components/pages/SCUBA2Observing";
-import SCUBA2Pipeline from "./components/pages/SCUBA2Pipeline";
+import SCUBA2Performance from "./components/pages/SCUBA2Performance";
 import TabJCMT from "./components/TabJCMT";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
         <Route path="/acsisobserving" element={<ACSISObserving />} />
         <Route path="/acsiscalibrations" element={<ACSISCalibrations />} />
         <Route path="/scuba2observing" element={<SCUBA2Observing />} />
-        <Route path="/scuba2pipeline" element={<SCUBA2Pipeline />} />
+        <Route path="/scuba2performance" element={<SCUBA2Performance />} />
       </Routes>
     </div>
   );

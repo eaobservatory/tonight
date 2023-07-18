@@ -152,9 +152,9 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(2, "/scuba2pipeline")}
+                onClick={() => handlePageClick(2, "/scuba2performance")}
               >
-                Data Reduction Pipeline
+                Performance
               </a>
             </li>
           </ul>
