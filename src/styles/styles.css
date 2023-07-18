@@ -22,3 +22,7 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
+
+ul.dropdown-menu > li {
+  text-align: center;
+}

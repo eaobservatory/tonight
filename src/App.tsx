@@ -17,7 +17,7 @@ function App() {
       <Navbar />
       <Tabs />
       <Routes>
-        {/* <Route path="/" element={<JCMTWeather />} /> */}
+        {/* <Route path="/" element={<JCMTConditions />} /> */}
         <Route path="/" element={<TabJCMT />} />
         <Route path="/jcmtconditions" element={<JCMTConditions />} />
         <Route path="/jcmtstatus" element={<JCMTStatus />} />
