@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Figure from "./Figure";
 import { TestData } from "../types/types";
+import useFetch from "./hooks/useFetch";
 
 function TabJCMT() {
   const figures = {
@@ -57,24 +58,15 @@ function TabJCMT() {
       src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfnoise.png",
     },
   };
-  const [testData, setTestData] = useState<TestData | null>(null);
+  const { data, loading, error } = useFetch("http://localhost:3001/test");
 
-  const fetchData = async (endpoint: string) => {
-    try {
-      const response = await axios.get(`http://localhost:3001${endpoint}`);
-      setTestData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  if (loading) return <div>Loading...</div>;
 
-  useEffect(() => {
-    fetchData("/test");
-  }, []);
+  if (error) return <div>Error!</div>;
 
   return (
     <>
-      <div>{testData?.message}</div>
+      <div>{data?.message}</div>
       <div className="figure-container">
         {Object.entries(figures).map(([key, values], index) => (
           <Figure title={key} src={values.src} key={index} />
