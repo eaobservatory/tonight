@@ -1,64 +1,61 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
 import Figure from "./Figure";
-import { TestData } from "../types/types";
-import useFetch from "./hooks/useFetch";
+import useFetch from "../hooks/useFetch";
 
 function TabJCMT() {
   const figures = {
     "EAO Weather": {
-      src: "http://www.eao.hawaii.edu/weather/images/jacwx.png",
+      endpoint: "/api/jcmtwx",
     },
     "SMA Phase Monitor": {
-      src: "http://www.eao.hawaii.edu/weather/images/smaphase.png",
+      endpoint: "/api/smaphase",
     },
     "MK Opacity": {
-      src: "http://www.eao.hawaii.edu/weather/images/mkopac.png",
+      endpoint: "/api/mkopac",
     },
     "JCMT Temperature": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmttemp.png",
+      endpoint: "/api/jcmttemp",
     },
     "JCMT Camera": {
-      src: "http://www.eao.hawaii.edu/weather/images/jcmt.jpg",
+      endpoint: "/api/jcmt",
     },
     "JCMT Dome": {
-      src: "http://www.eao.hawaii.edu/weather/images/jcmtdome.jpg",
+      endpoint: "/api/jcmtdome",
     },
     "UKIRT Dome": {
-      src: "http://www.eao.hawaii.edu/weather/images/ukirtdome.jpg",
+      endpoint: "/api/ukirtdome",
     },
     "JCMT Position": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtposn.png",
+      endpoint: "/api/jcmtposn",
     },
     "JCMT SMU (NS)": {
-      src: "https://www.eao.hawaii.edu/monitoring/secondary/jcmt/jcmtsmu_ns.png",
+      endpoint: "/api/jcmtsmuns",
     },
     "JCMT SMU (EW)": {
-      src: "https://www.eao.hawaii.edu/monitoring/secondary/jcmt/jcmtsmu_ew.png",
+      endpoint: "/api/jcmtsmuew",
     },
     "HARP Instrument Status": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtharp.png",
+      endpoint: "/api/jcmtharp",
     },
     "Namakanui Instrument Status": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtnamakanui.png",
+      endpoint: "/api/jcmtnamakanui",
     },
     "SCUBA-2 Instrument Status": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2.png",
+      endpoint: "/api/jcmtsc2",
     },
     "SCUBA-2 Data Reduction Pipeline FCFs": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perffcf.png",
+      endpoint: "/api/sc2perffcf",
     },
     "SCUBA-2 Data Reduction Pipeline NEFDs": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfnefd.png",
+      endpoint: "/api/sc2perfnefd",
     },
     "SCUBA-2 Data Reduction Pipeline Flats": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfflat.png",
+      endpoint: "/api/sc2perfflat",
     },
     "SCUBA-2 Data Reduction Pipeline Noise": {
-      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perfnoise.png",
+      endpoint: "/api/sc2perfnoise",
     },
   };
-  const { data, loading, error } = useFetch("http://localhost:3001/test");
+  const { data, loading, error } = useFetch("http://localhost:3001/api");
 
   if (loading) return <div>Loading...</div>;
 
@@ -67,9 +64,10 @@ function TabJCMT() {
   return (
     <>
       <div>{data?.message}</div>
+      <Figure title="test" endpoint="/api/jcmtwx" />
       <div className="figure-container">
         {Object.entries(figures).map(([key, values], index) => (
-          <Figure title={key} src={values.src} key={index} />
+          <Figure title={key} endpoint={values.endpoint} key={index} />
         ))}
       </div>
     </>

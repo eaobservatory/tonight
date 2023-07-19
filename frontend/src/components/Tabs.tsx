@@ -144,7 +144,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(2, "/scuba2observing")}
+                onClick={() => handlePageClick(2, "/sc2observing")}
               >
                 Observing
               </a>
@@ -152,7 +152,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(2, "/scuba2performance")}
+                onClick={() => handlePageClick(2, "/sc2performance")}
               >
                 Performance
               </a>

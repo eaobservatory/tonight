@@ -26,8 +26,8 @@ function App() {
         <Route path="/jcmtcomments" element={<JCMTComments />} />
         <Route path="/acsisobserving" element={<ACSISObserving />} />
         <Route path="/acsiscalibrations" element={<ACSISCalibrations />} />
-        <Route path="/scuba2observing" element={<SCUBA2Observing />} />
-        <Route path="/scuba2performance" element={<SCUBA2Performance />} />
+        <Route path="/sc2observing" element={<SCUBA2Observing />} />
+        <Route path="/sc2performance" element={<SCUBA2Performance />} />
       </Routes>
     </div>
   );

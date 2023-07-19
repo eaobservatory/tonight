@@ -6,20 +6,6 @@ function useFetch(url: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>(null);
 
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     axios
-  //       .get(url)
-  //       .then((response) => {
-  //         setData(response.data);
-  //       })
-  //       .catch((error) => {
-  //         setError(error);
-  //       })
-  //       .finally(() => {
-  //         setLoading(false);
-  //       });
-  //   }, [url]);
   useEffect(() => {
     const fetch = async () => {
       try {

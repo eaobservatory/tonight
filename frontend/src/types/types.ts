@@ -1,3 +1,3 @@
-export interface TestData {
-  message: string;
-}
+// export interface TestData {
+//   message: string;
+// }
