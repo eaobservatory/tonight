@@ -3,13 +3,13 @@ import Figure from "../Figure";
 function JCMTStatus() {
   const figures = {
     "HARP Instrument Status": {
-      endpoint: "/api/jcmtharp",
+      endpoint: "/api/live/jcmtharp",
     },
     "Namakanui Instrument Status": {
-      endpoint: "/api/jcmtnamakanui",
+      endpoint: "/api/live/jcmtnamakanui",
     },
     "SCUBA-2 Instrument Status": {
-      endpoint: "/api/jcmtsc2",
+      endpoint: "/api/live/jcmtsc2",
     },
   };
 

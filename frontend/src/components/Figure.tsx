@@ -6,7 +6,12 @@ interface Props {
 }
 
 function Figure({ title, endpoint }: Props) {
-  const { data } = useFetch(`http://localhost:3001${endpoint}`);
+  const { data, loading, error } = useFetch(`http://localhost:3001${endpoint}`);
+
+  if (loading) return <div>Loading...</div>;
+
+  if (error) return <div>Error!</div>;
+
   const img = data?.image;
 
   return (

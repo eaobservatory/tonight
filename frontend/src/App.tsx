@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Tabs from "./components/Tabs";
@@ -10,7 +9,7 @@ import ACSISObserving from "./components/pages/ACSISObserving";
 import ACSISCalibrations from "./components/pages/ACSISCalibrations";
 import SCUBA2Observing from "./components/pages/SCUBA2Observing";
 import SCUBA2Performance from "./components/pages/SCUBA2Performance";
-import TabJCMT from "./components/TabJCMT";
+import Test from "./components/Test";
 
 function App() {
   return (
@@ -19,7 +18,7 @@ function App() {
       <Tabs />
       <Routes>
         {/* <Route path="/" element={<JCMTConditions />} /> */}
-        <Route path="/" element={<TabJCMT />} />
+        <Route path="/" element={<Test />} />
         <Route path="/jcmtconditions" element={<JCMTConditions />} />
         <Route path="/jcmtstatus" element={<JCMTStatus />} />
         <Route path="/jcmtcameras" element={<JCMTCameras />} />

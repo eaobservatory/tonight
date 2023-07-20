@@ -3,16 +3,16 @@ import Figure from "../Figure";
 function SCUBA2Performance() {
   const figures = {
     "SCUBA-2 Data Reduction Pipeline FCFs": {
-      endpoint: "/api/sc2perffcf",
+      endpoint: "/api/live/sc2perffcf",
     },
     "SCUBA-2 Data Reduction Pipeline NEFDs": {
-      endpoint: "/api/sc2perfnefd",
+      endpoint: "/api/live/sc2perfnefd",
     },
     "SCUBA-2 Data Reduction Pipeline Flats": {
-      endpoint: "/api/sc2perfflat",
+      endpoint: "/api/live/sc2perfflat",
     },
     "SCUBA-2 Data Reduction Pipeline Noise": {
-      endpoint: "/api/sc2perfnoise",
+      endpoint: "/api/live/sc2perfnoise",
     },
   };
 
