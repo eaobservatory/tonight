@@ -1,5 +1,3 @@
-import Figure from "../Figure";
-
 function JCMTComments() {
   return <p>comments</p>;
 }

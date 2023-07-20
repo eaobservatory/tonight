@@ -1,5 +1,3 @@
-import Figure from "../Figure";
-
 function SCUBA2Observing() {
   return <p>observing</p>;
 }

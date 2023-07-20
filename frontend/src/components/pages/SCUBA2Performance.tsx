@@ -1,4 +1,4 @@
-import Figure from "../Figure";
+import OldFigure from "../OldFigure";
 
 function SCUBA2Performance() {
   const figures = {
@@ -19,7 +19,7 @@ function SCUBA2Performance() {
   return (
     <div className="figure-container">
       {Object.entries(figures).map(([key, values], index) => (
-        <Figure title={key} endpoint={values.endpoint} key={index} />
+        <OldFigure title={key} endpoint={values.endpoint} key={index} />
       ))}
     </div>
   );

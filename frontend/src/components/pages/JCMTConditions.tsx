@@ -1,34 +1,34 @@
-import Figure from "../Figure";
+import OldFigure from "../OldFigure";
 
 function JCMTConditions() {
   const figures = {
     "EAO Weather": {
-      endpoint: "/api/jcmtwx",
+      endpoint: "/api/live/jcmtwx",
     },
     "SMA Phase Monitor": {
-      endpoint: "/api/smaphase",
+      endpoint: "/api/live/smaphase",
     },
     "MK Opacity": {
-      endpoint: "/api/mkopac",
+      endpoint: "/api/live/mkopac",
     },
     "JCMT Temperature": {
-      endpoint: "/api/jcmttemp",
+      endpoint: "/api/live/jcmttemp",
     },
     "JCMT Position": {
-      endpoint: "/api/jcmtposn",
+      endpoint: "/api/live/jcmtposn",
     },
     "JCMT SMU (NS)": {
-      endpoint: "/api/jcmtsmuns",
+      endpoint: "/api/live/jcmtsmuns",
     },
     "JCMT SMU (EW)": {
-      endpoint: "/api/jcmtsmuew",
+      endpoint: "/api/live/jcmtsmuew",
     },
   };
 
   return (
     <div className="figure-container">
       {Object.entries(figures).map(([key, values], index) => (
-        <Figure title={key} endpoint={values.endpoint} key={index} />
+        <OldFigure title={key} endpoint={values.endpoint} key={index} />
       ))}
     </div>
   );
