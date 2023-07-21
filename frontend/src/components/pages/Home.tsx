@@ -1,9 +1,6 @@
-import OldFigure from "./OldFigure";
-import useFetch from "../hooks/useFetch";
-import Plot from "react-plotly.js";
-import Figure from "./Figure";
+import Figure from "../Figure";
 
-function Test() {
+function Home() {
   const figures = {
     "EAO Weather": {
       endpoint: "/api/live/jcmtwx",
@@ -77,4 +74,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default Home;

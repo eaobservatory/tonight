@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Environment variables
+# Misc
 .env
+config.ini
+
