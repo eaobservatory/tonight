@@ -138,7 +138,7 @@ function Tabs() {
             role="button"
             aria-expanded="false"
           >
-            SCUBA
+            SCUBA-2
           </a>
           <ul className="dropdown-menu">
             <li>

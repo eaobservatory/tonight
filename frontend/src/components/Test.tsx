@@ -60,61 +60,12 @@ function Test() {
 
   return (
     <>
-      <Figure endpoint="/api/test" />
-      <Plot
-        data={[
-          {
-            x: [1, 2, 3],
-            y: [4, 5, 6],
-            type: "scatter",
-            mode: "lines",
-            marker: { color: "red" },
-            name: "line 1",
-          },
-          {
-            x: [1, 2, 3],
-            y: [5, 6, 7],
-            type: "scatter",
-            mode: "lines",
-            marker: { color: "blue" },
-            name: "line 2",
-          },
+      <Figure
+        endpoint="/api/test"
+        groups={[
+          ["nmnCryo_ls_temp1"],
+          ["nmnCryo_ls_temp3", "nmnCryo_ls_temp4", "nmnCryo_ls_temp2"],
         ]}
-        layout={{
-          xaxis: { range: [0, 10] },
-          yaxis: { range: [0, 10] },
-          title: "Test Plot",
-        }}
-      />
-      <Plot
-        data={[
-          {
-            x: [1, 2, 3],
-            y: [4, 5, 6],
-            type: "scatter",
-            mode: "lines",
-            marker: { color: "red" },
-            name: "Line 1",
-            xaxis: "x1",
-            yaxis: "y1",
-          },
-          {
-            x: [1, 2, 3],
-            y: [2, 3, 4],
-            type: "scatter",
-            mode: "lines",
-            marker: { color: "blue" },
-            name: "Line 2",
-            xaxis: "x2",
-            yaxis: "y2",
-          },
-        ]}
-        layout={{
-          xaxis: { domain: [0, 0.45] },
-          yaxis2: { anchor: "x2" },
-          xaxis2: { domain: [0.55, 1] },
-          title: "Multiple Subplots",
-        }}
       />
       {/* <OldFigure title="test" endpoint="/api/live/jcmtwx" /> */}
       {/* <div className="figure-container">
