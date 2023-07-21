@@ -3,20 +3,20 @@ import OldFigure from "../OldFigure";
 function JCMTStatus() {
   const figures = {
     "HARP Instrument Status": {
-      endpoint: "/api/live/jcmtharp",
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtharp.png",
     },
     "Namakanui Instrument Status": {
-      endpoint: "/api/live/jcmtnamakanui",
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtnamakanui.png",
     },
     "SCUBA-2 Instrument Status": {
-      endpoint: "/api/live/jcmtsc2",
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2.png",
     },
   };
 
   return (
     <div className="figure-container">
       {Object.entries(figures).map(([key, values], index) => (
-        <OldFigure title={key} endpoint={values.endpoint} key={index} />
+        <OldFigure title={key} src={values.src} key={index} />
       ))}
     </div>
   );

@@ -3,32 +3,32 @@ import OldFigure from "../OldFigure";
 function JCMTConditions() {
   const figures = {
     "EAO Weather": {
-      endpoint: "/api/live/jcmtwx",
+      src: "http://www.eao.hawaii.edu/weather/images/jacwx.png",
     },
     "SMA Phase Monitor": {
-      endpoint: "/api/live/smaphase",
+      src: "http://www.eao.hawaii.edu/weather/images/smaphase.png",
     },
     "MK Opacity": {
-      endpoint: "/api/live/mkopac",
+      src: "http://www.eao.hawaii.edu/weather/images/mkopac.png",
     },
     "JCMT Temperature": {
-      endpoint: "/api/live/jcmttemp",
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmttemp.png",
     },
     "JCMT Position": {
-      endpoint: "/api/live/jcmtposn",
+      src: "https://www.eao.hawaii.edu/monitoring/images/jcmtposn.png",
     },
     "JCMT SMU (NS)": {
-      endpoint: "/api/live/jcmtsmuns",
+      src: "https://www.eao.hawaii.edu/monitoring/secondary/jcmt/jcmtsmu_ns.png",
     },
     "JCMT SMU (EW)": {
-      endpoint: "/api/live/jcmtsmuew",
+      src: "https://www.eao.hawaii.edu/monitoring/secondary/jcmt/jcmtsmu_ew.png",
     },
   };
 
   return (
     <div className="figure-container">
       {Object.entries(figures).map(([key, values], index) => (
-        <OldFigure title={key} endpoint={values.endpoint} key={index} />
+        <OldFigure title={key} src={values.src} key={index} />
       ))}
     </div>
   );
