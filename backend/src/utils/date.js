@@ -1,8 +1,13 @@
+/**
+ * Gets start and end dates used for querying engarchive while accounting for HST vs UTC.
+ *
+ * @returns {Array<Array<string>>} An array containing two arrays, each representing a date as [year, month, day].
+ */
 const getDateArray = () => {
-  const date = new Date(); // HST
-  const prevDate = new Date(date.getTime());
+  const date = new Date(); // today
+  const prevDate = new Date(date.getTime()); // yesterday
   prevDate.setDate(date.getDate() - 1);
-  const nextDate = new Date(date.getTime());
+  const nextDate = new Date(date.getTime()); // tomorrow
   nextDate.setDate(date.getDate() + 1);
 
   const hour = date.getHours();
@@ -14,7 +19,7 @@ const getDateArray = () => {
   let dayStart;
   let dayEnd;
 
-  // setting start and end dates for engarchive query based on hst -> utc day
+  // check what day it is in UTC based on HST hour
   if (hour >= 14) {
     yearStart = date.getFullYear(); // date, YYYY
     yearEnd = nextDate.getFullYear(); // nextDate, YYYY
