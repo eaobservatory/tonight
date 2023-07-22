@@ -1,12 +1,12 @@
 import requests
 import urllib.parse
-import configparser
+import os
+from dotenv import load_dotenv
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+load_dotenv()
 
-username = config.get('check_pvs', 'username')
-password = config.get('check_pvs', 'password')
+username = os.getenv('ENGARCHIVE_USERNAME')
+password = os.getenv('ENGARCHIVE_PASSWORD')
 
 pvs = [
     'conb:cryo:ls1:d60:val', # jcmtharp
