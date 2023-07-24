@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
 const axios = require("axios");
-const querystring = require("querystring");
 
 dotenv.config({ path: "../.env" });
 
@@ -16,7 +15,7 @@ const password = process.env.ENGARCHIVE_PASSWORD;
  * @throws {Error} - Throws an error if the request fails.
  */
 const queryPV = async (pv, dateArray) => {
-  const pvEscaped = querystring.escape(pv); // url encoded pv
+  const pvEscaped = encodeURIComponent(pv); // url encoded pv
   const url = `http://${username}:${password}@engarchive.eao.hawaii.edu/cgi-bin/CGIExport.cgi?DIRECTORY=%2Fjcmtdata%2Fepics_data%2Fchanarch%2Fdir&PATTERN=&NAMES=${pvEscaped}%0D%0A&STARTMONTH=${dateArray[0][1]}&STARTDAY=${dateArray[0][2]}&STARTYEAR=${dateArray[0][0]}&STARTHOUR=14&STARTMINUTE=00&STARTSECOND=00&ENDMONTH=${dateArray[1][1]}&ENDDAY=${dateArray[1][2]}&ENDYEAR=${dateArray[1][0]}&ENDHOUR=13&ENDMINUTE=59&ENDSECOND=59&COMMAND=GET&Y0=0&Y1=0&REDUCE=ON&FORMAT=SPREADSHEET&INTERPOL=0`;
   console.log(`${pv}: trying queryPV...`);
 
