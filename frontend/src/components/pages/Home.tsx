@@ -3,14 +3,7 @@ import Figure from "../Figure";
 function Home() {
   return (
     <>
-      <Figure
-        title="jcmtnamakanui"
-        endpoint="/api/live/jcmtnamakanui"
-        // groups={[
-        //   ["nmnCryo:ls:temp4"],
-        //   ["nmnCryo:ls:temp3", "nmnCryo:ls:temp1", "nmnCryo:ls:temp2"],
-        // ]}
-      />
+      <Figure title="jcmtnamakanui" endpoint="/api/live/jcmtnamakanui" />
       <Figure
         title="jcmtwx"
         endpoint="/api/live/jcmtwx"
@@ -20,6 +13,14 @@ function Home() {
           ["ws:wxt510:stat:pressure"],
           ["ws:wxt510:stat:windSpd"],
           ["ws:wxt510:stat:windDir"],
+        ]}
+      />
+      <Figure
+        title="jcmtsc2"
+        endpoint="/api/live/jcmtsc2"
+        groups={[
+          ["scu2CCS:ls218a:t2", "scu2CCS:ls218b:t1", "scu2CCS:ls370a:chan1:k"],
+          ["scu2CCS:ls370c:chan:k"],
         ]}
       />
     </>

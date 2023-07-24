@@ -21,15 +21,15 @@ const getDateArray = () => {
 
   // check what day it is in UTC based on HST hour
   if (hour >= 14) {
-    yearStart = date.getFullYear(); // date, YYYY
-    yearEnd = nextDate.getFullYear(); // nextDate, YYYY
+    yearStart = String(date.getFullYear()); // date, YYYY
+    yearEnd = String(nextDate.getFullYear()); // nextDate, YYYY
     monthStart = String(date.getMonth() + 1).padStart(2, "0"); // date, MM
     monthEnd = String(nextDate.getMonth() + 1).padStart(2, "0"); // nextDate, MM
     dayStart = String(date.getDate()).padStart(2, "0"); // date, DD
     dayEnd = String(nextDate.getDate()).padStart(2, "0"); // nextDate, DD
   } else {
-    yearStart = prevDate.getFullYear(); // prevDate, YYYY
-    yearEnd = date.getFullYear(); // date, YYYY
+    yearStart = String(prevDate.getFullYear()); // prevDate, YYYY
+    yearEnd = String(date.getFullYear()); // date, YYYY
     monthStart = String(prevDate.getMonth() + 1).padStart(2, "0"); // prevDate, MM
     monthEnd = String(date.getMonth() + 1).padStart(2, "0"); // date, MM
     dayStart = String(prevDate.getDate()).padStart(2, "0"); // prevDate, DD
@@ -37,8 +37,8 @@ const getDateArray = () => {
   }
 
   return [
-    [yearStart, monthStart, dayStart],
-    [yearEnd, monthEnd, dayEnd],
+    [yearStart, monthStart, dayStart], // [YYYY, MM, DD]
+    [yearEnd, monthEnd, dayEnd], // [YYYY, MM, DD]
   ];
 };
 
