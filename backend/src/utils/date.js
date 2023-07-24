@@ -1,7 +1,7 @@
 /**
  * Gets start and end dates used for querying engarchive while accounting for HST vs UTC.
  *
- * @returns {Array<Array<string>>} An array containing two arrays, each representing a date as [year, month, day].
+ * @returns {Array<Array<string>>} An array containing two arrays, each representing a date as [year, month, day] in HST.
  */
 const getDateArray = () => {
   const date = new Date(); // today
