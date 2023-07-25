@@ -22,7 +22,19 @@ function useFetch(url: string) {
     fetch();
   }, [url]);
 
-  return { data, loading, error };
+  const refetch = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(url);
+      setData(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { data, loading, error, refetch };
 }
 
 export default useFetch;
