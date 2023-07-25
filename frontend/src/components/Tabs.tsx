@@ -1,17 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useContext } from "react";
+import { TabContext } from "../App";
 
 function Tabs() {
-  const [activeTab, setActiveTab] = useState(0);
+  const { activeTab, handlePageClick } = useContext(TabContext) ?? {};
   const dropdownJCMTRef = useRef<HTMLLIElement>(null);
   const dropdownACSISRef = useRef<HTMLLIElement>(null);
   const dropdownSCUBA2Ref = useRef<HTMLLIElement>(null);
-  const navigate = useNavigate();
-
-  const handlePageClick = (tab: number, path: string) => {
-    setActiveTab(tab);
-    navigate(path);
-  };
 
   const handleDocumentClick = (e: MouseEvent) => {
     const dropdownRefs = [dropdownJCMTRef, dropdownACSISRef, dropdownSCUBA2Ref];
@@ -57,7 +51,7 @@ function Tabs() {
               <a
                 className="dropdown-item"
                 onClick={() => {
-                  handlePageClick(0, "/jcmtconditions");
+                  handlePageClick?.(0, "/jcmtconditions");
                 }}
               >
                 Conditions
@@ -66,7 +60,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(0, "/jcmtstatus")}
+                onClick={() => handlePageClick?.(0, "/jcmtstatus")}
               >
                 Instrument Status
               </a>
@@ -74,7 +68,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(0, "/jcmtcameras")}
+                onClick={() => handlePageClick?.(0, "/jcmtcameras")}
               >
                 Cameras
               </a>
@@ -82,7 +76,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(0, "/jcmtcomments")}
+                onClick={() => handlePageClick?.(0, "/jcmtcomments")}
               >
                 Operator Comments
               </a>
@@ -109,7 +103,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(1, "/acsisobserving")}
+                onClick={() => handlePageClick?.(1, "/acsisobserving")}
               >
                 Observing
               </a>
@@ -117,7 +111,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(1, "/acsiscalibrations")}
+                onClick={() => handlePageClick?.(1, "/acsiscalibrations")}
               >
                 Calibrations
               </a>
@@ -144,7 +138,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(2, "/sc2observing")}
+                onClick={() => handlePageClick?.(2, "/sc2observing")}
               >
                 Observing
               </a>
@@ -152,7 +146,7 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick(2, "/sc2performance")}
+                onClick={() => handlePageClick?.(2, "/sc2performance")}
               >
                 Performance
               </a>

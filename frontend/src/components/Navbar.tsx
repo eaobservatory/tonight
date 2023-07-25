@@ -1,4 +1,8 @@
+import { useContext } from "react";
+import { TabContext } from "../App";
+
 function Navbar() {
+  const { activeTab, handlePageClick } = useContext(TabContext) ?? {};
   const date = new Date();
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dateUTC = `${date.getUTCFullYear()}/${(date.getUTCMonth() + 1)
@@ -26,7 +30,13 @@ function Navbar() {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand mr-0 mr-md-2" href="/">
+        <a
+          className="navbar-brand mr-0 mr-md-2"
+          onClick={(e) => {
+            e.preventDefault();
+            handlePageClick?.(0, "/");
+          }}
+        >
           <img
             src="./src/assets/eao.png"
             width="36"

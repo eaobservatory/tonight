@@ -3,8 +3,9 @@ import Figure from "../Figure";
 function Home() {
   return (
     <>
+      <p>home</p>
       <Figure title="jcmtnamakanui" endpoint="/api/live/jcmtnamakanui" />
-      <Figure
+      {/* <Figure
         title="jcmtwx"
         endpoint="/api/live/jcmtwx"
         groups={[
@@ -22,7 +23,7 @@ function Home() {
           ["scu2CCS:ls218a:t2", "scu2CCS:ls218b:t1", "scu2CCS:ls370a:chan1:k"],
           ["scu2CCS:ls370c:chan:k"],
         ]}
-      />
+      /> */}
     </>
   );
 }
