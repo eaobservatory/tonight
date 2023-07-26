@@ -53,20 +53,90 @@ function Navbar() {
             <li className="nav-item">
               <a
                 className="nav-link"
-                href="https://www.eao.hawaii.edu/JCMT/"
+                href="https://www.eao.hawaii.edu"
                 target="_blank"
               >
-                JCMT
+                EAO
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item dropdown">
               <a
-                className="nav-link"
-                href="http://omp.eao.hawaii.edu/cgi-bin/nightrep.pl?tel=JCMT"
-                target="_blank"
+                className="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
               >
-                Observing Report
+                OMP
               </a>
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a
+                  className="dropdown-item"
+                  href="https://omp.eao.hawaii.edu/cgi-bin/nightrep.pl?tel=JCMT"
+                  target="_blank"
+                >
+                  Observing Report
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="https://omp.eao.hawaii.edu/cgi-bin/queryfault.pl?cat=JCMT"
+                  target="_blank"
+                >
+                  Faults
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="https://omp.eao.hawaii.edu/cgi-bin/queryfault.pl?cat=JCMT_EVENTS"
+                  target="_blank"
+                >
+                  Events
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="https://omp.eao.hawaii.edu/cgi-bin/sched.pl?tel=JCMT"
+                  target="_blank"
+                >
+                  Schedule
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="https://omp.eao.hawaii.edu/cgi-bin/qstatus.pl"
+                  target="_blank"
+                >
+                  Queue Status
+                </a>
+              </div>
+            </li>
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Daycrew
+              </a>
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a
+                  className="dropdown-item"
+                  href="https://www.eao.hawaii.edu/daycrew/HILO"
+                  target="_blank"
+                >
+                  Hilo
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="https://www.eao.hawaii.edu/daycrew/JCMT"
+                  target="_blank"
+                >
+                  JCMT
+                </a>
+              </div>
             </li>
             <li className="nav-item">
               <a
@@ -75,15 +145,6 @@ function Navbar() {
                 target="_blank"
               >
                 Archive
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="http://omp.eao.hawaii.edu/cgi-bin/qstatus.pl"
-                target="_blank"
-              >
-                Queue Status
               </a>
             </li>
           </ul>

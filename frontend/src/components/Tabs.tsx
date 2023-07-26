@@ -4,11 +4,11 @@ import { TabContext } from "../App";
 function Tabs() {
   const { activeTab, handlePageClick } = useContext(TabContext) ?? {};
   const dropdownJCMTRef = useRef<HTMLLIElement>(null); // refs used to close dropdown menus on click outside
-  const dropdownACSISRef = useRef<HTMLLIElement>(null);
-  const dropdownSCUBA2Ref = useRef<HTMLLIElement>(null);
+  const dropdownObservingRef = useRef<HTMLLIElement>(null);
+  const dropdownQARef = useRef<HTMLLIElement>(null);
 
   const handleDocumentClick = (e: MouseEvent) => {
-    const dropdownRefs = [dropdownJCMTRef, dropdownACSISRef, dropdownSCUBA2Ref];
+    const dropdownRefs = [dropdownJCMTRef, dropdownObservingRef, dropdownQARef];
 
     dropdownRefs.forEach((dropdownRef) => {
       const dropdownMenu = dropdownRef.current?.children[1];
@@ -95,7 +95,7 @@ function Tabs() {
         </li>
         <li
           className="nav-item dropdown dropdown-center"
-          ref={dropdownACSISRef}
+          ref={dropdownObservingRef}
         >
           <a
             className={`nav-link dropdown-toggle ${
@@ -139,10 +139,7 @@ function Tabs() {
             </li>
           </ul>
         </li>
-        <li
-          className="nav-item dropdown dropdown-center"
-          ref={dropdownSCUBA2Ref}
-        >
+        <li className="nav-item dropdown dropdown-center" ref={dropdownQARef}>
           <a
             className={`nav-link dropdown-toggle ${
               activeTab === 3 ? "active" : ""

@@ -13,6 +13,10 @@
   padding-bottom: 0;
 }
 
+.nav-item .dropdown-menu {
+  z-index: 1100;
+}
+
 .figure {
   width: 30%;
 }
