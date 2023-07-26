@@ -13,7 +13,6 @@ interface Props {
 }
 
 interface PlotLayout {
-  title: string;
   [key: string]: any;
 }
 
@@ -58,6 +57,7 @@ function Figure({ title, endpoint, mode, groups }: Props) {
         newPlotLayout[`yaxis${i + 1}`] = {
           domain: [i / plotGroups.length, (i + 1) / plotGroups.length],
           anchor: "x",
+          title: "",
         };
       }
 
