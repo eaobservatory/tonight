@@ -26,7 +26,7 @@ const queryPV = async (pv, dateArray) => {
     console.log(`${pv}: success!`);
     return data;
   } catch (error) {
-    console.log(`${pv}: ERROR -- \n${error.message}`);
+    console.log(`${pv}: ERROR -- \n\t${error.message}`);
     return error.message;
   }
 };

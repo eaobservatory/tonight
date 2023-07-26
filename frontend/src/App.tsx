@@ -1,25 +1,33 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useCallback, useEffect } from "react";
+import { useNavigate, Routes, Route } from "react-router-dom";
+import useFetch from "./hooks/useFetch";
 import Navbar from "./components/Navbar";
 import Tabs from "./components/Tabs";
-import JCMTConditions from "./components/pages/JCMTConditions";
-import JCMTStatus from "./components/pages/JCMTStatus";
-import JCMTCameras from "./components/pages/JCMTCameras";
-import JCMTComments from "./components/pages/JCMTComments";
-import ACSISObserving from "./components/pages/ACSISObserving";
-import ACSISCalibrations from "./components/pages/ACSISCalibrations";
-import SCUBA2Observing from "./components/pages/SCUBA2Observing";
-import SCUBA2Performance from "./components/pages/SCUBA2Performance";
-import Home from "./components/pages/Home";
+import Overview from "./pages/Overview";
+import JCMTConditions from "./pages/JCMTConditions";
+import JCMTStatus from "./pages/JCMTStatus";
+import JCMTCameras from "./pages/JCMTCameras";
+import ObservingACSIS from "./pages/ObservingACSIS";
+import ObservingSCUBA2 from "./pages/ObservingSCUBA2";
+import ObservingAll from "./pages/ObservingAll";
+import QAACSIS from "./pages/QAACSIS";
+import QASCUBA2 from "./pages/QASCUBA2";
 
 export const TabContext = React.createContext<{
   activeTab: number;
   handlePageClick: (tab: number, path: string) => void;
 } | null>(null);
 
+export const FetchContext = React.createContext({
+  jcmtwxAPIData: null,
+  jcmtsc2APIData: null,
+  jcmtnamakanuiAPIData: null,
+});
+
 function App() {
-  const location = useLocation();
   const navigate = useNavigate();
+
+  // TabContext
   const [activeTab, setActiveTab] = useState(0);
   const handlePageClick = useCallback(
     (tab: number, path: string) => {
@@ -29,72 +37,48 @@ function App() {
     [navigate]
   );
 
+  // FetchContext
+  const { data: jcmtwxAPIData, refetch: jcmtwxRefetch } = useFetch(
+    "http://localhost:3001/api/live/jcmtwx"
+  );
+  const { data: jcmtsc2APIData, refetch: jcmtsc2Refetch } = useFetch(
+    "http://localhost:3001/api/live/jcmtsc2"
+  );
+  const { data: jcmtnamakanuiAPIData, refetch: jcmtnamakanuiRefetch } =
+    useFetch("http://localhost:3001/api/live/jcmtnamakanui");
+
+  const refetches = [jcmtwxRefetch, jcmtsc2Refetch, jcmtnamakanuiRefetch];
+
+  // refetch apiData every 5 minutes
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetches.forEach((refetch) => refetch());
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(intervalId); // cleanup on unmount
+  }, [refetches]);
+
   return (
     <div>
       <TabContext.Provider value={{ activeTab, handlePageClick }}>
         <Navbar />
         <Tabs />
       </TabContext.Provider>
-      <div style={{ display: location.pathname === "/" ? "block" : "none" }}>
-        <Home />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/jcmtconditions" ? "block" : "none",
-        }}
+      <FetchContext.Provider
+        value={{ jcmtwxAPIData, jcmtsc2APIData, jcmtnamakanuiAPIData }}
       >
-        <JCMTConditions />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/jcmtstatus" ? "block" : "none",
-        }}
-      >
-        <JCMTStatus />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/jcmtcameras" ? "block" : "none",
-        }}
-      >
-        <JCMTCameras />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/jcmtcomments" ? "block" : "none",
-        }}
-      >
-        <JCMTComments />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/acsisobserving" ? "block" : "none",
-        }}
-      >
-        <ACSISObserving />
-      </div>
-      <div
-        style={{
-          display:
-            location.pathname === "/acsiscalibrations" ? "block" : "none",
-        }}
-      >
-        <ACSISCalibrations />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/sc2observing" ? "block" : "none",
-        }}
-      >
-        <SCUBA2Observing />
-      </div>
-      <div
-        style={{
-          display: location.pathname === "/sc2performance" ? "block" : "none",
-        }}
-      >
-        <SCUBA2Performance />
-      </div>
+        <Routes>
+          <Route path="/" element={<Overview />} />
+          <Route path="/jcmtconditions" element={<JCMTConditions />} />
+          <Route path="/jcmtstatus" element={<JCMTStatus />} />
+          <Route path="/jcmtcameras" element={<JCMTCameras />} />
+          <Route path="/observingacsis" element={<ObservingACSIS />} />
+          <Route path="/observingscuba2" element={<ObservingSCUBA2 />} />
+          <Route path="/observingall" element={<ObservingAll />} />
+          <Route path="/qaacsis" element={<QAACSIS />} />
+          <Route path="/qascuba2" element={<QASCUBA2 />} />
+        </Routes>
+      </FetchContext.Provider>
     </div>
   );
 }

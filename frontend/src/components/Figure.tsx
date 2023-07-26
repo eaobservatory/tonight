@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
-import useFetch from "../hooks/useFetch";
+import { useState, useEffect, useContext } from "react";
 import Plot from "react-plotly.js";
 import { Data } from "plotly.js";
+import { FetchContext } from "../App";
+
+type Endpoint = "jcmtwx" | "jcmtsc2" | "jcmtnamakanui";
 
 interface Props {
   title: string; // title of figure
-  endpoint: string; // API endpoint with data to plot
+  endpoint: Endpoint; // API endpoint with data to plot (/api/live/{endpoint})
+  mode: any; // type of plot to display (lines, markers, lines+markers, etc.)
   groups?: string[][]; // array of arrays of PV variables to plot on same axes
 }
 
@@ -14,7 +17,7 @@ interface PlotLayout {
   [key: string]: any;
 }
 
-function Figure({ title, endpoint, groups }: Props) {
+function Figure({ title, endpoint, mode, groups }: Props) {
   const [plotData, setPlotData] = useState<Data[]>([]); // used for displaying old data while updating with new data
   const [plotLayout, setPlotLayout] = useState<PlotLayout>({
     title: title,
@@ -25,9 +28,8 @@ function Figure({ title, endpoint, groups }: Props) {
       range: ["2015-03-01 14:00:00", "2015-03-02 14:00:00"], // placeholder date while waiting for API call
     },
   });
-  const { data: apiData, refetch } = useFetch(
-    `http://localhost:3001${endpoint}`
-  ); // API call -> database querying
+  const contextValue = useContext(FetchContext) ?? {};
+  const apiData = contextValue[`${endpoint}APIData`];
 
   // update plot when apiData changes
   useEffect(() => {
@@ -90,7 +92,7 @@ function Figure({ title, endpoint, groups }: Props) {
                 x: points[0],
                 y: points[1],
                 type: "scatter",
-                mode: "lines",
+                mode: mode,
                 name: apiData[key]["label"],
                 yaxis: `y${i + 1}`,
               };
@@ -104,16 +106,7 @@ function Figure({ title, endpoint, groups }: Props) {
       setPlotLayout(newPlotLayout);
       setPlotData(newPlotData);
     }
-  }, [apiData]); // update plot when apiData changes
-
-  // refetch apiData every 2 minutes
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      refetch();
-    }, 2 * 60 * 1000);
-
-    return () => clearInterval(intervalId); // cleanup on unmount
-  }, [refetch]);
+  }, [apiData]); // update plot when apiData changes (refetch happens in App.tsx)
 
   /**
    * Parses a date string from the API into a Date object.

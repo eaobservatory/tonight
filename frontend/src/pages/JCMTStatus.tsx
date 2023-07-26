@@ -1,4 +1,4 @@
-import OldFigure from "../OldFigure";
+import OldFigure from "../components/OldFigure";
 
 function JCMTStatus() {
   const figures = {

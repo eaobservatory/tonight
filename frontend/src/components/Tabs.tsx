@@ -3,7 +3,7 @@ import { TabContext } from "../App";
 
 function Tabs() {
   const { activeTab, handlePageClick } = useContext(TabContext) ?? {};
-  const dropdownJCMTRef = useRef<HTMLLIElement>(null);
+  const dropdownJCMTRef = useRef<HTMLLIElement>(null); // refs used to close dropdown menus on click outside
   const dropdownACSISRef = useRef<HTMLLIElement>(null);
   const dropdownSCUBA2Ref = useRef<HTMLLIElement>(null);
 
@@ -33,10 +33,25 @@ function Tabs() {
   return (
     <>
       <ul className="nav nav-tabs nav-justified sticky-top bg-white">
+        <li className="nav-item">
+          <a
+            className={`nav-link ${activeTab === 0 ? "active" : ""}`}
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="false"
+            href="#"
+            onClick={() => {
+              handlePageClick?.(0, "/");
+            }}
+            role="button"
+            aria-expanded="false"
+          >
+            Overview
+          </a>
+        </li>
         <li className="nav-item dropdown dropdown-center" ref={dropdownJCMTRef}>
           <a
             className={`nav-link dropdown-toggle ${
-              activeTab === 0 ? "active" : ""
+              activeTab === 1 ? "active" : ""
             }`}
             data-bs-toggle="dropdown"
             data-bs-auto-close="false"
@@ -50,8 +65,9 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
+                href="#"
                 onClick={() => {
-                  handlePageClick?.(0, "/jcmtconditions");
+                  handlePageClick?.(1, "/jcmtconditions");
                 }}
               >
                 Conditions
@@ -60,7 +76,8 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick?.(0, "/jcmtstatus")}
+                href="#"
+                onClick={() => handlePageClick?.(1, "/jcmtstatus")}
               >
                 Instrument Status
               </a>
@@ -68,17 +85,10 @@ function Tabs() {
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick?.(0, "/jcmtcameras")}
+                href="#"
+                onClick={() => handlePageClick?.(1, "/jcmtcameras")}
               >
                 Cameras
-              </a>
-            </li>
-            <li>
-              <a
-                className="dropdown-item"
-                onClick={() => handlePageClick?.(0, "/jcmtcomments")}
-              >
-                Operator Comments
               </a>
             </li>
           </ul>
@@ -86,41 +96,6 @@ function Tabs() {
         <li
           className="nav-item dropdown dropdown-center"
           ref={dropdownACSISRef}
-        >
-          <a
-            className={`nav-link dropdown-toggle ${
-              activeTab === 1 ? "active" : ""
-            }`}
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="false"
-            href="#"
-            role="button"
-            aria-expanded="false"
-          >
-            ACSIS
-          </a>
-          <ul className="dropdown-menu">
-            <li>
-              <a
-                className="dropdown-item"
-                onClick={() => handlePageClick?.(1, "/acsisobserving")}
-              >
-                Observing
-              </a>
-            </li>
-            <li>
-              <a
-                className="dropdown-item"
-                onClick={() => handlePageClick?.(1, "/acsiscalibrations")}
-              >
-                Calibrations
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li
-          className="nav-item dropdown dropdown-center"
-          ref={dropdownSCUBA2Ref}
         >
           <a
             className={`nav-link dropdown-toggle ${
@@ -132,23 +107,71 @@ function Tabs() {
             role="button"
             aria-expanded="false"
           >
-            SCUBA-2
+            Observing
           </a>
           <ul className="dropdown-menu">
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick?.(2, "/sc2observing")}
+                href="#"
+                onClick={() => handlePageClick?.(2, "/observingacsis")}
               >
-                Observing
+                ACSIS
               </a>
             </li>
             <li>
               <a
                 className="dropdown-item"
-                onClick={() => handlePageClick?.(2, "/sc2performance")}
+                href="#"
+                onClick={() => handlePageClick?.(2, "/observingscuba2")}
               >
-                Performance
+                SCUBA-2
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => handlePageClick?.(1, "/observingall")}
+              >
+                All
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li
+          className="nav-item dropdown dropdown-center"
+          ref={dropdownSCUBA2Ref}
+        >
+          <a
+            className={`nav-link dropdown-toggle ${
+              activeTab === 3 ? "active" : ""
+            }`}
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="false"
+            href="#"
+            role="button"
+            aria-expanded="false"
+          >
+            QA
+          </a>
+          <ul className="dropdown-menu">
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => handlePageClick?.(3, "/qaacsis")}
+              >
+                ACSIS
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => handlePageClick?.(3, "/qascuba2")}
+              >
+                SCUBA-2
               </a>
             </li>
           </ul>

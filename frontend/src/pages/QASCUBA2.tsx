@@ -1,6 +1,6 @@
-import OldFigure from "../OldFigure";
+import OldFigure from "../components/OldFigure";
 
-function SCUBA2Performance() {
+function QASCUBA2() {
   const figures = {
     "SCUBA-2 Data Reduction Pipeline FCFs": {
       src: "https://www.eao.hawaii.edu/monitoring/images/jcmtsc2perffcf.png",
@@ -25,4 +25,4 @@ function SCUBA2Performance() {
   );
 }
 
-export default SCUBA2Performance;
+export default QASCUBA2;
