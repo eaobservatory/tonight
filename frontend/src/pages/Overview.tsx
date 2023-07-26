@@ -4,7 +4,6 @@ function Overview() {
   return (
     <>
       <p>Overview</p>
-      {/* <NewFigure title="jcmtnamakanui" endpoint="jcmtnamakanui" mode="lines" /> */}
       <Figure title="jcmtnamakanui" endpoint="jcmtnamakanui" mode="lines" />
       <Figure
         title="jcmtwx"

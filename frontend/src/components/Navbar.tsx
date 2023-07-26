@@ -141,6 +141,15 @@ function Navbar() {
             <li className="nav-item">
               <a
                 className="nav-link"
+                href="https://vlbi-control1.eao.hawaii.edu/login.html"
+                target="_blank"
+              >
+                VLBI
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
                 href="https://www.eao.hawaii.edu/monitoring/tonight/jcmt/archive/?C=N;O=D"
                 target="_blank"
               >
