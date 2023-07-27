@@ -52,6 +52,8 @@ function App() {
   // refetch API data to update plots every 5 minutes
   useEffect(() => {
     const intervalId = setInterval(() => {
+      const currentTime = new Date();
+      console.log("refetching API data @", currentTime.toLocaleString());
       refetches.forEach((refetch) => refetch());
     }, 5 * 60 * 1000);
 

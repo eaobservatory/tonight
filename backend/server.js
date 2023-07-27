@@ -13,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // update cache every 5 minutes
+updateCache().catch((err) => console.error(err)); // on server start
 setInterval(() => {
   updateCache().catch((err) => console.error(err));
 }, 5 * 60 * 1000);

@@ -1,7 +1,7 @@
 const { redisClient } = require("../../config/redis");
 
 const getJCMTSC2 = async (req, res) => {
-  const data = JSON.parse(await redisClient.get("jcmtnamakanui"));
+  const data = JSON.parse(await redisClient.get("jcmtsc2"));
   res.json(data);
 };
 

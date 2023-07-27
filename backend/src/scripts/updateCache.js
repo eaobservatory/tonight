@@ -11,7 +11,8 @@ const { getDateArray } = require("../utils/date");
  * @throws Will throw an error if the Redis client fails to set the data.
  */
 async function updateCache() {
-  console.log("\n**** UPDATING CACHE ****\n");
+  const currentTime = new Date();
+  console.log("\n**** UPDATING CACHE ****\t", currentTime, "\n");
   const dateArray = getDateArray();
   const jcmtwx = {
     dateArray: dateArray,

@@ -4,12 +4,13 @@ import { Data } from "plotly.js";
 import { FetchContext } from "../App";
 
 type Endpoint = "jcmtwx" | "jcmtsc2" | "jcmtnamakanui";
+type Group = { [key: string]: string[] }; // {y-axis label: PV variables}
 
 interface Props {
   title: string; // title of figure
   endpoint: Endpoint; // API endpoint with data to plot (/api/live/{endpoint})
   mode: any; // type of plot to display (lines, markers, lines+markers, etc.)
-  groups?: string[][]; // array of arrays of PV variables to plot on same axes
+  groups: Group[]; // array of Groups, each group is one set of PV variables to plot on same axes
 }
 
 interface PlotLayout {
@@ -26,6 +27,15 @@ function Figure({ title, endpoint, mode, groups }: Props) {
       dtick: 3600000, // set tick interval to 1 hour
       range: ["2015-03-01 14:00:00", "2015-03-02 14:00:00"], // placeholder date while waiting for API call
     },
+    legend: {
+      orientation: "h",
+      y: -0.1,
+      xanchor: "center",
+      x: 0.5,
+    },
+    margin: {
+      t: 40,
+    },
   });
   const contextValue = useContext(FetchContext) ?? {};
   const apiData = contextValue[`${endpoint}APIData`];
@@ -36,10 +46,9 @@ function Figure({ title, endpoint, mode, groups }: Props) {
       const keys: string[] = apiData
         ? Object.keys(apiData).filter((key) => key !== "dateArray") // filter to remove 'dateArray' key, only keep PVs
         : [];
-      const plotGroups: string[][] = groups || [keys]; // each group is one set of PV variables to plot on same axes
 
       // CREATE NEW PLOT LAYOUT
-      let newPlotLayout: PlotLayout = { ...plotLayout };
+      let newPlotLayout: PlotLayout = { ...plotLayout, shapes: [] };
 
       // update x-axis range in plotLayout with new dateArray
       const dateArray =
@@ -53,52 +62,75 @@ function Figure({ title, endpoint, mode, groups }: Props) {
           : ["2015-03-01 14:00:00", "2015-03-02 14:00:00"]; // placeholder date while waiting for API call
 
       // defining vertical position of each subplot
-      for (let i = 0; i < plotGroups.length; i++) {
-        newPlotLayout[`yaxis${i + 1}`] = {
-          domain: [i / plotGroups.length, (i + 1) / plotGroups.length],
-          anchor: "x",
-          title: "",
-        };
+      for (let i = 0; i <= groups.length; i++) {
+        if (i < groups.length) {
+          const yAxisName = i === 0 ? "yaxis" : `yaxis${i + 1}`;
+          newPlotLayout[yAxisName] = {
+            domain: [i / groups.length, (i + 1) / groups.length],
+            anchor: "x",
+            zeroline: false,
+            linecolor: "black",
+            mirror: true,
+          };
+        }
+
+        // add horizontal line to separate each subplot
+        newPlotLayout.shapes.push({
+          type: "line",
+          xref: "paper",
+          yref: "paper",
+          x0: 0,
+          y0: i / groups.length,
+          x1: 1,
+          y1: i / groups.length,
+          line: {
+            color: "black",
+            width: 1,
+          },
+        });
       }
 
       // CREATE NEW PLOT DATA
       const newPlotData: Data[] = []; // array of data to pass to Plot component
 
       // for each group of PV variables
-      // plotGroups.map((group, i) => {
-      plotGroups // reverse order of groups so that first group from API is plotted on top
+      groups // reverse order of groups so that first group from API is plotted on top
         .slice()
         .reverse()
-        .map((group, i) => {
+        .map((group: Group, i) => {
+          const yAxisName = i === 0 ? "yaxis" : `yaxis${i + 1}`;
+          newPlotLayout[yAxisName].title = Object.keys(group)[0]; // y-axis label is key of each group
           // create plot data for each PV variable
-          group.map((key) => {
-            if (apiData?.[key]) {
-              const lines: string[] = apiData[key]["data"]; // each line contains date and value
-              const points: [Date[], string[]] = [[], []]; // date, value
+          Object.keys(group).map((yAxis) => {
+            group[yAxis].map((pv) => {
+              if (apiData?.[pv]) {
+                const lines: string[] = apiData[pv]["data"]; // each line contains date and value
+                const points: [Date[], string[]] = [[], []]; // date, value
 
-              // parse each line into date and value
-              lines.map((line) => {
-                const point = line.split("\t"); // date and value separated by tab
+                // parse each line into date and value
+                lines.map((line) => {
+                  const point = line.split("\t"); // date and value separated by tab
 
-                // don't plot if value is #N/A
-                if (point[1] != "#N/A") {
-                  const date: Date = parseDate(point[0]);
-                  points[0].push(date); // date
-                  points[1].push(point[1]); // value
-                }
-              });
+                  // don't plot if value is #N/A
+                  if (point[1] != "#N/A") {
+                    const date: Date = parseDate(point[0]);
+                    points[0].push(date); // date
+                    points[1].push(point[1]); // value
+                  }
+                });
 
-              const plotDatum: Data = {
-                x: points[0],
-                y: points[1],
-                type: "scatter",
-                mode: mode,
-                name: apiData[key]["label"],
-                yaxis: `y${i + 1}`,
-              };
+                const plotDatum: Data = {
+                  x: points[0],
+                  y: points[1],
+                  type: "scatter",
+                  mode: mode,
+                  name: apiData[pv]["label"],
+                  yaxis: `y${i + 1}`,
+                };
 
-              newPlotData.push(plotDatum);
-            }
+                newPlotData.push(plotDatum);
+              }
+            });
           });
         });
 
