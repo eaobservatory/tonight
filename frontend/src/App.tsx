@@ -37,7 +37,7 @@ function App() {
     [navigate]
   );
 
-  // FetchContext
+  // FetchContext -- allows data to be fetched once and passed to all components
   const { data: jcmtwxAPIData, refetch: jcmtwxRefetch } = useFetch(
     "http://localhost:3001/api/live/jcmtwx"
   );
@@ -49,7 +49,7 @@ function App() {
 
   const refetches = [jcmtwxRefetch, jcmtsc2Refetch, jcmtnamakanuiRefetch];
 
-  // refetch apiData every 5 minutes
+  // refetch API data to update plots every 5 minutes
   useEffect(() => {
     const intervalId = setInterval(() => {
       refetches.forEach((refetch) => refetch());
