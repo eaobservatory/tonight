@@ -22,6 +22,7 @@ export const FetchContext = React.createContext({
   jcmtwxAPIData: null,
   jcmtsc2APIData: null,
   jcmtnamakanuiAPIData: null,
+  jcmtsmuAPIData: null,
 });
 
 function App() {
@@ -46,8 +47,16 @@ function App() {
   );
   const { data: jcmtnamakanuiAPIData, refetch: jcmtnamakanuiRefetch } =
     useFetch("http://localhost:3001/api/live/jcmtnamakanui");
+  const { data: jcmtsmuAPIData, refetch: jcmtsmuRefetch } = useFetch(
+    "http://localhost:3001/api/live/jcmtsmu"
+  );
 
-  const refetches = [jcmtwxRefetch, jcmtsc2Refetch, jcmtnamakanuiRefetch];
+  const refetches = [
+    jcmtwxRefetch,
+    jcmtsc2Refetch,
+    jcmtnamakanuiRefetch,
+    jcmtsmuRefetch,
+  ];
 
   // refetch API data to update plots every 5 minutes
   useEffect(() => {
@@ -67,7 +76,12 @@ function App() {
         <Tabs />
       </TabContext.Provider>
       <FetchContext.Provider
-        value={{ jcmtwxAPIData, jcmtsc2APIData, jcmtnamakanuiAPIData }}
+        value={{
+          jcmtwxAPIData,
+          jcmtsc2APIData,
+          jcmtnamakanuiAPIData,
+          jcmtsmuAPIData,
+        }}
       >
         <Routes>
           <Route path="/" element={<Overview />} />

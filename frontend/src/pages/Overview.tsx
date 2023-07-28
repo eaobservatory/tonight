@@ -46,6 +46,12 @@ function Overview() {
         ]}
         mode="lines"
       />
+      <Figure
+        title="jcmtsmu"
+        endpoint="jcmtsmu"
+        groups={[{ ns: ["ns"] }, { ew: ["ew"] }]}
+        mode="lines"
+      />
     </>
   );
 }

@@ -27,7 +27,7 @@ const queryPV = async (pv, dateArray) => {
     return data;
   } catch (error) {
     console.log(`${pv}: ERROR -- ${error.message}`);
-    return; // plot should be blank if error occurs
+    return []; // plot should be blank if error occurs
   }
 };
 

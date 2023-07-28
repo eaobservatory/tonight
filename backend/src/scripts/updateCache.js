@@ -14,6 +14,8 @@ async function updateCache() {
   const currentTime = new Date();
   console.log("\n**** UPDATING CACHE ****\t", currentTime, "\n");
   const dateArray = getDateArray();
+
+  // jcmtwx
   const jcmtwx = {
     dateArray: dateArray,
     "ws:wxt510:stat:airTemp": {
@@ -42,6 +44,8 @@ async function updateCache() {
     },
   };
   await redisClient.set("jcmtwx", JSON.stringify(jcmtwx));
+
+  // jcmtsc2
   const jcmtsc2 = {
     dateArray: dateArray,
     "scu2CCS:ls218a:t2": {
@@ -62,6 +66,8 @@ async function updateCache() {
     },
   };
   await redisClient.set("jcmtsc2", JSON.stringify(jcmtsc2));
+
+  // jcmtnamakanui
   const jcmtnamakanui = {
     dateArray: dateArray,
     "nmnCryo:ls:temp1": {
@@ -82,6 +88,7 @@ async function updateCache() {
     },
   };
   await redisClient.set("jcmtnamakanui", JSON.stringify(jcmtnamakanui));
+
   console.log("\n**** CACHE UPDATED ****\n");
 }
 
