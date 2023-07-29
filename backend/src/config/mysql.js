@@ -18,6 +18,10 @@ mysqlOMPConnection.connect((err) => {
   console.log("Connected to MySQL!");
 });
 
+const queryOMP = util
+  .promisify(mysqlOMPConnection.query)
+  .bind(mysqlOMPConnection);
+
 module.exports = {
-  mysqlOMPConnection,
+  queryOMP,
 };

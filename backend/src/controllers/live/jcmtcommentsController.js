@@ -1,8 +1,9 @@
-// const { mysqlOMPConnection } = require("../../config/mysql");
-// select * from ompshiftlog order by date desc limit 10;
+// const { queryOMP } = require("../../config/mysql");
 
 const getJCMTCOMMENTS = async (req, res) => {
   res.json({ message: "hello world" });
+  // const rows = await queryOMP('SELECT * FROM ompshiftlog ORDER BY date DESC LIMIT 10');
+  // res.send(rows);
 };
 
 module.exports = {
