@@ -5,7 +5,7 @@
  * @returns {Array<Array<string>>} An array containing three arrays, each representing a date as [year, month, day]. The first two are HST, the last is UTC.
  */
 const getDateArray = () => {
-  const date = new Date(); // today in hST
+  const date = new Date(); // today in HST
   const prevDate = new Date(date.getTime()); // yesterday
   prevDate.setDate(date.getDate() - 1);
   const nextDate = new Date(date.getTime()); // tomorrow
@@ -49,7 +49,7 @@ const getDateArray = () => {
 };
 
 /**
- * Converts a UTC date and time to HST (Hawaii Standard Time).
+ * Converts a UTC date (summit file system is in UTC) and time to HST (Hawaii Standard Time).
  * Produces string in same format as engarchive output.
  *
  * @param {Array} dateArray - An array containing the UTC date and time. The array should have the following format: [YYYY, MMM, DD, HH:MM:SS].
@@ -89,6 +89,27 @@ function convertUTCToHST(dateArray) {
 
   // Return the HST date and time as an array
   return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+
+  // // Above conversion works when run in HST. Below is an alternative that works in any timezone.
+  // // It's much slower, so use for testing only.
+
+  // // Create an Intl.DateTimeFormat object for the 'en-US' locale and HST timezone
+  // const formatter = new Intl.DateTimeFormat("en-US", {
+  //   timeZone: "Pacific/Honolulu",
+  //   year: "numeric",
+  //   month: "2-digit",
+  //   day: "2-digit",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   second: "2-digit",
+  //   hour12: false,
+  // });
+
+  // // Format the date
+  // const hstDate = formatter.format(date);
+
+  // // Replace the first comma with a space to get the 'MM/DD/YYYY HH:MM:SS' format
+  // return hstDate.replace(",", "");
 }
 
 module.exports = {

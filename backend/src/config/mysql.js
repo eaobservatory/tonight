@@ -9,7 +9,7 @@ const mysqlOMPConnection = mysql.createConnection({
   user: process.env.STAFF_USERNAME,
   password: process.env.STAFF_PASSWORD,
   database: "omp",
-  timezone: 'Z',
+  timezone: "Z",
 });
 
 mysqlOMPConnection.connect((err) => {
