@@ -3,8 +3,8 @@ const axios = require("axios");
 
 dotenv.config({ path: "../.env" });
 
-const username = process.env.ENGARCHIVE_USERNAME;
-const password = process.env.ENGARCHIVE_PASSWORD;
+const username = process.env.STAFF_USERNAME;
+const password = process.env.STAFF_PASSWORD;
 
 /**
  * Queries the PV (Process Variable) from the engineering archive.

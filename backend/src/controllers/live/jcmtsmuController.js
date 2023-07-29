@@ -10,7 +10,7 @@ const getJCMTSMU = async (req, res) => {
     ["2023", "07", "27"],
     ["2023", "07", "27"],
   ];
-  const logFilePath = path.join(__dirname, "../../temp/SMU_param_3.log"); // change to absolute path in production, won't need to import path
+  const logFilePath = path.join(__dirname, "../../temp/SMU_param_3.log"); // change path in production
   //   const logFilePath = `/jac_logs/${dateArray[2][0]}${dateArray[2][1]}${dateArray[2][2]}/SMU_param.log`;
 
   // check for existence of file

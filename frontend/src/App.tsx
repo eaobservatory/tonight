@@ -18,7 +18,8 @@ export const TabContext = React.createContext<{
   handlePageClick: (tab: number, path: string) => void;
 } | null>(null);
 
-export const FetchContext = React.createContext({
+// Contains API data that queries the engarchive (i.e., EPICS data)
+export const EPICSContext = React.createContext({
   jcmtwxAPIData: null,
   jcmtsc2APIData: null,
   jcmtnamakanuiAPIData: null,
@@ -38,7 +39,7 @@ function App() {
     [navigate]
   );
 
-  // FetchContext -- allows data to be fetched once and passed to all components
+  // EPICSContext -- allows data to be fetched once and passed to all components
   const { data: jcmtwxAPIData, refetch: jcmtwxRefetch } = useFetch(
     "http://localhost:3001/api/live/jcmtwx"
   );
@@ -75,7 +76,7 @@ function App() {
         <Navbar />
         <Tabs />
       </TabContext.Provider>
-      <FetchContext.Provider
+      <EPICSContext.Provider
         value={{
           jcmtwxAPIData,
           jcmtsc2APIData,
@@ -94,7 +95,7 @@ function App() {
           <Route path="/qaacsis" element={<QAACSIS />} />
           <Route path="/qascuba2" element={<QASCUBA2 />} />
         </Routes>
-      </FetchContext.Provider>
+      </EPICSContext.Provider>
     </div>
   );
 }
