@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv");
+const util = require("util");
 
 dotenv.config({ path: "../.env" });
 
@@ -8,6 +9,7 @@ const mysqlOMPConnection = mysql.createConnection({
   user: process.env.STAFF_USERNAME,
   password: process.env.STAFF_PASSWORD,
   database: "omp",
+  timezone: 'Z',
 });
 
 mysqlOMPConnection.connect((err) => {
