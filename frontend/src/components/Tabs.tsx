@@ -114,18 +114,18 @@ function Tabs() {
               <a
                 className="dropdown-item"
                 href="#"
-                onClick={() => handlePageClick?.(2, "/observingacsis")}
+                onClick={() => handlePageClick?.(2, "/observingsc2")}
               >
-                ACSIS
+                SCUBA-2
               </a>
             </li>
             <li>
               <a
                 className="dropdown-item"
                 href="#"
-                onClick={() => handlePageClick?.(2, "/observingscuba2")}
+                onClick={() => handlePageClick?.(2, "/observingacsis")}
               >
-                SCUBA-2
+                ACSIS
               </a>
             </li>
             <li>
@@ -166,7 +166,7 @@ function Tabs() {
               <a
                 className="dropdown-item"
                 href="#"
-                onClick={() => handlePageClick?.(3, "/qascuba2")}
+                onClick={() => handlePageClick?.(3, "/qasc2")}
               >
                 SCUBA-2
               </a>

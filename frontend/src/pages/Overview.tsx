@@ -5,8 +5,8 @@ function Overview() {
     <>
       <p>Overview</p>
       <Figure
-        title="jcmtnamakanui"
-        endpoint="jcmtnamakanui"
+        title="jcmtnama"
+        endpoint="jcmtnama"
         groups={[
           {
             temp: [

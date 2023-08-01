@@ -17,6 +17,20 @@
   z-index: 1100;
 }
 
+ul.dropdown-menu > li {
+  text-align: center;
+}
+
+.index-table {
+  width: 50%;
+  margin: auto;
+}
+
+.comments-table {
+  width: 50%;
+  margin: auto;
+}
+
 .figure {
   width: 30%;
 }
@@ -25,8 +39,4 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-}
-
-ul.dropdown-menu > li {
-  text-align: center;
 }

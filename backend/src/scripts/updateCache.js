@@ -67,8 +67,8 @@ async function updateCache() {
   };
   await redisClient.set("jcmtsc2", JSON.stringify(jcmtsc2));
 
-  // jcmtnamakanui
-  const jcmtnamakanui = {
+  // jcmtnama
+  const jcmtnama = {
     dateArray: dateArray,
     "nmnCryo:ls:temp1": {
       label: "cold head 2nd stage (< 3.5 K)",
@@ -87,11 +87,22 @@ async function updateCache() {
       data: await queryPV("nmnCryo:ls:temp4", dateArray),
     },
   };
-  await redisClient.set("jcmtnamakanui", JSON.stringify(jcmtnamakanui));
+  await redisClient.set("jcmtnama", JSON.stringify(jcmtnama));
 
   console.log("\n**** CACHE UPDATED ****\n");
 }
 
+// Clears the Redis cache every midnight.
+async function clearCache() {
+  return new Promise((resolve, reject) => {
+    client.flushdb((err, succeeded) => {
+      if (err) reject(err);
+      else resolve(succeeded);
+    });
+  });
+}
+
 module.exports = {
   updateCache,
+  clearCache,
 };

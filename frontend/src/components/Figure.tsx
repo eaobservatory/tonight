@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import Plot from "react-plotly.js";
 import { Data } from "plotly.js";
-import { EPICSContext } from "../App";
+import { APIContext } from "../App";
 
-type Endpoint = "jcmtwx" | "jcmtsc2" | "jcmtnamakanui" | "jcmtsmu";
+type Endpoint = "jcmtwx" | "jcmtsc2" | "jcmtnama" | "jcmtsmu";
 type Group = { [key: string]: string[] }; // {y-axis label: PV variables}
 
 interface Props {
@@ -38,7 +38,7 @@ function Figure({ title, endpoint, mode, groups }: Props) {
         t: 40,
       },
     });
-    const contextValue = useContext(EPICSContext) ?? {};
+    const contextValue = useContext(APIContext) ?? {};
     const apiData = contextValue[`${endpoint}APIData`];
 
     // update plot when apiData changes

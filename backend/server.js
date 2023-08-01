@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { updateCache } = require("./src/scripts/updateCache");
+const cron = require("node-cron");
+const { updateCache, clearCache } = require("./src/scripts/updateCache");
 
 dotenv.config({ path: "../.env" });
 
@@ -12,11 +13,35 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-// update cache every 5 minutes
-updateCache().catch((err) => console.error(err)); // on server start
-setInterval(() => {
-  updateCache().catch((err) => console.error(err));
-}, 5 * 60 * 1000);
+// clear cache at midnight
+cron.schedule(
+  "0 0 * * *",
+  function () {
+    clearCache()
+      .then(() => {
+        console.log("Cache successfully cleared");
+      })
+      .catch((err) => console.error(err));
+  },
+  {
+    scheduled: true,
+    timezone: "UTC",
+  }
+);
+
+// update cache on server start, then every 5 minutes
+updateCache().catch((err) => console.error(err));
+
+cron.schedule(
+  "*/5 * * * *",
+  function () {
+    updateCache().catch((err) => console.error(err));
+  },
+  {
+    scheduled: true,
+    timezone: "UTC",
+  }
+);
 
 app.use("/api/live", require("./src/routes/live"));
 
