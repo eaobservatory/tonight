@@ -1,8 +1,8 @@
-import { useEffect, useRef, useContext } from "react";
-import { TabContext } from "../App";
+import { useEffect, useRef } from "react";
+import { useTabs } from "../contexts/TabContext";
 
 function Tabs() {
-  const { activeTab, handlePageClick } = useContext(TabContext) ?? {};
+  const { activeTab, handlePageClick } = useTabs();
   const dropdownJCMTRef = useRef<HTMLLIElement>(null); // refs used to close dropdown menus on click outside
   const dropdownObservingRef = useRef<HTMLLIElement>(null);
   const dropdownQARef = useRef<HTMLLIElement>(null);
@@ -13,6 +13,7 @@ function Tabs() {
     dropdownRefs.forEach((dropdownRef) => {
       const dropdownMenu = dropdownRef.current?.children[1];
       if (
+        dropdownMenu &&
         dropdownMenu?.classList.contains("show") &&
         (!dropdownRef.current?.contains(e.target as Node) || // close dropdown menu on click outside
           dropdownMenu?.contains(e.target as Node)) // close dropdown menu on click inside
@@ -132,7 +133,7 @@ function Tabs() {
               <a
                 className="dropdown-item"
                 href="#"
-                onClick={() => handlePageClick?.(1, "/observingall")}
+                onClick={() => handlePageClick?.(2, "/observingall")}
               >
                 All
               </a>

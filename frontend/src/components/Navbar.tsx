@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { TabContext } from "../App";
+import { useTabs } from "../contexts/TabContext";
 
 function Navbar() {
-  const { handlePageClick } = useContext(TabContext) ?? {};
+  const { handlePageClick } = useTabs();
   const date = new Date();
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dateUTC = `${date.getUTCFullYear()}/${(date.getUTCMonth() + 1)

@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import Plot from "react-plotly.js";
 import { Data } from "plotly.js";
-import { APIContext } from "../App";
+import { useEPICS } from "../contexts/EPICSContext";
+import { useIeie } from "../contexts/IeieContext";
 
-type Endpoint = "jcmtwx" | "jcmtsc2" | "jcmtnama" | "jcmtsmu";
 type Group = { [key: string]: string[] }; // {y-axis label: PV variables}
 
 interface Props {
   title: string; // title of figure
-  endpoint: Endpoint; // API endpoint with data to plot (/api/live/{endpoint})
+  endpoint: string; // API endpoint with data to plot (/api/live/{endpoint})
   mode: any; // type of plot to display (lines, markers, lines+markers, etc.)
   groups: Group[]; // array of Groups, each group is one set of PV variables to plot on same axes
 }
@@ -38,8 +38,7 @@ function Figure({ title, endpoint, mode, groups }: Props) {
         t: 40,
       },
     });
-    const contextValue = useContext(APIContext) ?? {};
-    const apiData = contextValue[`${endpoint}APIData`];
+    const apiData = selectContext(endpoint);
 
     // update plot when apiData changes
     useEffect(() => {
@@ -155,6 +154,28 @@ function Figure({ title, endpoint, mode, groups }: Props) {
     );
   }
 }
+
+/**
+ * Selects the appropriate context based on the provided endpoint.
+ *
+ * @param {string} endpoint - The endpoint to use for selecting the context.
+ * @returns {any} - The data associated with the endpoint from the appropriate context. If the endpoint does not match any known endpoints, returns an empty array.
+ */
+const selectContext = (endpoint: string) => {
+  const { epicsAPIData } = useEPICS();
+  const { ieieAPIData } = useIeie();
+
+  switch (endpoint) {
+    case "jcmtwx":
+    case "jcmtsc2":
+    case "jcmtnama":
+      return epicsAPIData[endpoint];
+    case "jcmtsmu":
+      return ieieAPIData[endpoint];
+    default:
+      return [];
+  }
+};
 
 /**
  * Parses a date string from the API into a Date object.

@@ -1,22 +1,18 @@
-import { useEffect, useState, useContext } from "react";
-import { APIContext } from "../App";
+import { useEffect, useState } from "react";
+import { useOMP } from "../contexts/OMPContext";
 
 function AllIndex() {
-  const contextValue = useContext(APIContext) ?? {};
+  const { ompAPIData } = useOMP();
 
   // get and filter sc2 data (one line per obsnum)
-  const sc2Data = contextValue.sc2indexAPIData
-    ? (contextValue.sc2indexAPIData as any[])
-    : [];
+  const sc2Data = ompAPIData.sc2index;
   const sc2FilteredData = sc2Data?.filter(
     (v: any, i: number, a: any[]) =>
       a.findIndex((t) => t.obsnum === v.obsnum) === i
   );
 
   // get and filter acsis data (one line per obsnum)
-  const acsisData = contextValue.acsisindexAPIData
-    ? (contextValue.acsisindexAPIData as any[])
-    : [];
+  const acsisData = ompAPIData.acsisindex;
   const acsisFilteredData = acsisData?.filter(
     (v: any, i: number, a: any[]) =>
       a.findIndex((t) => t.obsnum === v.obsnum) === i

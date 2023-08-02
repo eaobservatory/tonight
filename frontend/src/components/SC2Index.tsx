@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useOMP } from "../contexts/OMPContext";
 import { dateToTime } from "../utils/date";
-import { APIContext } from "../App";
 
 interface Observation {
   backend: string;
@@ -10,18 +9,20 @@ interface Observation {
   object: string;
   map_wdth: number;
   map_hght: number;
+  tau225st: number;
   tau225en: number;
+  wvmtaust: number;
   wvmtauen: number;
+  seeingst: number;
   seeingen: number;
   roofsten: string;
   date_obs: string;
+  doorsten: string;
 }
 
 function SC2Index() {
-  const contextValue = useContext(APIContext) ?? {};
-  const data = contextValue.sc2indexAPIData
-    ? (contextValue.sc2indexAPIData as Observation[])
-    : [];
+  const { ompAPIData } = useOMP();
+  const data = ompAPIData.sc2index;
   // keep only one line per obsnum
   const filteredData = data?.filter(
     (v: Observation, i: number, a: Observation[]) =>
@@ -42,7 +43,8 @@ function SC2Index() {
             <td>Tau</td>
             <td>WVM</td>
             <td>Seeing</td>
-            <td>Dome</td>
+            <td>Roof</td>
+            <td>Doors</td>
           </tr>
         </thead>
         <tbody>
@@ -69,14 +71,16 @@ function SC2Index() {
                       ).toFixed(1)}'`
                     : "n/a"}
                 </td>
-                <td>{obs.tau225en.toFixed(2)}</td>
-                <td>{obs.wvmtauen.toFixed(2)}</td>
+                <td>{((obs.tau225st + obs.tau225en) / 2).toFixed(2)}</td>
+                <td>{((obs.wvmtaust + obs.wvmtauen) / 2).toFixed(2)}</td>
                 <td>
-                  {typeof obs.seeingen === "number"
-                    ? obs.seeingen.toFixed(2)
+                  {typeof obs.seeingst == "number" &&
+                  typeof obs.seeingen === "number"
+                    ? ((obs.seeingst + obs.seeingen) / 2).toFixed(2)
                     : "n/a"}
                 </td>
                 <td>{obs.roofsten}</td>
+                <td>{obs.doorsten}</td>
               </tr>
             ))}
         </tbody>

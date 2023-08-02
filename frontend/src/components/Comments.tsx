@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useOMP } from "../contexts/OMPContext";
 import { dateToTime } from "../utils/date";
-import { APIContext } from "../App";
 
 interface Comment {
   shiftid: number;
@@ -11,10 +10,8 @@ interface Comment {
 }
 
 function Comments() {
-  const contextValue = useContext(APIContext) ?? {};
-  const data = contextValue.commentsAPIData
-    ? (contextValue.commentsAPIData as Comment[])
-    : [];
+  const { ompAPIData } = useOMP();
+  const data = ompAPIData.comments;
 
   return (
     <>

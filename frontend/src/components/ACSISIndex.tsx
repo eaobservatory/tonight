@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useOMP } from "../contexts/OMPContext";
 import { dateToTime } from "../utils/date";
-import { APIContext } from "../App";
 
 interface Observation {
   backend: string;
@@ -9,19 +8,20 @@ interface Observation {
   project: string;
   object: string;
   steptime: number;
+  tau225st: number;
   tau225en: number;
+  wvmtaust: number;
   wvmtauen: number;
   instrume: string;
   restfreq: number;
   date_obs: string;
   roofsten: string;
+  doorsten: string;
 }
 
 function ACSISIndex() {
-  const contextValue = useContext(APIContext) ?? {};
-  const data = contextValue.acsisindexAPIData
-    ? (contextValue.acsisindexAPIData as Observation[])
-    : [];
+  const { ompAPIData } = useOMP();
+  const data = ompAPIData.acsisindex;
   // keep only one line per obsnum
   const filteredData = data?.filter(
     (v: Observation, i: number, a: Observation[]) =>
@@ -41,7 +41,8 @@ function ACSISIndex() {
             <td>Tau</td>
             <td>WVM</td>
             <td>Rx/Freq</td>
-            <td>Dome</td>
+            <td>Roof</td>
+            <td>Doors</td>
           </tr>
         </thead>
         <tbody>
@@ -60,12 +61,13 @@ function ACSISIndex() {
                   </a>
                 </td>
                 <td>{obs.steptime.toFixed(1)}</td>
-                <td>{obs.tau225en.toFixed(2)}</td>
-                <td>{obs.wvmtauen.toFixed(2)}</td>
+                <td>{((obs.tau225st + obs.tau225en) / 2).toFixed(2)}</td>
+                <td>{((obs.wvmtaust + obs.wvmtauen) / 2).toFixed(2)}</td>
                 <td>
                   {obs.instrume}/{obs.restfreq.toFixed(1)}
                 </td>
                 <td>{obs.roofsten}</td>
+                <td>{obs.doorsten}</td>
               </tr>
             ))}
         </tbody>
