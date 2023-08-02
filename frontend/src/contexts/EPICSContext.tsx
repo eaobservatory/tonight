@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 
 interface EPICSContextValue {
@@ -30,6 +30,17 @@ export function EPICSProvider({ children }: { children: ReactNode }) {
     jcmtnama: jcmtnamaAPIData,
   };
   const epicsRefetches = [jcmtwxRefetch, jcmtsc2Refetch, jcmtnamaRefetch];
+
+  // refetch EPICS API data to update plots every 5 minutes
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const currentTime = new Date();
+      console.log("refetching EPICS data @", currentTime.toLocaleString());
+      epicsRefetches.forEach((refetch) => refetch());
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(intervalId); // cleanup on unmount
+  }, []);
 
   return (
     <EPICSContext.Provider value={{ epicsAPIData, epicsRefetches }}>

@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 
 interface IeieContextValue {
@@ -20,6 +20,17 @@ export function IeieProvider({ children }: { children: ReactNode }) {
 
   const ieieAPIData = { jcmtsmu: jcmtsmuAPIData };
   const ieieRefetches = [jcmtsmuRefetch];
+
+  // refetch ieie API data to update plots every 5 minutes
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const currentTime = new Date();
+      console.log("refetching ieie data @", currentTime.toLocaleString());
+      ieieRefetches.forEach((refetch) => refetch());
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(intervalId); // cleanup on unmount
+  }, []);
 
   return (
     <IeieContext.Provider value={{ ieieAPIData, ieieRefetches }}>

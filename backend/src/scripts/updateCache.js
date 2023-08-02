@@ -115,7 +115,7 @@ async function updateCache() {
   console.log("\n**** CACHE UPDATED ****\n");
 }
 
-// Clears the Redis cache every midnight.
+// clears the Redis cache (scheduled for every midnight in server.js)
 async function clearCache() {
   return new Promise((resolve, reject) => {
     client.flushdb((err, succeeded) => {
