@@ -29,8 +29,8 @@ async function updateCache() {
     "nmnCryo:ls:temp2",
     "nmnCryo:ls:temp3",
     "nmnCryo:ls:temp4",
-  ];
-  const results = {};
+  ]; // PV names
+  const results = {}; // PV data
 
   // query all PVs and store in results
   for (let pv of pvs) {
