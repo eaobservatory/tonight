@@ -34,6 +34,7 @@ export default async function Figure({ title, mode, groups, pvData }: Props) {
       margin: {
         t: 40,
       },
+      shapes: [],
     };
 
     // set x-axis range based on date
@@ -56,7 +57,7 @@ export default async function Figure({ title, mode, groups, pvData }: Props) {
       }
 
       // add horizontal line to separate each subplot
-      plotLayout["shapes"] = {
+      plotLayout.shapes.push({
         type: "line",
         xref: "paper",
         yref: "paper",
@@ -68,7 +69,7 @@ export default async function Figure({ title, mode, groups, pvData }: Props) {
           color: "black",
           width: 1,
         },
-      };
+      });
     }
 
     // CREATE PLOT DATA
@@ -124,10 +125,10 @@ export default async function Figure({ title, mode, groups, pvData }: Props) {
       </>
     );
   } catch (e) {
-    console.log(`Error rendering figure: ${e}`);
+    console.log(`Error rendering figure: ${(e as Error).message}`);
     return (
       <>
-        <p>Error rendering figure</p>
+        <p>{(e as Error).message}</p>
       </>
     );
   }

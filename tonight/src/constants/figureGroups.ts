@@ -11,7 +11,7 @@ export const jcmtwx: groups = [
 
 export const jcmtnama: groups = [
   {
-    temp: [
+    "temperature (k)": [
       "nmnCryo:ls:temp1",
       "nmnCryo:ls:temp2",
       "nmnCryo:ls:temp3",

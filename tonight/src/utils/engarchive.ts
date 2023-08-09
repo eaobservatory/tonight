@@ -32,10 +32,16 @@ export const getPV = async (pv: PV) => {
 type PV = keyof typeof labels;
 
 const labels: { [key: string]: string } = {
-  "ws:wxt510:stat:airTemp ": "temperature",
+  // jcmtwx
+  "ws:wxt510:stat:airTemp": "temperature",
   "ws:wxt510:stat:humidity": "relative humidity",
   "ws:wxt510:stat:pressure": "barometric pressure",
-  "ws:wxt510:stat:windSpd ": "wind speed",
-  "ws:wxt510:stat:windDir ": "wind direction",
+  "ws:wxt510:stat:windSpd": "wind speed",
+  "ws:wxt510:stat:windDir": "wind direction",
   "enviro:dewpoint": "dew point",
+  // jcmtnama
+  "nmnCryo:ls:temp1": "cold head 2nd stage (<3.5 K)",
+  "nmnCryo:ls:temp2": "4k plate (<4.2 K)",
+  "nmnCryo:ls:temp3": "cold head 1st stage (< 22 K)",
+  "nmnCryo:ls:temp4": "outer shield (< 100 K)",
 };
