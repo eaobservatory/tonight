@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Comments from "@/components/Comments";
 import Figure from "@/components/Figure";
-import { jcmtwx, jcmtnama } from "@/constants/figureGroups";
 import { getPV } from "@/utils/engarchive";
 import VegaChart from "@/components/Vega";
 

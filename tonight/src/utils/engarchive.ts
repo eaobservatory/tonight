@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import { getDateArray } from "./date";
+import { labels } from "@/constants/plots";
 
 dotenv.config({ path: "@/../env" });
+
+type PV = keyof typeof labels;
 
 export const revalidate = 60 * 5; // revalidate every 5 minutes
 
@@ -23,25 +26,9 @@ export const getPV = async (pv: PV) => {
     const data = res.split("\n").slice(18, -1); // split response into lines, remove header
     console.log(`${pv}: success!`);
     return { label: labels[pv], data: data };
+    // return { label: labels[pv], data: ["hello", "world"] };
   } catch (error: any) {
     console.log(`${pv}: ERROR -- ${error.message}`);
     return []; // plot should be blank if error occurs
   }
-};
-
-type PV = keyof typeof labels;
-
-const labels: { [key: string]: string } = {
-  // jcmtwx
-  "ws:wxt510:stat:airTemp": "temperature",
-  "ws:wxt510:stat:humidity": "relative humidity",
-  "ws:wxt510:stat:pressure": "barometric pressure",
-  "ws:wxt510:stat:windSpd": "wind speed",
-  "ws:wxt510:stat:windDir": "wind direction",
-  "enviro:dewpoint": "dew point",
-  // jcmtnama
-  "nmnCryo:ls:temp1": "cold head 2nd stage (<3.5 K)",
-  "nmnCryo:ls:temp2": "4k plate (<4.2 K)",
-  "nmnCryo:ls:temp3": "cold head 1st stage (< 22 K)",
-  "nmnCryo:ls:temp4": "outer shield (< 100 K)",
 };
