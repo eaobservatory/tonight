@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { getDateArray } from "./date";
+import { getDateArray } from "@/utils/date";
 import { labels } from "@/constants/plots";
 
 dotenv.config({ path: "@/../env" });
@@ -26,7 +26,6 @@ export const getPV = async (pv: PV) => {
     const data = res.split("\n").slice(18, -1); // split response into lines, remove header
     console.log(`${pv}: success!`);
     return { label: labels[pv], data: data };
-    // return { label: labels[pv], data: ["hello", "world"] };
   } catch (error: any) {
     console.log(`${pv}: ERROR -- ${error.message}`);
     return []; // plot should be blank if error occurs
