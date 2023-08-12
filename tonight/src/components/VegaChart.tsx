@@ -6,7 +6,7 @@ import { getDateArray } from "@/utils/date";
 
 interface Props {
   plot: string;
-  plotType: string;
+  mark: string;
 }
 
 interface Value {
@@ -26,14 +26,14 @@ interface Value {
 //   return hourStr;
 // });
 
-const getUTCHour = (date: string) => {
-  let utcHour = Number(date.substring(11, 13)) + 10; // UTC is 10 hours ahead of HST
-  if (utcHour >= 24) {
-    utcHour -= 10;
-  }
-  const hourStr = utcHour.toString().padStart(2, "0");
-  return hourStr;
-};
+// const getUTCHour = (date: string) => {
+//   let utcHour = Number(date.substring(11, 13)) + 10; // UTC is 10 hours ahead of HST
+//   if (utcHour >= 24) {
+//     utcHour -= 10;
+//   }
+//   const hourStr = utcHour.toString().padStart(2, "0");
+//   return hourStr;
+// };
 
 const cleanPVData = (pvData: { [key: string]: any }, dateArray: string[][]) => {
   // remove 0.0
@@ -51,29 +51,13 @@ const cleanPVData = (pvData: { [key: string]: any }, dateArray: string[][]) => {
     }
   };
 
-  // filter out data points before correct day
-  // const filterDate = (pv: string) => {
-  //   if (pvData[pv]) {
-  //     const data = pvData[pv]["data"];
-  //     for (let i = 0; i < data.length; i++) {
-  //       const line = data[i];
-  //       const point = line.split("\t");
-  //       if (
-  //         point[0] <
-  //         `${dateArray[0][1]}/${dateArray[0][2]}/${dateArray[0][0]} 14:00:00.000`
-  //       ) {
-  //         data.splice(i, 1);
-  //         i--;
-  //       }
-  //     }
-  //   }
-  // };
-
   // jcmtwx
   removeZero("ws:wxt510:stat:airTemp");
   removeZero("ws:wxt510:stat:pressure");
   removeZero("ws:wxt510:stat:humidity");
-  // filterDate("ws:wxt510:stat:pressure");
+
+  //jcmtsc2
+  removeZero("scu2CCS:ls370c:chan:k");
 };
 
 const getPVData = async (plot: string, dateArray: string[][]) => {
@@ -89,7 +73,7 @@ const getPVData = async (plot: string, dateArray: string[][]) => {
   return pvData;
 };
 
-const createSVG = async (plot: string, plotType: string) => {
+const createSVG = async (plot: string, mark: string) => {
   const dateArray = getDateArray();
   const pvData = await getPVData(plot, dateArray);
   const values: Value[] = [];
@@ -104,13 +88,13 @@ const createSVG = async (plot: string, plotType: string) => {
         for (const line of data) {
           const point = line.split("\t");
           if (point[1] != "#N/A" && !point[1].startsWith(" ")) {
-            const utc = getUTCHour(point[0]);
+            // const utc = getUTCHour(point[0]);
             const value = {
               dateTime: point[0],
               value: point[1],
               subplot: subplotName,
               label: label,
-              utc: utc,
+              // utc: utc,
             };
             values.push(value);
           }
@@ -142,7 +126,7 @@ const createSVG = async (plot: string, plotType: string) => {
         {
           width: 800,
           height: 400 / numSubplots,
-          mark: plotType,
+          mark: { type: mark, clip: true },
           encoding: {
             x: {
               field: "dateTime",
@@ -168,6 +152,10 @@ const createSVG = async (plot: string, plotType: string) => {
             color: {
               field: "label",
               type: "nominal",
+              legend: {
+                orient: "bottom",
+                title: null,
+              },
               scale: {
                 range: [
                   "#1f77b4", // blue
@@ -191,28 +179,26 @@ const createSVG = async (plot: string, plotType: string) => {
           // },
         },
         // transparent layer for UTC axis labels
-        {
-          mark: { type: "line", opacity: 0 },
-          encoding: {
-            x: {
-              // field: "dateTime",
-              // type: "temporal",
-              field: "utc",
-              type: "ordinal",
-              axis: {
-                // format: "%H",
-                title: "UTC",
-                titlePadding: 10,
-                orient: "top",
-              },
-              // timeUnit: "yearmonthdatehoursminutes",
-              // scale: { type: "utc" },
-            },
-          },
-          resolve: {
-            scale: { x: "independent" },
-          },
-        },
+        // {
+        //   mark: { type: "line", opacity: 0 },
+        //   encoding: {
+        //     x: {
+        //       field: "dateTime",
+        //       type: "temporal",
+        //       axis: {
+        //         format: "%H",
+        //         title: "UTC",
+        //         titlePadding: 10,
+        //         orient: "top",
+        //       },
+        //       timeUnit: "yearmonthdatehoursminutes",
+        //       scale: { type: "utc" },
+        //     },
+        //   },
+        //   // resolve: {
+        //   //   scale: { x: "independent" },
+        //   // },
+        // },
       ],
       resolve: {
         axis: { x: "independent" },
@@ -223,7 +209,9 @@ const createSVG = async (plot: string, plotType: string) => {
     },
   } as unknown as lite.TopLevelSpec;
 
-  const config = { config: { customFormatTypes: true } };
+  const config = {
+    config: { customFormatTypes: true, lineBreak: "\n" },
+  };
 
   const vegaspec = lite.compile(spec, config).spec;
   const view = new vega.View(vega.parse(vegaspec), { renderer: "none" });
@@ -231,21 +219,21 @@ const createSVG = async (plot: string, plotType: string) => {
   return svgStr;
 };
 
-const VegaChart = async ({ plot, plotType }: Props) => {
+const VegaChart = async ({ plot, mark }: Props) => {
   try {
-    const svgStr = await createSVG(plot, plotType);
+    const svgStr = await createSVG(plot, mark);
     const date = new Date();
     const timeStr =
       date.getHours() + ":" + String(date.getMinutes()).padStart(2, "0");
-    // const dateArray = getDateArray();
-    // const pvData = await getPVData(plot, dateArray);
-    // const dataStr = JSON.stringify(pvData, null, 2);
+    const dateArray = getDateArray();
+    const pvData = await getPVData(plot, dateArray);
+    const dataStr = JSON.stringify(pvData, null, 2);
 
     return (
       <div>
         <p>{timeStr}</p>
         <img src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`} />
-        {/* <pre style={{ fontSize: "10px" }}>{dataStr}</pre> */}
+        <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
       </div>
     );
   } catch (e) {

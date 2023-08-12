@@ -15,9 +15,9 @@ export default async function JCMTConditions() {
       {/* <Suspense fallback={<p>Loading PVs...</p>}>
         <PVs /> <br />
       </Suspense> */}
-      <Suspense fallback={<p>Loading Comments...</p>}>
+      {/* <Suspense fallback={<p>Loading Comments...</p>}>
         <Comments /> <br />
-      </Suspense>
+      </Suspense> */}
     </>
   );
 }
