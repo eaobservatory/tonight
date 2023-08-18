@@ -6,10 +6,15 @@ import { RowDataPacket } from "mysql2";
 
 export const revalidate = 60 * 5; // revalidate every 5 minutes
 
-export const getComments = cache(async (): Promise<Comment[]> => {
+export const getComments = cache(async (date = "live"): Promise<Comment[]> => {
   console.log("querying comments...");
-  const dateArray = getDateArray();
-  const dateStr = `${dateArray[2][0]}-${dateArray[2][1]}-${dateArray[2][2]}`;
+  let dateStr;
+  if (date == "live") {
+    const dateArray = getDateArray();
+    dateStr = `${dateArray[2][0]}-${dateArray[2][1]}-${dateArray[2][2]}`;
+  } else {
+    dateStr = date;
+  }
   const [rows] = await poolOMP.query(
     `SELECT date, author, text FROM ompshiftlog WHERE telescope = "JCMT" AND DATE(date) = ? ORDER BY date DESC`,
     [dateStr]

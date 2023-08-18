@@ -12,7 +12,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-const Navbar = () => {
+export const LiveNavbar = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -134,16 +134,8 @@ const Navbar = () => {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link
-            href="https://www.eao.hawaii.edu/monitoring/tonight/jcmt/archive/?C=N;O=D"
-            legacyBehavior
-            passHref
-          >
-            <NavigationMenuLink
-              className={navigationMenuTriggerStyle()}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          <Link href="/archive" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Archive
             </NavigationMenuLink>
           </Link>
@@ -152,5 +144,3 @@ const Navbar = () => {
     </NavigationMenu>
   );
 };
-
-export default Navbar;

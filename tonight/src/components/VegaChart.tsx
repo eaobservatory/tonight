@@ -2,11 +2,12 @@ import * as vega from "vega";
 import * as lite from "vega-lite";
 import { plots } from "@/constants/plots";
 import { getPV } from "@/utils/engarchive";
-import { getDateArray } from "@/utils/date";
+import { getDateArray, getPrevDay } from "@/utils/date";
 
 interface Props {
   plot: string;
   mark: string;
+  date?: string;
 }
 
 interface Value {
@@ -35,7 +36,7 @@ interface Value {
 //   return hourStr;
 // };
 
-const cleanPVData = (pvData: { [key: string]: any }, dateArray: string[][]) => {
+const cleanPVData = (pvData: { [key: string]: any }) => {
   // remove 0.0
   const removeZero = (pv: string) => {
     if (pvData[pv]) {
@@ -60,22 +61,27 @@ const cleanPVData = (pvData: { [key: string]: any }, dateArray: string[][]) => {
   removeZero("scu2CCS:ls370c:chan:k");
 };
 
-const getPVData = async (plot: string, dateArray: string[][]) => {
+const getPVData = async (plot: string, date: string) => {
   const pvData: { [key: string]: any } = {};
   for (const subplot of plots[plot]) {
     for (const pvs of Object.values(subplot)) {
       for (const pv of pvs) {
-        pvData[pv] = await getPV(pv);
+        pvData[pv] = await getPV(pv, date);
       }
     }
   }
-  cleanPVData(pvData, dateArray);
+  cleanPVData(pvData);
   return pvData;
 };
 
-const createSVG = async (plot: string, mark: string) => {
-  const dateArray = getDateArray();
-  const pvData = await getPVData(plot, dateArray);
+const createSVG = async (plot: string, mark: string, date: string) => {
+  let dateArray;
+  if (date == "live") {
+    dateArray = getDateArray();
+  } else {
+    dateArray = [getPrevDay(date), date.split("-")];
+  }
+  const pvData = await getPVData(plot, date);
   const values: Value[] = [];
   const numSubplots = plots[plot].length;
 
@@ -219,14 +225,15 @@ const createSVG = async (plot: string, mark: string) => {
   return svgStr;
 };
 
-const VegaChart = async ({ plot, mark }: Props) => {
+const VegaChart = async ({ plot, mark, date = "live" }: Props) => {
   try {
-    const svgStr = await createSVG(plot, mark);
-    const date = new Date();
+    const svgStr = await createSVG(plot, mark, date);
+
+    const dateObj = new Date();
     const timeStr =
-      date.getHours() + ":" + String(date.getMinutes()).padStart(2, "0");
+      dateObj.getHours() + ":" + String(dateObj.getMinutes()).padStart(2, "0");
     const dateArray = getDateArray();
-    const pvData = await getPVData(plot, dateArray);
+    const pvData = await getPVData(plot, date);
     const dataStr = JSON.stringify(pvData, null, 2);
 
     return (

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { getDateArray } from "@/utils/date";
+import { getDateArray, getPrevDay } from "@/utils/date";
 import { labels } from "@/constants/plots";
 
 dotenv.config({ path: "@/../env" });
@@ -8,8 +8,14 @@ type PV = keyof typeof labels;
 
 export const revalidate = 60 * 5; // revalidate every 5 minutes
 
-export const getPV = async (pv: PV) => {
-  const dateArray = getDateArray();
+// date should be a string in format YYYY-MM-DD
+export const getPV = async (pv: PV, date = "live") => {
+  let dateArray;
+  if (date == "live") {
+    dateArray = getDateArray();
+  } else {
+    dateArray = [getPrevDay(date), date.split("-")];
+  }
   const pvEscaped = encodeURIComponent(pv); // url encoded pv
   const username = process.env.STAFF_USERNAME;
   const password = process.env.STAFF_PASSWORD;

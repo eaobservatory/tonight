@@ -13,7 +13,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-const Navtabs = () => {
+export const LiveNavtabs = () => {
   const pathname = usePathname();
   let activeTab;
   if (pathname == "/") {
@@ -103,5 +103,3 @@ const Navtabs = () => {
     </NavigationMenu>
   );
 };
-
-export default Navtabs;
