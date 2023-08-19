@@ -94,3 +94,18 @@ export const dateToYMD = (date: any) => {
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
+
+/**
+ * Converts a date string in "YYYY-MM-DD" format to a Date object.
+ * Used by DatePicker to ensure Calendar date matches url searchParams.
+ *
+ * @param {string} ymd - The date string in "YYYY-MM-DD" format.
+ * @returns {Date} - A Date object representing the input date.
+ */
+export const ymdToDate = (ymd: string) => {
+  const [year, month, day] = ymd.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const offsetMinutes = date.getTimezoneOffset();
+  const offsetMilliseconds = offsetMinutes * 60 * 1000;
+  return new Date(date.getTime() + offsetMilliseconds);
+};

@@ -8,9 +8,9 @@ export default async function Home() {
   return (
     <>
       <p>home page</p>
-      <Suspense fallback={<p>Loading comments...</p>}>
+      {/* <Suspense fallback={<p>Loading comments...</p>}>
         <Comments /> <br />
-      </Suspense>
+      </Suspense> */}
       <Suspense fallback={<p>Loading jcmtwx...</p>}>
         <VegaChart plot={"jcmtwx"} mark={"line"} />
       </Suspense>

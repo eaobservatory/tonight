@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { cn } from "@/utils/shadcn";
@@ -11,13 +11,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useRouter, usePathname } from "next/navigation";
-import { dateToYMD } from "@/utils/date";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { dateToYMD, ymdToDate } from "@/utils/date";
 
 export default function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = useState<Date>();
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const dateParam = searchParams.get("date");
+    if (dateParam) {
+      const date = ymdToDate(dateParam);
+      setDate(date);
+    }
+  }, []);
 
   return (
     <Popover>
