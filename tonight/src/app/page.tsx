@@ -11,15 +11,15 @@ export default async function Home() {
       {/* <Suspense fallback={<p>Loading comments...</p>}>
         <Comments /> <br />
       </Suspense> */}
-      <Suspense fallback={<p>Loading jcmtwx...</p>}>
+      {/* <Suspense fallback={<p>Loading jcmtwx...</p>}>
         <VegaChart plot={"jcmtwx"} mark={"line"} />
-      </Suspense>
+      </Suspense> */}
       {/* <Suspense fallback={<p>Loading jcmtsc2...</p>}>
         <VegaChart plot={"jcmtsc2"} mark={"line"} />
       </Suspense> */}
-      {/* <Suspense fallback={<p>Loading jcmtnama...</p>}>
+      <Suspense fallback={<p>Loading jcmtnama...</p>}>
         <VegaChart plot={"jcmtnama"} mark={"line"} />
-      </Suspense> */}
+      </Suspense>
     </>
   );
 }

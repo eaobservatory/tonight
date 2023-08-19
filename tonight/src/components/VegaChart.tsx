@@ -1,8 +1,15 @@
 import * as vega from "vega";
 import * as lite from "vega-lite";
-import { plots } from "@/constants/plots";
+import { plots, titles } from "@/constants/plots";
 import { getPV } from "@/utils/engarchive";
 import { getDateArray, getPrevDay } from "@/utils/date";
+import { ArchiveIcon } from "@radix-ui/react-icons";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 interface Props {
   plot: string;
@@ -74,7 +81,7 @@ const getPVData = async (plot: string, date: string) => {
   return pvData;
 };
 
-const createSVG = async (plot: string, mark: string, date: string) => {
+const createSpec = async (plot: string, mark: string, date: string) => {
   let dateArray;
   if (date == "live") {
     dateArray = getDateArray();
@@ -225,20 +232,37 @@ const createSVG = async (plot: string, mark: string, date: string) => {
   return svgStr;
 };
 
-const VegaChart = async ({ plot, mark, date = "live" }: Props) => {
+export default async function VegaChart({ plot, mark, date = "live" }: Props) {
   try {
-    const svgStr = await createSVG(plot, mark, date);
+    const svgStr = await createSpec(plot, mark, date);
+    // const dateArray = getDateArray();
+    const ymd = getDateArray()[2].join("-");
 
     const dateObj = new Date();
     const timeStr =
       dateObj.getHours() + ":" + String(dateObj.getMinutes()).padStart(2, "0");
-    const dateArray = getDateArray();
     const pvData = await getPVData(plot, date);
     const dataStr = JSON.stringify(pvData, null, 2);
 
     return (
       <div>
         <p>{timeStr}</p>
+        <span>{titles[plot]}</span>
+        {date == "live" ? (
+          <>
+            <a className="inline-block" href={`/archive/${plot}?date=${ymd}`}>
+              <ArchiveIcon />
+            </a>
+            <Popover>
+              <PopoverTrigger>
+                <InfoCircledIcon />
+              </PopoverTrigger>
+              <PopoverContent>
+                Place content for the popover here.
+              </PopoverContent>
+            </Popover>
+          </>
+        ) : null}
         <img src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`} />
         <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
       </div>
@@ -246,6 +270,4 @@ const VegaChart = async ({ plot, mark, date = "live" }: Props) => {
   } catch (e) {
     return <p>{(e as Error).message}</p>;
   }
-};
-
-export default VegaChart;
+}

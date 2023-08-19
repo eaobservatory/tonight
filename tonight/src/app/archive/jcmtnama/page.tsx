@@ -1,4 +1,3 @@
-import Comments from "@/components/Comments";
 import VegaChart from "@/components/VegaChart";
 import { Suspense } from "react";
 
@@ -17,9 +16,6 @@ export default async function ArchiveHome({
   }
   return (
     <>
-      <p>archive home</p>
-      <p>{dateParam}</p>
-      {/* <Comments date={dateParam} /> */}
       <Suspense fallback={<p>Loading jcmtnama...</p>}>
         <VegaChart plot={"jcmtnama"} mark={"line"} date={dateParam} />
       </Suspense>

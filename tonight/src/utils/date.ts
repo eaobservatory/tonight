@@ -57,6 +57,7 @@ export const getDateArray = () => {
  */
 export const dateToTime = (date: string) => {
   const dateObj = new Date(date);
+
   return `${dateObj.getUTCHours().toString().padStart(2, "0")}:${dateObj
     .getUTCMinutes()
     .toString()
@@ -73,13 +74,13 @@ export const dateToTime = (date: string) => {
 export const getPrevDay = (date: string) => {
   const [year, month, day] = date.split("-");
   const currentDate = new Date(Number(year), Number(month) - 1, Number(day));
-  const nextDate = new Date(); // tomorrow
-  nextDate.setDate(currentDate.getDate() - 1);
-  const nextYear = String(nextDate.getFullYear()); // date, YYYY
-  const nextMonth = String(nextDate.getMonth()).padStart(2, "0"); // nextDate, MM
-  const nextDay = String(nextDate.getDate()).padStart(2, "0"); // nextDate, DD
+  const prevDate = new Date(currentDate.getTime());
+  prevDate.setDate(currentDate.getDate() - 1);
+  const prevYear = String(prevDate.getFullYear());
+  const prevMonth = String(prevDate.getMonth() + 1).padStart(2, "0");
+  const prevDay = String(prevDate.getDate()).padStart(2, "0");
 
-  return [nextYear, nextMonth, nextDay];
+  return [prevYear, prevMonth, prevDay];
 };
 
 /**
@@ -92,6 +93,7 @@ export const dateToYMD = (date: any) => {
   const year = String(date.getFullYear());
   const month = String(date.getMonth() + 1).padStart(2, "0"); // month is 0-indexed
   const day = String(date.getDate()).padStart(2, "0");
+
   return `${year}-${month}-${day}`;
 };
 
@@ -107,5 +109,6 @@ export const ymdToDate = (ymd: string) => {
   const date = new Date(Date.UTC(year, month - 1, day));
   const offsetMinutes = date.getTimezoneOffset();
   const offsetMilliseconds = offsetMinutes * 60 * 1000;
+
   return new Date(date.getTime() + offsetMilliseconds);
 };

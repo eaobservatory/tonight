@@ -57,3 +57,9 @@ export const labels: { [key: string]: string } = {
   "nmnCryo:ls:temp3": "cold head 1st stage\n(< 22 K)",
   "nmnCryo:ls:temp4": "outer shield\n(< 100 K)",
 };
+
+export const titles: { [key: string]: string } = {
+  jcmtwx: "JCMT Weather",
+  jcmtsc2: "JCMT SCUBA-2 Instrument Status",
+  jcmtnama: "JCMT Namakanui Instrument Status",
+};
