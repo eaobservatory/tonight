@@ -4,13 +4,19 @@ import { plots, titles } from "@/constants/plots";
 import { getPV } from "@/utils/engarchive";
 import { getDateArray, getPrevDay } from "@/utils/date";
 import { ArchiveIcon } from "@radix-ui/react-icons";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Props {
   plot: string;
@@ -120,6 +126,7 @@ const createSpec = async (
       }
     }
   }
+  // console.log(values);
 
   const spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -151,8 +158,10 @@ const createSpec = async (
               type: "temporal",
               scale: {
                 domain: [
-                  `${dateArray[0][1]}/${dateArray[0][2]}/${dateArray[0][0]} 14:00:00.000`,
-                  `${dateArray[1][1]}/${dateArray[1][2]}/${dateArray[1][0]} 14:00:00.000`,
+                  // `${dateArray[0][1]}/${dateArray[0][2]}/${dateArray[0][0]} 14:00:00.000`,
+                  // `${dateArray[1][1]}/${dateArray[1][2]}/${dateArray[1][0]} 14:00:00.000`,
+                  `${dateArray[0][0]}-${dateArray[0][1]}-${dateArray[0][2]} 14:00:00.000`,
+                  `${dateArray[1][0]}-${dateArray[1][1]}-${dateArray[1][2]} 14:00:00.000`,
                 ],
               },
               axis: {
@@ -242,7 +251,12 @@ const createPopoverContent = (pvData: { [key: string]: any }) => {
     <>
       {Object.keys(pvData).map((pv: string) => {
         const { label, data } = pvData[pv];
-        const mostRecentValue = data[data.length - 1].split("\t")[1];
+        let mostRecentValue;
+        try {
+          mostRecentValue = data[data.length - 1].split("\t")[1];
+        } catch (e) {
+          mostRecentValue = "N/A";
+        }
         return (
           <p className="text-sm">
             {label}: {mostRecentValue}
@@ -269,15 +283,34 @@ export default async function VegaChart({ plot, mark, date }: Props) {
       <div>
         <p>{timeStr}</p>
         <span>{titles[plot]}</span>
+        {/* tooltip causes hydration error */}
         <Popover>
           <PopoverTrigger>
+            {/* <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger> */}
             <InfoCircledIcon />
+            {/* </TooltipTrigger>
+                <TooltipContent>
+                  Get snapshot of most recent values
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider> */}
           </PopoverTrigger>
           <PopoverContent>{popoverContent}</PopoverContent>
         </Popover>
         {date == "live" ? (
           <a className="inline-block" href={`/plots/${plot}?date=${ymd}`}>
-            <ArchiveIcon />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <ArchiveIcon />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Link to today's archive</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </a>
         ) : null}
         <Image
@@ -293,6 +326,13 @@ export default async function VegaChart({ plot, mark, date }: Props) {
       </div>
     );
   } catch (e) {
-    return <p>Error rendering plot: {(e as Error).message}</p>;
+    const pvData = await getPVData(plot, date);
+    const dataStr = JSON.stringify(pvData, null, 2);
+    return (
+      <>
+        <p>Error rendering plot: {(e as Error).message}</p>
+        {dataStr}
+      </>
+    );
   }
 }

@@ -20,12 +20,12 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="z-20">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Image src={eao} alt="eao" width={30} height={30} />
+              <Image src={eao} alt="eao" width={36} height={36} />
               JCMT Tonight
             </NavigationMenuLink>
           </Link>
@@ -44,7 +44,7 @@ export default function Navbar() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>OMP</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="gap-1 p-6 w-auto whitespace-nowrap">
               <li>
                 <NavigationMenuLink asChild>
                   <a
@@ -101,7 +101,7 @@ export default function Navbar() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Daycrew</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="gap-1 p-6 w-auto whitespace-nowrap">
               <li>
                 <NavigationMenuLink asChild>
                   <a
