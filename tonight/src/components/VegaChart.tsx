@@ -10,11 +10,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 
 interface Props {
   plot: string;
   mark: string;
-  date?: string;
+  date: string;
 }
 
 interface Value {
@@ -81,14 +82,18 @@ const getPVData = async (plot: string, date: string) => {
   return pvData;
 };
 
-const createSpec = async (plot: string, mark: string, date: string) => {
+const createSpec = async (
+  plot: string,
+  mark: string,
+  date: string,
+  pvData: { [key: string]: any }
+) => {
   let dateArray;
   if (date == "live") {
     dateArray = getDateArray();
   } else {
     dateArray = [getPrevDay(date), date.split("-")];
   }
-  const pvData = await getPVData(plot, date);
   const values: Value[] = [];
   const numSubplots = plots[plot].length;
 
@@ -232,42 +237,62 @@ const createSpec = async (plot: string, mark: string, date: string) => {
   return svgStr;
 };
 
-export default async function VegaChart({ plot, mark, date = "live" }: Props) {
+const createPopoverContent = (pvData: { [key: string]: any }) => {
+  return (
+    <>
+      {Object.keys(pvData).map((pv: string) => {
+        const { label, data } = pvData[pv];
+        const mostRecentValue = data[data.length - 1].split("\t")[1];
+        return (
+          <p className="text-sm">
+            {label}: {mostRecentValue}
+          </p>
+        );
+      })}
+    </>
+  );
+};
+
+export default async function VegaChart({ plot, mark, date }: Props) {
   try {
-    const svgStr = await createSpec(plot, mark, date);
-    // const dateArray = getDateArray();
+    const pvData = await getPVData(plot, date);
+    const svgStr = await createSpec(plot, mark, date, pvData);
+    const popoverContent = createPopoverContent(pvData);
     const ymd = getDateArray()[2].join("-");
 
     const dateObj = new Date();
     const timeStr =
       dateObj.getHours() + ":" + String(dateObj.getMinutes()).padStart(2, "0");
-    const pvData = await getPVData(plot, date);
     const dataStr = JSON.stringify(pvData, null, 2);
 
     return (
       <div>
         <p>{timeStr}</p>
         <span>{titles[plot]}</span>
+        <Popover>
+          <PopoverTrigger>
+            <InfoCircledIcon />
+          </PopoverTrigger>
+          <PopoverContent>{popoverContent}</PopoverContent>
+        </Popover>
         {date == "live" ? (
-          <>
-            <a className="inline-block" href={`/archive/${plot}?date=${ymd}`}>
-              <ArchiveIcon />
-            </a>
-            <Popover>
-              <PopoverTrigger>
-                <InfoCircledIcon />
-              </PopoverTrigger>
-              <PopoverContent>
-                Place content for the popover here.
-              </PopoverContent>
-            </Popover>
-          </>
+          <a className="inline-block" href={`/plots/${plot}?date=${ymd}`}>
+            <ArchiveIcon />
+          </a>
         ) : null}
-        <img src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`} />
+        <Image
+          src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
+          alt={plot}
+          style={{
+            width: "50%",
+          }}
+          width={200} // overridden by style
+          height={100} // overridden by style
+        />
         <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
       </div>
     );
   } catch (e) {
-    return <p>{(e as Error).message}</p>;
+    return <p>Error rendering plot: {(e as Error).message}</p>;
   }
 }

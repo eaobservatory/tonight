@@ -6,7 +6,7 @@ import { RowDataPacket } from "mysql2";
 
 export const revalidate = 60 * 5; // revalidate every 5 minutes
 
-export const getComments = cache(async (date = "live"): Promise<Comment[]> => {
+export const getComments = cache(async (date: string): Promise<Comment[]> => {
   console.log("querying comments...");
   let dateStr;
   if (date == "live") {

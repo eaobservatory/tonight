@@ -11,16 +11,21 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import DatePicker from "@/components/DatePicker";
+import Image from "next/image";
+import eao from "../assets/eao.png";
 
-const LiveNavbar = () => {
+export default function Navbar() {
+  const pathname = usePathname();
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Image src={eao} alt="eao" width={30} height={30} />
               JCMT Tonight
             </NavigationMenuLink>
           </Link>
@@ -136,35 +141,9 @@ const LiveNavbar = () => {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/archive" legacyBehavior passHref>
+          <Link href={pathname} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Archive
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
-};
-
-const ArchiveNavbar = () => {
-  const searchParams = useSearchParams();
-  const date = searchParams.get("date") || "none";
-
-  return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/archive" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              JCMT Tonight Archive
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Live
+              Today
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
@@ -174,13 +153,4 @@ const ArchiveNavbar = () => {
       </NavigationMenuList>
     </NavigationMenu>
   );
-};
-
-export default function Navbar() {
-  const pathname = usePathname();
-  if (pathname.startsWith("/archive")) {
-    return <ArchiveNavbar />;
-  } else {
-    return <LiveNavbar />;
-  }
 }

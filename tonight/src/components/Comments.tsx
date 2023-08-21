@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/table";
 
 interface Props {
-  date?: string;
+  date: string;
 }
 
-export default async function Comments({ date = "live" }: Props) {
+export default async function Comments({ date }: Props) {
   const comments = await getComments(date);
 
   return (

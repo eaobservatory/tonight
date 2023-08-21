@@ -19,14 +19,16 @@ export default function DatePicker() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const dateParam = searchParams.get("date");
 
   useEffect(() => {
-    const dateParam = searchParams.get("date");
     if (dateParam) {
       const date = ymdToDate(dateParam);
-      setDate(date);
+      setDate(date); // set calendar to date from URL
+    } else {
+      setDate(undefined); // reset calendar when 'Today' is clicked
     }
-  }, []);
+  }, [dateParam]);
 
   return (
     <Popover>
@@ -46,9 +48,14 @@ export default function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={(date) => {
-            setDate(date);
-            router.push(`${pathname}?date=${dateToYMD(date)}`);
+          onSelect={(selectedDate) => {
+            setDate(selectedDate);
+            const ymd = dateToYMD(selectedDate);
+            if (ymd != undefined) {
+              router.push(`${pathname}?date=${ymd}`);
+            } else {
+              router.push(pathname);
+            }
           }}
           initialFocus
         />

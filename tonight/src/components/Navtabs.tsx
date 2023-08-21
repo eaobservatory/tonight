@@ -13,7 +13,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-const LiveNavtabs = () => {
+export default function Navtabs() {
   const pathname = usePathname();
   let activeTab;
   if (pathname == "/") {
@@ -24,110 +24,21 @@ const LiveNavtabs = () => {
     activeTab = 2;
   } else if (pathname.startsWith("/qa")) {
     activeTab = 3;
-  } else {
-    activeTab = 0;
-  }
-
-  return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Home
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>JCMT</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="/jcmtconditions">Conditions</a>
-                </NavigationMenuLink>
-              </li>
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="#">Instrument Status</a>
-                </NavigationMenuLink>
-              </li>
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="/jcmtcameras">Cameras</a>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Observing</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="#">SCUBA-2</a>
-                </NavigationMenuLink>
-              </li>
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="#">ACSIS</a>
-                </NavigationMenuLink>
-              </li>
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="#">All</a>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>QA</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="#">SCUBA-2</a>
-                </NavigationMenuLink>
-              </li>
-              <li>
-                <NavigationMenuLink asChild>
-                  <a href="#">ACSIS</a>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
-};
-
-const ArchiveNavtabs = () => {
-  const pathname = usePathname();
-  let activeTab;
-  if (pathname == "/") {
-    activeTab = 0;
-  } else if (pathname.startsWith("/archive/jcmt")) {
-    activeTab = 1;
-  } else if (pathname.startsWith("/archive/observing")) {
-    activeTab = 2;
-  } else if (pathname.startsWith("/archive/qa")) {
-    activeTab = 3;
+  } else if (pathname.startsWith("/plots")) {
+    activeTab = 4;
   } else {
     activeTab = 0;
   }
 
   const searchParams = useSearchParams();
-  const date = searchParams.get("date") || "none";
+  const dateParam = searchParams.get("date") || "live";
 
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link
-            href={"/archive" + (date == "none" ? "" : `?date=${date}`)}
+            href={"/" + (dateParam == "live" ? "" : `?date=${dateParam}`)}
             legacyBehavior
             passHref
           >
@@ -142,19 +53,24 @@ const ArchiveNavtabs = () => {
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li>
                 <NavigationMenuLink asChild>
-                  <a
+                  <Link
                     href={
-                      "/archive/jcmtconditions" +
-                      (date == "none" ? "" : `?date=${date}`)
+                      "/jcmt/conditions" +
+                      (dateParam == "live" ? "" : `?date=${dateParam}`)
                     }
                   >
                     Conditions
-                  </a>
+                  </Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <a href="#">Instrument Status</a>
+                  <Link href="#">Instrument Status</Link>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="/jcmt/cameras">Cameras</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -166,17 +82,17 @@ const ArchiveNavtabs = () => {
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               <li>
                 <NavigationMenuLink asChild>
-                  <a href="#">SCUBA-2</a>
+                  <Link href="#">SCUBA-2</Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <a href="#">ACSIS</a>
+                  <Link href="#">ACSIS</Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <a href="#">All</a>
+                  <Link href="#">All</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -188,27 +104,29 @@ const ArchiveNavtabs = () => {
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               <li>
                 <NavigationMenuLink asChild>
-                  <a href="#">SCUBA-2</a>
+                  <Link href="#">SCUBA-2</Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <a href="#">ACSIS</a>
+                  <Link href="#">ACSIS</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link
+            href={"/plots" + (dateParam == "live" ? "" : `?date=${dateParam}`)}
+            legacyBehavior
+            passHref
+          >
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Plots
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
-};
-
-export default function Navtabs() {
-  const pathname = usePathname();
-  if (pathname.startsWith("/archive")) {
-    return <ArchiveNavtabs />;
-  } else {
-    return <LiveNavtabs />;
-  }
 }

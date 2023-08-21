@@ -1,6 +1,12 @@
-import { Suspense } from "react";
-
-export default function JCMTCameras() {
+export default function JCMTCamerasPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
+  const dateParam = searchParams?.date || "live";
+  if (dateParam != "live") {
+    return <p>Cameras not available in archive.</p>;
+  }
   return (
     <>
       <a href="http://irtfweb.ifa.hawaii.edu/~irtfcameras/" target="_blank">

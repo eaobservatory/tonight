@@ -4,21 +4,26 @@ import VegaChart from "@/components/VegaChart";
 
 export const revalidate = 60 * 5; // revalidate every 5 minutes
 
-export default async function Home() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
+  const dateParam = searchParams?.date || "live";
   return (
     <>
       <p>home page</p>
       {/* <Suspense fallback={<p>Loading comments...</p>}>
-        <Comments /> <br />
+        <Comments date={dateParam}/> <br />
       </Suspense> */}
       {/* <Suspense fallback={<p>Loading jcmtwx...</p>}>
-        <VegaChart plot={"jcmtwx"} mark={"line"} />
+        <VegaChart plot={"jcmtweather"} mark={"line"} />
       </Suspense> */}
       {/* <Suspense fallback={<p>Loading jcmtsc2...</p>}>
-        <VegaChart plot={"jcmtsc2"} mark={"line"} />
+        <VegaChart plot={"jcmtscuba2"} mark={"line"} />
       </Suspense> */}
-      <Suspense fallback={<p>Loading jcmtnama...</p>}>
-        <VegaChart plot={"jcmtnama"} mark={"line"} />
+      <Suspense fallback={<p>Loading jcmtnamakanui...</p>}>
+        <VegaChart plot={"jcmtnamakanui"} mark={"line"} date={dateParam} />
       </Suspense>
     </>
   );

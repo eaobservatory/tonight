@@ -90,6 +90,11 @@ export const getPrevDay = (date: string) => {
  * @returns {Array<string>} - A string in the format "YYYY-MM-DD".
  */
 export const dateToYMD = (date: any) => {
+  // deselecting a date (clicking an already selected date)
+  if (!(date instanceof Date)) {
+    return;
+  }
+
   const year = String(date.getFullYear());
   const month = String(date.getMonth() + 1).padStart(2, "0"); // month is 0-indexed
   const day = String(date.getDate()).padStart(2, "0");
