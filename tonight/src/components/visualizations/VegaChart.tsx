@@ -31,34 +31,15 @@ interface Value {
   label: string;
 }
 
-// vega.expressionFunction("getUTCHour", function (datum: Value, params: number) {
-//   const date = String(datum.dateTime);
-//   let utcHour = Number(date.substring(11, 13)) + params; // UTC is 10 hours ahead of HST
-//   if (utcHour >= 24) {
-//     utcHour -= 10;
-//   }
-//   const hourStr = utcHour.toString().padStart(2, "0");
-//   return hourStr;
-// });
-
-// const getUTCHour = (date: string) => {
-//   let utcHour = Number(date.substring(11, 13)) + 10; // UTC is 10 hours ahead of HST
-//   if (utcHour >= 24) {
-//     utcHour -= 10;
-//   }
-//   const hourStr = utcHour.toString().padStart(2, "0");
-//   return hourStr;
-// };
-
 const cleanPVData = (pvData: { [key: string]: any }) => {
-  // remove 0.0
+  // remove 0s
   const removeZero = (pv: string) => {
     if (pvData[pv]) {
       const data = pvData[pv]["data"];
       for (let i = 0; i < data.length; i++) {
         const line = data[i];
         const point = line.split("\t");
-        if (point[1] == "0.0") {
+        if (Number(point[1]) == 0) {
           data.splice(i, 1);
           i--;
         }
@@ -66,12 +47,12 @@ const cleanPVData = (pvData: { [key: string]: any }) => {
     }
   };
 
-  // jcmtwx
+  // jcmtweather
   removeZero("ws:wxt510:stat:airTemp");
   removeZero("ws:wxt510:stat:pressure");
   removeZero("ws:wxt510:stat:humidity");
 
-  //jcmtsc2
+  //jcmtscuba2
   removeZero("scu2CCS:ls370c:chan:k");
 };
 
@@ -112,13 +93,11 @@ const createSpec = async (
         for (const line of data) {
           const point = line.split("\t");
           if (point[1] != "#N/A" && !point[1].startsWith(" ")) {
-            // const utc = getUTCHour(point[0]);
             const value = {
               dateTime: point[0],
               value: point[1],
               subplot: subplotName,
               label: label,
-              // utc: utc,
             };
             values.push(value);
           }
@@ -126,7 +105,17 @@ const createSpec = async (
       }
     }
   }
-  // console.log(values);
+
+  // value of datum seems to depend on the first layer's x field
+  vega.expressionFunction("utcFormatter", function (datum: Date) {
+    const hstHour = String(datum).substring(16, 18);
+    let utcHour = Number(hstHour) + 10;
+    if (utcHour >= 24) {
+      utcHour -= 24;
+    }
+    const hourStr = utcHour.toString().padStart(2, "0");
+    return hourStr;
+  });
 
   const spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -158,10 +147,8 @@ const createSpec = async (
               type: "temporal",
               scale: {
                 domain: [
-                  // `${dateArray[0][1]}/${dateArray[0][2]}/${dateArray[0][0]} 14:00:00.000`,
-                  // `${dateArray[1][1]}/${dateArray[1][2]}/${dateArray[1][0]} 14:00:00.000`,
-                  `${dateArray[0][0]}-${dateArray[0][1]}-${dateArray[0][2]} 14:00:00.000`,
-                  `${dateArray[1][0]}-${dateArray[1][1]}-${dateArray[1][2]} 14:00:00.000`,
+                  `${dateArray[0][0]}-${dateArray[0][1]}-${dateArray[0][2]}T14:00:00.000`,
+                  `${dateArray[1][0]}-${dateArray[1][1]}-${dateArray[1][2]}T14:00:00.000`,
                 ],
               },
               axis: {
@@ -201,31 +188,23 @@ const createSpec = async (
               },
             },
           },
-          // resolve: {
-          //   scale: { x: "independent" },
-          // },
         },
         // transparent layer for UTC axis labels
-        // {
-        //   mark: { type: "line", opacity: 0 },
-        //   encoding: {
-        //     x: {
-        //       field: "dateTime",
-        //       type: "temporal",
-        //       axis: {
-        //         format: "%H",
-        //         title: "UTC",
-        //         titlePadding: 10,
-        //         orient: "top",
-        //       },
-        //       timeUnit: "yearmonthdatehoursminutes",
-        //       scale: { type: "utc" },
-        //     },
-        //   },
-        //   // resolve: {
-        //   //   scale: { x: "independent" },
-        //   // },
-        // },
+        {
+          mark: { type: "point", opacity: 0, clip: true },
+          encoding: {
+            x: {
+              field: "dateTime",
+              type: "temporal",
+              axis: {
+                formatType: "utcFormatter",
+                title: "Time (UTC)",
+                titlePadding: 10,
+                orient: "top",
+              },
+            },
+          },
+        },
       ],
       resolve: {
         axis: { x: "independent" },
@@ -255,7 +234,7 @@ const createPopoverContent = (pvData: { [key: string]: any }) => {
         try {
           mostRecentValue = data[data.length - 1].split("\t")[1];
         } catch (e) {
-          mostRecentValue = "N/A";
+          mostRecentValue = "n/a";
         }
         return (
           <p className="text-sm">
@@ -283,19 +262,18 @@ export default async function VegaChart({ plot, mark, date }: Props) {
       <div>
         <p>{timeStr}</p>
         <span>{titles[plot]}</span>
-        {/* tooltip causes hydration error */}
         <Popover>
           <PopoverTrigger>
-            {/* <TooltipProvider>
+            <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger> */}
-            <InfoCircledIcon />
-            {/* </TooltipTrigger>
+                <TooltipTrigger asChild>
+                  <InfoCircledIcon />
+                </TooltipTrigger>
                 <TooltipContent>
                   Get snapshot of most recent values
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider> */}
+            </TooltipProvider>
           </PopoverTrigger>
           <PopoverContent>{popoverContent}</PopoverContent>
         </Popover>
@@ -327,11 +305,10 @@ export default async function VegaChart({ plot, mark, date }: Props) {
     );
   } catch (e) {
     const pvData = await getPVData(plot, date);
-    const dataStr = JSON.stringify(pvData, null, 2);
+    // const dataStr = JSON.stringify(pvData, null, 2);
     return (
       <>
         <p>Error rendering plot: {(e as Error).message}</p>
-        {dataStr}
       </>
     );
   }
