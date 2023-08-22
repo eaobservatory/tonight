@@ -304,8 +304,6 @@ export default async function VegaChart({ plot, mark, date }: Props) {
       </div>
     );
   } catch (e) {
-    const pvData = await getPVData(plot, date);
-    // const dataStr = JSON.stringify(pvData, null, 2);
     return (
       <>
         <p>Error rendering plot: {(e as Error).message}</p>
