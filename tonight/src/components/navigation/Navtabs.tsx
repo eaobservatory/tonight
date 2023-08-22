@@ -82,17 +82,38 @@ export default function Navtabs() {
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#">SCUBA-2</Link>
+                  <Link
+                    href={
+                      "/observing/scuba2" +
+                      (dateParam == "live" ? "" : `?date=${dateParam}`)
+                    }
+                  >
+                    SCUBA-2
+                  </Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#">ACSIS</Link>
+                  <Link
+                    href={
+                      "/observing/acsis" +
+                      (dateParam == "live" ? "" : `?date=${dateParam}`)
+                    }
+                  >
+                    ACSIS
+                  </Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#">All</Link>
+                  <Link
+                    href={
+                      "/observing/all" +
+                      (dateParam == "live" ? "" : `?date=${dateParam}`)
+                    }
+                  >
+                    All
+                  </Link>
                 </NavigationMenuLink>
               </li>
             </ul>

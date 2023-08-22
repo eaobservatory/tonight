@@ -12,9 +12,9 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { usePathname } from "next/navigation";
-import DatePicker from "@/components/DatePicker";
+import DatePicker from "@/components/navigation/DatePicker";
 import Image from "next/image";
-import eao from "../assets/eao.png";
+import eao from "@/assets/eao.png";
 
 export default function Navbar() {
   const pathname = usePathname();

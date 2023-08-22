@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 import { cn } from "@/utils/shadcn";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -41,7 +42,11 @@ export default function DatePicker() {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? (
+            format(date, "PPP")
+          ) : (
+            <span>{format(utcToZonedTime(new Date(), "UTC"), "PPP")}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

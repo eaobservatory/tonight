@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Comments from "@/components/Comments";
 
 export default async function JCMTConditionsPage({
   searchParams,
@@ -10,9 +9,6 @@ export default async function JCMTConditionsPage({
   return (
     <>
       <p>jcmt conditions</p>
-      {/* <Suspense fallback={<p>Loading Comments...</p>}>
-        <Comments date={dateParam} /> <br />
-      </Suspense> */}
     </>
   );
 }

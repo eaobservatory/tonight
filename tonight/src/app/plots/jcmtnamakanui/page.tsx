@@ -1,4 +1,4 @@
-import VegaChart from "@/components/VegaChart";
+import VegaChart from "@/components/visualizations/VegaChart";
 import { Suspense } from "react";
 
 export default async function PlotsJCMTNamakanuiPage({

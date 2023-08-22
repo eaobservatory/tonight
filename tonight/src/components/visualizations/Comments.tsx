@@ -1,4 +1,3 @@
-import { dateToTime } from "@/utils/date";
 import { getComments } from "@/utils/omp";
 import { Comment } from "@/types/types";
 import {
@@ -27,18 +26,21 @@ export default async function Comments({ date }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {comments &&
+        {comments.length > 0 ? (
           comments.map((comment: Comment, i: number) => (
             <TableRow key={i}>
               <TableCell>
                 {comment.author} <br />
-                {dateToTime(comment.date)}
+                {comment.date}
               </TableCell>
               <TableCell
                 dangerouslySetInnerHTML={{ __html: removeTags(comment.text) }}
               />
             </TableRow>
-          ))}
+          ))
+        ) : (
+          <TableRow>No comments found.</TableRow>
+        )}
       </TableBody>
     </Table>
   );
