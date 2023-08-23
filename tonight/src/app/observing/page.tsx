@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function PlotsPage({
+export default function ObservingPage({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | undefined };
@@ -10,32 +10,30 @@ export default function PlotsPage({
     <>
       <Link
         href={
-          "/plots/jcmtweather" +
+          "/observing/scuba2" +
           (dateParam == "live" ? "" : `?date=${dateParam}`)
         }
         className="underline text-blue-500 hover:text-blue-700"
       >
-        JCMT Weather
+        SCUBA-2
       </Link>
       <br />
       <Link
         href={
-          "/plots/jcmtscuba2" +
-          (dateParam == "live" ? "" : `?date=${dateParam}`)
+          "/observing/acsis" + (dateParam == "live" ? "" : `?date=${dateParam}`)
         }
         className="underline text-blue-500 hover:text-blue-700"
       >
-        SCUBA-2 Instrument Status
+        ACSIS
       </Link>
       <br />
       <Link
         href={
-          "/plots/jcmtnamakanui" +
-          (dateParam == "live" ? "" : `?date=${dateParam}`)
+          "/observing/all" + (dateParam == "live" ? "" : `?date=${dateParam}`)
         }
         className="underline text-blue-500 hover:text-blue-700"
       >
-        Namakanui Instrument Status
+        All
       </Link>
     </>
   );

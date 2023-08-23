@@ -49,7 +49,7 @@ export default async function ACSISIndex({ date }: Props) {
                   <Link
                     href={`https://omp.eao.hawaii.edu/cgi-bin/projecthome.pl?project=${obs.project}`}
                     target="_blank"
-                    className="underline text-blue-500"
+                    className="underline text-blue-500 hover:text-blue-700"
                   >
                     {obs.project}
                   </Link>
