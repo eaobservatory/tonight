@@ -64,10 +64,11 @@ export const getSCUBA2Index = cache(async (date: string) => {
     backend: row.backend,
     obsnum: row.obsnum,
     utdate: row.utdate,
+    obsdate: row.date_obs,
     obstime: `${dateToTime(row.date_obs)} - ${dateToTime(row.date_end)}`,
     project: row.project,
     mode: getMode(row.obs_type, row.scan_pat, row.sam_mode, row.sw_mode),
-    inbeam: row.recipe == "REDUCE_POL_SCAN" ? "POL" : "n/a",
+    inbeam: row.recipe == "REDUCE_POL_SCAN" ? "POL-2" : "n/a",
     object: row.object,
     map:
       row.map_wdth != null && row.map_hght != null
@@ -117,6 +118,7 @@ export const getACSISIndex = cache(async (date: string) => {
     backend: row.backend,
     obsnum: row.obsnum,
     utdate: row.utdate,
+    obsdate: row.date_obs,
     obstime: `${dateToTime(row.date_obs)} - ${dateToTime(row.date_end)}`,
     project: row.project,
     mode: getMode(row.obs_type, row.scan_pat, row.sam_mode, row.sw_mode),

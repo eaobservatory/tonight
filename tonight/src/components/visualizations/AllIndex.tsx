@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSCUBA2Index, getACSISIndex } from "@/utils/omp";
 import { SCUBA2Observation, ACSISObservation } from "@/types/types";
 import {
@@ -21,7 +22,7 @@ export default async function AllIndex({ date }: Props) {
 
     const allObservations = [...scuba2Observations, ...acsisObservations];
     const sortedObservations = allObservations.sort(
-      (a, b) => new Date(b.obstime).getTime() - new Date(a.obstime).getTime()
+      (a, b) => new Date(b.obsdate).getTime() - new Date(a.obsdate).getTime()
     );
 
     return (
@@ -49,15 +50,16 @@ export default async function AllIndex({ date }: Props) {
               (obs: SCUBA2Observation | ACSISObservation, i: number) => (
                 <TableRow key={i}>
                   <TableCell>{obs.backend}</TableCell>
-                  <TableCell>{obs.obstime}</TableCell>
+                  <TableCell>{obs.obstime} </TableCell>
                   <TableCell>{obs.obsnum}</TableCell>
                   <TableCell>
-                    <a
+                    <Link
                       href={`https://omp.eao.hawaii.edu/cgi-bin/projecthome.pl?project=${obs.project}`}
                       target="_blank"
+                      className="underline text-blue-500"
                     >
                       {obs.project}
-                    </a>
+                    </Link>
                   </TableCell>
                   <TableCell>{obs.mode}</TableCell>
                   <TableCell>
@@ -74,7 +76,9 @@ export default async function AllIndex({ date }: Props) {
               )
             )
           ) : (
-            <TableRow>No observations found.</TableRow>
+            <TableRow>
+              <TableCell>No observations found.</TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

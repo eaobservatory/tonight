@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSCUBA2Index } from "@/utils/omp";
 import { SCUBA2Observation } from "@/types/types";
 import {
@@ -45,12 +46,13 @@ export default async function SCUBA2Index({ date }: Props) {
                 <TableCell>{obs.obstime}</TableCell>
                 <TableCell>{obs.obsnum}</TableCell>
                 <TableCell>
-                  <a
+                  <Link
                     href={`https://omp.eao.hawaii.edu/cgi-bin/projecthome.pl?project=${obs.project}`}
                     target="_blank"
+                    className="underline text-blue-500"
                   >
                     {obs.project}
-                  </a>
+                  </Link>
                 </TableCell>
                 <TableCell>{obs.mode}</TableCell>
                 <TableCell>{obs.inbeam}</TableCell>
@@ -64,7 +66,9 @@ export default async function SCUBA2Index({ date }: Props) {
               </TableRow>
             ))
           ) : (
-            <TableRow>No SCUBA-2 observations found.</TableRow>
+            <TableRow>
+              <TableCell>No SCUBA-2 observations found.</TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

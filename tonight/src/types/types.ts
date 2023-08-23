@@ -8,6 +8,7 @@ export interface SCUBA2Observation {
   backend: string;
   obsnum: number;
   utdate: number;
+  obsdate: string;
   obstime: string;
   project: string;
   mode: string;
@@ -25,6 +26,7 @@ export interface ACSISObservation {
   backend: string;
   obsnum: number;
   utdate: number;
+  obsdate: string;
   obstime: string;
   project: string;
   mode: string;
