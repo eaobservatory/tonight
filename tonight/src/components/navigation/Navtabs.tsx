@@ -12,6 +12,11 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { cva } from "class-variance-authority";
+
+const customTriggerStyle = cva(
+  "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent underline-offset-8 hover:underline rounded-none text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent focus:bg-transparent"
+);
 
 export default function Navtabs() {
   const pathname = usePathname();
@@ -42,13 +47,23 @@ export default function Navtabs() {
             legacyBehavior
             passHref
           >
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink
+              className={`${customTriggerStyle()} ${
+                activeTab === 0 ? "!font-bold underline decoration-2" : ""
+              }`}
+            >
               Home
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>JCMT</NavigationMenuTrigger>
+          <NavigationMenuTrigger
+            className={`${customTriggerStyle()} ${
+              activeTab === 1 ? "font-bold underline decoration-2" : ""
+            }`}
+          >
+            JCMT
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li>
@@ -77,7 +92,13 @@ export default function Navtabs() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Observing</NavigationMenuTrigger>
+          <NavigationMenuTrigger
+            className={`${customTriggerStyle()} ${
+              activeTab === 2 ? "font-bold underline decoration-2" : ""
+            }`}
+          >
+            Observing
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               <li>
@@ -120,17 +141,23 @@ export default function Navtabs() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>QA</NavigationMenuTrigger>
+          <NavigationMenuTrigger
+            className={`${customTriggerStyle()} ${
+              activeTab === 3 ? "font-bold underline decoration-2" : ""
+            }`}
+          >
+            QA
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#">SCUBA-2</Link>
+                  <Link href="/qa/scuba2">SCUBA-2</Link>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#">ACSIS</Link>
+                  <Link href="/qa/acsis">ACSIS</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -142,7 +169,11 @@ export default function Navtabs() {
             legacyBehavior
             passHref
           >
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink
+              className={`${customTriggerStyle()} ${
+                activeTab === 4 ? "!font-bold underline decoration-2" : ""
+              }`}
+            >
               Plots
             </NavigationMenuLink>
           </Link>

@@ -15,17 +15,22 @@ import { usePathname } from "next/navigation";
 import DatePicker from "@/components/navigation/DatePicker";
 import Image from "next/image";
 import eao from "@/assets/eao.png";
+import { cva } from "class-variance-authority";
+
+const customTriggerStyle = cva(
+  "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent rounded-none text-white text-sm font-medium transition-colors hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent focus:bg-transparent focus:text-white"
+);
 
 export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu className="z-20">
+    <NavigationMenu className="z-20 bg-eao">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Image src={eao} alt="eao" width={36} height={36} />
+            <NavigationMenuLink className={customTriggerStyle()}>
+              {/* <Image src={eao} alt="eao" width={36} height={36} /> */}
               JCMT Tonight
             </NavigationMenuLink>
           </Link>
@@ -33,7 +38,7 @@ export default function Navbar() {
         <NavigationMenuItem>
           <Link href="https://www.eao.hawaii.edu" legacyBehavior passHref>
             <NavigationMenuLink
-              className={navigationMenuTriggerStyle()}
+              className={customTriggerStyle()}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -42,7 +47,9 @@ export default function Navbar() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>OMP</NavigationMenuTrigger>
+          <NavigationMenuTrigger className={customTriggerStyle()}>
+            OMP
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="gap-1 p-6 w-auto whitespace-nowrap">
               <li>
@@ -99,7 +106,9 @@ export default function Navbar() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Daycrew</NavigationMenuTrigger>
+          <NavigationMenuTrigger className={customTriggerStyle()}>
+            Daycrew
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="gap-1 p-6 w-auto whitespace-nowrap">
               <li>
@@ -132,7 +141,7 @@ export default function Navbar() {
             passHref
           >
             <NavigationMenuLink
-              className={navigationMenuTriggerStyle()}
+              className={customTriggerStyle()}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -142,7 +151,7 @@ export default function Navbar() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href={pathname} legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink className={customTriggerStyle()}>
               Today
             </NavigationMenuLink>
           </Link>

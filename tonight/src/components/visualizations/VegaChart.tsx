@@ -294,11 +294,9 @@ export default async function VegaChart({ plot, mark, date }: Props) {
         <Image
           src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
           alt={plot}
-          style={{
-            width: "50%",
-          }}
-          width={200} // overridden by style
-          height={100} // overridden by style
+          className="w-1/2"
+          width={200} // overridden by className
+          height={100} // overridden by className
         />
         <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
       </div>
