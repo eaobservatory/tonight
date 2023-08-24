@@ -18,7 +18,6 @@ module.exports = {
     extend: {
       colors: {
         eao: "#6757AE",
-        eaoLight: "#7A6BBD",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

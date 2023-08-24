@@ -14,27 +14,19 @@ import {
 import { usePathname } from "next/navigation";
 import DatePicker from "@/components/navigation/DatePicker";
 import Image from "next/image";
-import eao from "@/assets/eao.png";
+import eao from "@/assets/eao.svg";
 import { cva } from "class-variance-authority";
 
 const customTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent rounded-none text-white text-sm font-medium transition-colors hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent focus:bg-transparent focus:text-white"
+  "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent rounded-none text-white text-sm font-medium transition-colors hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent "
 );
 
 export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu className="z-20 bg-eao">
+    <NavigationMenu className="z-20 bg-eao max-w-full justify-between">
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={customTriggerStyle()}>
-              {/* <Image src={eao} alt="eao" width={36} height={36} /> */}
-              JCMT Tonight
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="https://www.eao.hawaii.edu" legacyBehavior passHref>
             <NavigationMenuLink
@@ -149,6 +141,24 @@ export default function Navbar() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
+      </NavigationMenuList>
+      <NavigationMenuList className="py-2">
+        <NavigationMenuItem className="flex items-center">
+          <Link href="/" legacyBehavior passHref>
+            <NavigationMenuLink className={customTriggerStyle()}>
+              <Image
+                src={eao}
+                alt="EAO"
+                width={40}
+                height={40}
+                className="pr-1"
+              />
+              JCMT Tonight
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+      <NavigationMenuList>
         <NavigationMenuItem>
           <Link href={pathname} legacyBehavior passHref>
             <NavigationMenuLink className={customTriggerStyle()}>
@@ -156,7 +166,7 @@ export default function Navbar() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="pr-2">
           <DatePicker />
         </NavigationMenuItem>
       </NavigationMenuList>

@@ -39,8 +39,8 @@ export default function Navtabs() {
   const dateParam = searchParams.get("date") || "live";
 
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
+    <NavigationMenu className="max-w-full sticky top-0 bg-white">
+      <NavigationMenuList className="space-x-8">
         <NavigationMenuItem>
           <Link
             href={"/" + (dateParam == "live" ? "" : `?date=${dateParam}`)}
