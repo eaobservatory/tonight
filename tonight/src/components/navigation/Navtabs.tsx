@@ -13,9 +13,10 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cva } from "class-variance-authority";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 
 const customTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent underline-offset-8 hover:underline rounded-none text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent focus:bg-transparent"
+  "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent underline-offset-8 hover:underline rounded-none text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent focus:bg-transparent "
 );
 
 export default function Navtabs() {
@@ -39,7 +40,9 @@ export default function Navtabs() {
   const dateParam = searchParams.get("date") || "live";
 
   return (
-    <NavigationMenu className="max-w-full sticky top-0 bg-white">
+    // <>
+    // max-lg:hidden
+    <NavigationMenu className="max-w-full sticky top-0">
       <NavigationMenuList className="space-x-8">
         <NavigationMenuItem>
           <Link
@@ -48,9 +51,10 @@ export default function Navtabs() {
             passHref
           >
             <NavigationMenuLink
-              className={`${customTriggerStyle()} ${
-                activeTab === 0 ? "!font-bold underline decoration-2" : ""
-              }`}
+              className={
+                customTriggerStyle() +
+                `${activeTab === 0 ? "!font-bold underline decoration-2" : ""}`
+              }
             >
               Home
             </NavigationMenuLink>
@@ -58,14 +62,23 @@ export default function Navtabs() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger
-            className={`${customTriggerStyle()} ${
-              activeTab === 1 ? "font-bold underline decoration-2" : ""
-            }`}
+            className={
+              customTriggerStyle() +
+              `${activeTab === 1 ? "!font-bold underline decoration-2" : ""}`
+            }
           >
-            JCMT
+            <NavigationMenuLink asChild>
+              <Link
+                href={
+                  "/jcmt" + (dateParam == "live" ? "" : `?date=${dateParam}`)
+                }
+              >
+                JCMT
+              </Link>
+            </NavigationMenuLink>
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+          <NavigationMenuContent className="!w-screen flex justify-center">
+            <ul className="flex justify-center whitespace-nowrap gap-20 p-6 w-[600px] bg-popover shadow border">
               <li>
                 <NavigationMenuLink asChild>
                   <Link
@@ -80,7 +93,7 @@ export default function Navtabs() {
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#">Instrument Status</Link>
+                  <Link href="/jcmt/status">Instrument Status</Link>
                 </NavigationMenuLink>
               </li>
               <li>
@@ -93,14 +106,24 @@ export default function Navtabs() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger
-            className={`${customTriggerStyle()} ${
-              activeTab === 2 ? "font-bold underline decoration-2" : ""
-            }`}
+            className={
+              customTriggerStyle() +
+              `${activeTab === 2 ? "!font-bold underline decoration-2" : ""}`
+            }
           >
-            Observing
+            <NavigationMenuLink asChild>
+              <Link
+                href={
+                  "/observing" +
+                  (dateParam == "live" ? "" : `?date=${dateParam}`)
+                }
+              >
+                Observing
+              </Link>
+            </NavigationMenuLink>
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+          <NavigationMenuContent className="!w-screen flex justify-center">
+            <ul className="flex justify-center whitespace-nowrap gap-20 p-6 w-[600px] bg-popover shadow border">
               <li>
                 <NavigationMenuLink asChild>
                   <Link
@@ -142,14 +165,21 @@ export default function Navtabs() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger
-            className={`${customTriggerStyle()} ${
-              activeTab === 3 ? "font-bold underline decoration-2" : ""
-            }`}
+            className={
+              customTriggerStyle() +
+              `${activeTab === 3 ? "!font-bold underline decoration-2" : ""}`
+            }
           >
-            QA
+            <NavigationMenuLink asChild>
+              <Link
+                href={"/qa" + (dateParam == "live" ? "" : `?date=${dateParam}`)}
+              >
+                QA
+              </Link>
+            </NavigationMenuLink>
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+          <NavigationMenuContent className="!w-screen flex justify-center">
+            <ul className="flex justify-center whitespace-nowrap gap-20 p-6 w-[600px] bg-popover shadow border">
               <li>
                 <NavigationMenuLink asChild>
                   <Link href="/qa/scuba2">SCUBA-2</Link>
@@ -170,9 +200,10 @@ export default function Navtabs() {
             passHref
           >
             <NavigationMenuLink
-              className={`${customTriggerStyle()} ${
-                activeTab === 4 ? "!font-bold underline decoration-2" : ""
-              }`}
+              className={
+                customTriggerStyle() +
+                `${activeTab === 4 ? "!font-bold underline decoration-2" : ""}`
+              }
             >
               Plots
             </NavigationMenuLink>
@@ -180,5 +211,9 @@ export default function Navtabs() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+    //   <div className="hidden max-lg:block">
+    //     <HamburgerMenuIcon />
+    //   </div>
+    // </>
   );
 }

@@ -16,6 +16,7 @@ import DatePicker from "@/components/navigation/DatePicker";
 import Image from "next/image";
 import eao from "@/assets/eao.svg";
 import { cva } from "class-variance-authority";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 
 const customTriggerStyle = cva(
   "group inline-flex h-9 w-max items-center justify-center px-4 py-2 bg-transparent hover:bg-transparent rounded-none text-white text-sm font-medium transition-colors hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-transparent "
@@ -25,6 +26,8 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
+    // <>
+    // max-lg:hidden
     <NavigationMenu className="z-20 bg-eao max-w-full justify-between">
       <NavigationMenuList>
         <NavigationMenuItem>
@@ -42,8 +45,8 @@ export default function Navbar() {
           <NavigationMenuTrigger className={customTriggerStyle()}>
             OMP
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="gap-1 p-6 w-auto whitespace-nowrap">
+          <NavigationMenuContent className="!w-screen flex justify-start ml-[4.5rem]">
+            <ul className="grid grid-cols-2 gap-y-1 gap-x-16 p-6 bg-popover shadow border">
               <li>
                 <NavigationMenuLink asChild>
                   <a
@@ -101,8 +104,8 @@ export default function Navbar() {
           <NavigationMenuTrigger className={customTriggerStyle()}>
             Daycrew
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="gap-1 p-6 w-auto whitespace-nowrap">
+          <NavigationMenuContent className="!w-screen flex justify-start ml-[9.75rem]">
+            <ul className="flex-col space-y-1 p-6 bg-popover shadow border">
               <li>
                 <NavigationMenuLink asChild>
                   <a
@@ -145,7 +148,7 @@ export default function Navbar() {
       <NavigationMenuList className="py-2">
         <NavigationMenuItem className="flex items-center">
           <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={customTriggerStyle()}>
+            <NavigationMenuLink className={customTriggerStyle() + "text-base"}>
               <Image
                 src={eao}
                 alt="EAO"
@@ -171,5 +174,9 @@ export default function Navbar() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+    //   <div className="hidden max-lg:block">
+    //     <HamburgerMenuIcon />
+    //   </div>
+    // </>
   );
 }
