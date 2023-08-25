@@ -6,6 +6,7 @@ import { getDateArray, getPrevDay } from "@/utils/date";
 import { ArchiveIcon } from "@radix-ui/react-icons";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Popover,
   PopoverContent,
@@ -69,29 +70,6 @@ const getPVData = async (plot: string, date: string) => {
   return pvData;
 };
 
-const createPlaceholderValues = (
-  plot: string,
-  pvData: { [key: string]: any }
-) => {
-  let values = [];
-  for (const subplot of plots[plot]) {
-    const subplotName = Object.keys(subplot)[0];
-    for (const pvs of Object.values(subplot)) {
-      for (const pv of pvs) {
-        const { label } = pvData[pv];
-        const value = {
-          dateTime: "1970-01-01T00:00:00.000",
-          value: "0",
-          subplot: subplotName,
-          label: label,
-        };
-        values.push(value);
-      }
-    }
-  }
-  return values;
-};
-
 const createSpec = async (
   plot: string,
   mark: string,
@@ -113,24 +91,31 @@ const createSpec = async (
     for (const pvs of Object.values(subplot)) {
       for (const pv of pvs) {
         const { label, data } = pvData[pv];
-        for (const line of data) {
-          const point = line.split("\t");
-          if (point[1] != "#N/A" && !point[1].startsWith(" ")) {
-            const value = {
-              dateTime: point[0],
-              value: point[1],
-              subplot: subplotName,
-              label: label,
-            };
-            values.push(value);
+        if (data.length != 0) {
+          for (const line of data) {
+            const point = line.split("\t");
+            if (point[1] != "#N/A" && !point[1].startsWith(" ")) {
+              const value = {
+                dateTime: point[0],
+                value: point[1],
+                subplot: subplotName,
+                label: label,
+              };
+              values.push(value);
+            }
           }
+        } else {
+          // if no data, add placeholder value
+          const value = {
+            dateTime: "1970-01-01T00:00:00.000",
+            value: "0",
+            subplot: subplotName,
+            label: label,
+          };
+          values.push(value);
         }
       }
     }
-  }
-
-  if (values.length == 0) {
-    values = createPlaceholderValues(plot, pvData);
   }
 
   // value of datum seems to depend on the first layer's x field
@@ -216,7 +201,7 @@ const createSpec = async (
             },
           },
         },
-        // transparent layer for UTC axis labels
+        // transparent layer for UTC axis labels and right y axis
         {
           mark: { type: "point", opacity: 0, clip: true },
           encoding: {
@@ -230,11 +215,17 @@ const createSpec = async (
                 orient: "top",
               },
             },
+            y: {
+              field: "value",
+              type: "quantitative",
+              axis: { title: "\t", orient: "right" },
+              scale: { zero: false },
+            },
           },
         },
       ],
       resolve: {
-        axis: { x: "independent" },
+        axis: { x: "independent", y: "independent" },
       },
     },
     resolve: {
@@ -280,53 +271,51 @@ export default async function VegaChart({ plot, mark, date }: Props) {
     const popoverContent = createPopoverContent(pvData);
     const ymd = getDateArray()[2].join("-");
 
-    const dateObj = new Date();
-    const timeStr =
-      dateObj.getHours() + ":" + String(dateObj.getMinutes()).padStart(2, "0");
     const dataStr = JSON.stringify(pvData, null, 2);
 
     return (
-      <div>
-        <p>{timeStr}</p>
-        <span>{titles[plot]}</span>
-        <Popover>
-          <PopoverTrigger>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <InfoCircledIcon />
-                </TooltipTrigger>
-                <TooltipContent>
-                  Get snapshot of most recent values
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </PopoverTrigger>
-          <PopoverContent>{popoverContent}</PopoverContent>
-        </Popover>
-        {date == "live" ? (
-          <a className="inline-block" href={`/plots/${plot}?date=${ymd}`}>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <ArchiveIcon />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Link to today's archive</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </a>
-        ) : null}
-        <Image
-          src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
-          alt={plot}
-          className="w-1/2"
-          width={200} // overridden by className
-          height={100} // overridden by className
-        />
-        <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
-      </div>
+      <>
+        <div className="w-1/2 border py-4 pr-1 m-1">
+          <div className="flex justify-center space-x-1">
+            <span>{titles[plot]}</span>
+            <Popover>
+              <PopoverTrigger>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <InfoCircledIcon />
+                    </TooltipTrigger>
+                    <TooltipContent>See most recent values</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </PopoverTrigger>
+              <PopoverContent>{popoverContent}</PopoverContent>
+            </Popover>
+            {date == "live" ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link href={`/plots/${plot}?date=${ymd}`}>
+                      <ArchiveIcon />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>Link to today's archive</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : null}
+          </div>
+          <Image
+            src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
+            alt={plot}
+            className="w-full"
+            width={200} // overridden by className
+            height={100} // overridden by className
+          />
+        </div>
+        <div>
+          <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
+        </div>
+      </>
     );
   } catch (e) {
     return (

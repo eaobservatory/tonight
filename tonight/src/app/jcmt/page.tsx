@@ -25,6 +25,15 @@ export default function JCMTPage({
       >
         Cameras
       </Link>
+      <br />
+      <Link
+        href={
+          "/jcmt/status" + (dateParam == "live" ? "" : `?date=${dateParam}`)
+        }
+        className="underline text-blue-500 hover:text-blue-700"
+      >
+        Instrument Status
+      </Link>
     </>
   );
 }

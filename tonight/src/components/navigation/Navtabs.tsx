@@ -42,7 +42,7 @@ export default function Navtabs() {
   return (
     // <>
     // max-lg:hidden
-    <NavigationMenu className="max-w-full sticky top-0">
+    <NavigationMenu className="max-w-full sticky top-0 bg-white">
       <NavigationMenuList className="space-x-8">
         <NavigationMenuItem>
           <Link

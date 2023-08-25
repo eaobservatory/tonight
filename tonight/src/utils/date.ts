@@ -56,12 +56,16 @@ export const getDateArray = () => {
  * @returns {string} - The formated time string in the format HH:MM.
  */
 export const dateToTime = (date: string) => {
-  const dateObj = new Date(date);
+  try {
+    const dateObj = new Date(date);
 
-  return `${dateObj.getUTCHours()}:${dateObj
-    .getUTCMinutes()
-    .toString()
-    .padStart(2, "0")}`;
+    return `${dateObj.getUTCHours()}:${dateObj
+      .getUTCMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+  } catch (e) {
+    return ""; // ongoing observations have no end time
+  }
 };
 
 /**

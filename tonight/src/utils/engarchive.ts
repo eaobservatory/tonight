@@ -6,8 +6,6 @@ dotenv.config({ path: "@/../env" });
 
 type PV = keyof typeof labels;
 
-export const revalidate = 60 * 5; // revalidate every 5 minutes
-
 // date should be a string in format YYYY-MM-DD
 export const getPV = async (pv: PV, date = "live") => {
   let dateArray;
@@ -20,12 +18,15 @@ export const getPV = async (pv: PV, date = "live") => {
   const username = process.env.STAFF_USERNAME;
   const password = process.env.STAFF_PASSWORD;
   const url = `http://engarchive.eao.hawaii.edu/cgi-bin/CGIExport.cgi?DIRECTORY=%2Fjcmtdata%2Fepics_data%2Fchanarch%2Fdir&PATTERN=&NAMES=${pvEscaped}%0D%0A&STARTMONTH=${dateArray[0][1]}&STARTDAY=${dateArray[0][2]}&STARTYEAR=${dateArray[0][0]}&STARTHOUR=14&STARTMINUTE=01&STARTSECOND=00&ENDMONTH=${dateArray[1][1]}&ENDDAY=${dateArray[1][2]}&ENDYEAR=${dateArray[1][0]}&ENDHOUR=13&ENDMINUTE=59&ENDSECOND=00&COMMAND=GET&Y0=0&Y1=0&REDUCE=ON&FORMAT=SPREADSHEET&INTERPOL=0`;
-  console.log(`${pv}: trying getPV...\t${new Date().toLocaleString()}`);
+  console.log(`${pv}: trying getPV...\t${new Date().toLocaleString()}\n${url}`);
 
   try {
     const response = await fetch(url, {
       headers: {
         Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+      },
+      next: {
+        revalidate: 60 * 5, // revalidate every 5 minutes
       },
     });
     const res = await response.text();

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import DatePicker from "@/components/navigation/DatePicker";
 import Image from "next/image";
 import eao from "@/assets/eao.svg";
@@ -24,6 +24,16 @@ const customTriggerStyle = cva(
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      router.refresh();
+      console.log("refreshed");
+    }, 5 * 60 * 1000); // refresh current page every 5 minutes
+
+    return () => clearInterval(intervalId); // cleanup on unmount
+  }, []);
 
   return (
     // <>
