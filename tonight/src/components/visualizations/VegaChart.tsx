@@ -69,6 +69,29 @@ const getPVData = async (plot: string, date: string) => {
   return pvData;
 };
 
+const createPlaceholderValues = (
+  plot: string,
+  pvData: { [key: string]: any }
+) => {
+  let values = [];
+  for (const subplot of plots[plot]) {
+    const subplotName = Object.keys(subplot)[0];
+    for (const pvs of Object.values(subplot)) {
+      for (const pv of pvs) {
+        const { label } = pvData[pv];
+        const value = {
+          dateTime: "1970-01-01T00:00:00.000",
+          value: "0",
+          subplot: subplotName,
+          label: label,
+        };
+        values.push(value);
+      }
+    }
+  }
+  return values;
+};
+
 const createSpec = async (
   plot: string,
   mark: string,
@@ -81,7 +104,7 @@ const createSpec = async (
   } else {
     dateArray = [getPrevDay(date), date.split("-")];
   }
-  const values: Value[] = [];
+  let values: Value[] = [];
   const numSubplots = plots[plot].length;
 
   // populate values array to pass into spec
@@ -104,6 +127,10 @@ const createSpec = async (
         }
       }
     }
+  }
+
+  if (values.length == 0) {
+    values = createPlaceholderValues(plot, pvData);
   }
 
   // value of datum seems to depend on the first layer's x field
