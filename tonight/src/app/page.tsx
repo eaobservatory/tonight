@@ -16,15 +16,17 @@ export default async function HomePage({
       <Suspense fallback={<p>Loading comments...</p>}>
         <Comments date={dateParam} /> <br />
       </Suspense>
-      {/* <Suspense fallback={<p>Loading jcmtwx...</p>}>
-        <VegaChart plot={"jcmtweather"} mark={"line"} />
-      </Suspense> */}
+      {/* <div className="flex">
+        <Suspense fallback={<p>Loading jcmtwx...</p>}>
+          <VegaChart plot={"jcmtweather"} mark={"line"} date={dateParam} />
+        </Suspense> */}
       {/* <Suspense fallback={<p>Loading jcmtsc2...</p>}>
         <VegaChart plot={"jcmtscuba2"} mark={"line"} />
       </Suspense> */}
       {/* <Suspense fallback={<p>Loading jcmtnamakanui...</p>}>
-        <VegaChart plot={"jcmtnamakanui"} mark={"line"} date={dateParam} />
-      </Suspense> */}
+          <VegaChart plot={"jcmtnamakanui"} mark={"line"} date={dateParam} />
+        </Suspense>
+      </div> */}
     </>
   );
 }

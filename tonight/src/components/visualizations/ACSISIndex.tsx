@@ -20,7 +20,7 @@ export default async function ACSISIndex({ date }: Props) {
     const observations = await getACSISIndex(date);
 
     return (
-      <Table>
+      <Table className="border m-1 w-1/2">
         <TableHeader>
           <TableRow>
             <TableHead>Backend</TableHead>

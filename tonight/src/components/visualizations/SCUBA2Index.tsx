@@ -20,7 +20,7 @@ export default async function SCUBA2Index({ date }: Props) {
     const observations = await getSCUBA2Index(date);
 
     return (
-      <Table>
+      <Table className="border m-1 w-1/2">
         <TableHeader>
           <TableRow>
             <TableHead>Backend</TableHead>

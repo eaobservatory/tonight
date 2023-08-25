@@ -19,7 +19,7 @@ export default async function Comments({ date }: Props) {
     const comments = await getComments(date);
 
     return (
-      <Table>
+      <Table className="border m-1 w-1/2">
         <TableHeader>
           <TableRow>
             <TableHead>Operator</TableHead>

@@ -26,7 +26,7 @@ export default async function AllIndex({ date }: Props) {
     );
 
     return (
-      <Table>
+      <Table className="border m-1 w-1/2">
         <TableHeader>
           <TableRow>
             <TableHead>Backend</TableHead>
