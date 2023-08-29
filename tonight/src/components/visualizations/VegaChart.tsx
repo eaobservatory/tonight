@@ -18,6 +18,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   plot: string;
@@ -32,30 +42,34 @@ interface Value {
   label: string;
 }
 
-const cleanPVData = (pvData: { [key: string]: any }) => {
-  // remove 0s
-  const removeZero = (pv: string) => {
-    if (pvData[pv]) {
-      const data = pvData[pv]["data"];
-      for (let i = 0; i < data.length; i++) {
-        const line = data[i];
-        const point = line.split("\t");
-        if (Number(point[1]) == 0) {
-          data.splice(i, 1);
-          i--;
-        }
-      }
-    }
-  };
+interface SkeletonProps {
+  plot: string;
+}
 
-  // jcmtweather
-  removeZero("ws:wxt510:stat:airTemp");
-  removeZero("ws:wxt510:stat:pressure");
-  removeZero("ws:wxt510:stat:humidity");
+// const cleanPVData = (pvData: { [key: string]: any }) => {
+//   // remove 0s
+//   const removeZero = (pv: string) => {
+//     if (pvData[pv]) {
+//       const data = pvData[pv]["data"];
+//       for (let i = 0; i < data.length; i++) {
+//         const line = data[i];
+//         const point = line.split("\t");
+//         if (Number(point[1]) == 0) {
+//           data.splice(i, 1);
+//           i--;
+//         }
+//       }
+//     }
+//   };
 
-  //jcmtscuba2
-  removeZero("scu2CCS:ls370c:chan:k");
-};
+//   // jcmtweather
+//   removeZero("ws:wxt510:stat:airTemp");
+//   removeZero("ws:wxt510:stat:pressure");
+//   removeZero("ws:wxt510:stat:humidity");
+
+//   //jcmtscuba2
+//   removeZero("scu2CCS:ls370c:chan:k");
+// };
 
 const getPVData = async (plot: string, date: string) => {
   const pvData: { [key: string]: any } = {};
@@ -66,7 +80,7 @@ const getPVData = async (plot: string, date: string) => {
       }
     }
   }
-  cleanPVData(pvData);
+  // cleanPVData(pvData);
   return pvData;
 };
 
@@ -94,15 +108,15 @@ const createSpec = async (
         if (data.length != 0) {
           for (const line of data) {
             const point = line.split("\t");
-            if (point[1] != "#N/A" && !point[1].startsWith(" ")) {
-              const value = {
-                dateTime: point[0],
-                value: point[1],
-                subplot: subplotName,
-                label: label,
-              };
-              values.push(value);
-            }
+            // if (!point[1].startsWith(" ")) {
+            const value = {
+              dateTime: point[0],
+              value: point[1],
+              subplot: subplotName,
+              label: label,
+            };
+            values.push(value);
+            // }
           }
         } else {
           // if no data, add placeholder value
@@ -234,7 +248,11 @@ const createSpec = async (
   } as unknown as lite.TopLevelSpec;
 
   const config = {
-    config: { customFormatTypes: true, lineBreak: "\n" },
+    config: {
+      customFormatTypes: true,
+      lineBreak: "\n",
+      facet: { spacing: 0 },
+    },
   };
 
   const vegaspec = lite.compile(spec, config).spec;
@@ -245,26 +263,30 @@ const createSpec = async (
 
 const createPopoverContent = (pvData: { [key: string]: any }) => {
   return (
-    <>
-      {Object.keys(pvData).map((pv: string) => {
-        const { label, data } = pvData[pv];
-        let mostRecentValue;
-        try {
-          mostRecentValue = data[data.length - 1].split("\t")[1];
-        } catch (e) {
-          mostRecentValue = "n/a";
-        }
-        return (
-          <p className="text-sm">
-            {label}: {mostRecentValue}
-          </p>
-        );
-      })}
-    </>
+    <Table>
+      <TableBody>
+        {Object.keys(pvData).map((pv: string) => {
+          const { label, data } = pvData[pv];
+          let mostRecentValue;
+          try {
+            mostRecentValue = data[data.length - 1].split("\t")[1];
+            mostRecentValue = Number(mostRecentValue).toFixed(1);
+          } catch (e) {
+            mostRecentValue = "n/a";
+          }
+          return (
+            <TableRow>
+              <TableCell className="border">{label}</TableCell>
+              <TableCell className="border">{mostRecentValue}</TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 };
 
-export default async function VegaChart({ plot, mark, date }: Props) {
+export async function VegaChart({ plot, mark, date }: Props) {
   try {
     const pvData = await getPVData(plot, date);
     const svgStr = await createSpec(plot, mark, date, pvData);
@@ -275,9 +297,9 @@ export default async function VegaChart({ plot, mark, date }: Props) {
 
     return (
       <>
-        <div className="w-1/2 border py-4 pr-1 m-1">
+        <div className="w-auto border py-4 pr-1 m-1">
           <div className="flex justify-center space-x-1">
-            <span>{titles[plot]}</span>
+            <p className="whitespace-nowrap">{titles[plot]}</p>
             <Popover>
               <PopoverTrigger>
                 <TooltipProvider>
@@ -289,7 +311,9 @@ export default async function VegaChart({ plot, mark, date }: Props) {
                   </Tooltip>
                 </TooltipProvider>
               </PopoverTrigger>
-              <PopoverContent>{popoverContent}</PopoverContent>
+              <PopoverContent className="w-auto">
+                {popoverContent}
+              </PopoverContent>
             </Popover>
             {date == "live" ? (
               <TooltipProvider>
@@ -304,24 +328,40 @@ export default async function VegaChart({ plot, mark, date }: Props) {
               </TooltipProvider>
             ) : null}
           </div>
-          <Image
-            src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
-            alt={plot}
-            className="w-full"
-            width={200} // overridden by className
-            height={100} // overridden by className
-          />
+          <Link
+            href={`/plots/${plot}` + (date == "live" ? "" : `?date=${date}`)}
+          >
+            <Image
+              src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
+              alt={plot}
+              className="w-full"
+              width={200} // overridden by className
+              height={100} // overridden by className
+            />
+          </Link>
         </div>
-        <div>
+        {/* <div>
           <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
-        </div>
+        </div> */}
       </>
     );
   } catch (e) {
     return (
-      <>
-        <p>Error rendering plot: {(e as Error).message}</p>
-      </>
+      <div className="m-1 flex flex-col items-center border aspect-[8/5] pt-4 pb-6">
+        <p>Error rendering {titles[plot]}--</p>
+        <p>{(e as Error).message}</p>
+      </div>
     );
   }
+}
+
+export function VegaChartSkeleton({ plot }: SkeletonProps) {
+  return (
+    <div className="m-1 flex flex-col items-center border aspect-[8/5] pt-4 pb-6">
+      <p className="whitespace-nowrap">{titles[plot]}</p>
+      <div className="w-full h-full px-5 mt-2">
+        <Skeleton className="w-full h-full rounded-none" />
+      </div>
+    </div>
+  );
 }

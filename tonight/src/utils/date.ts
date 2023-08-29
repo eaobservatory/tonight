@@ -5,12 +5,13 @@
  * @returns {Array<Array<string>>} An array containing three arrays, each representing a date as [year, month, day]. The first two are HST, the last is UTC.
  */
 export const getDateArray = () => {
-  const date = new Date(); // today in HST
+  const date = new Date(); // today in HST/local time
   const prevDate = new Date(date.getTime()); // yesterday
   prevDate.setDate(date.getDate() - 1);
   const nextDate = new Date(date.getTime()); // tomorrow
   nextDate.setDate(date.getDate() + 1);
 
+  const hourOffset = date.getTimezoneOffset() / 60; // offset from UTC in hours
   const hour = date.getHours();
 
   let yearStart;
@@ -21,7 +22,7 @@ export const getDateArray = () => {
   let dayEnd;
 
   // check what day it is in UTC based on HST hour and get HST dates
-  if (hour >= 14) {
+  if (hour >= 24 - hourOffset) {
     yearStart = String(date.getFullYear()); // date, YYYY
     yearEnd = String(nextDate.getFullYear()); // nextDate, YYYY
     monthStart = String(date.getMonth() + 1).padStart(2, "0"); // date, MM

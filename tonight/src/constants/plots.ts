@@ -5,10 +5,10 @@ export const plots: { [key: string]: Subplot[] } = {};
 
 const jcmtweather: Plot = [
   { "Temperature\n(deg C)": ["ws:wxt510:stat:airTemp"] },
-  { "Relative Humidity\n(pct)": ["ws:wxt510:stat:humidity"] },
-  { "Barometric Pressure\n(mbar)": ["ws:wxt510:stat:pressure"] },
+  { "Humidity\n(pct)": ["ws:wxt510:stat:humidity"] },
+  { "Pressure\n(mbar)": ["ws:wxt510:stat:pressure"] },
   { "Wind Speed\n(mph)": ["ws:wxt510:stat:windSpd"] },
-  { "Wind Direction \n(deg)": ["ws:wxt510:stat:windDir"] },
+  { "Wind Direction\n(deg)": ["ws:wxt510:stat:windDir"] },
 ];
 plots["jcmtweather"] = jcmtweather;
 
@@ -38,6 +38,12 @@ const jcmtnamakanui: Plot = [
 ];
 plots["jcmtnamakanui"] = jcmtnamakanui;
 
+const jcmtposition: Plot = [
+  { "Azimuth (deg)": ["mount:az:enc"] },
+  { "Elevation (deg)": ["mount:el:enc"] },
+];
+plots["jcmtposition"] = jcmtposition;
+
 export const labels: { [key: string]: string } = {
   // jcmtweather
   "ws:wxt510:stat:airTemp": "temperature\n(deg C)",
@@ -56,10 +62,14 @@ export const labels: { [key: string]: string } = {
   "nmnCryo:ls:temp2": "4k plate\n(<4.2 K)",
   "nmnCryo:ls:temp3": "cold head 1st stage\n(< 22 K)",
   "nmnCryo:ls:temp4": "outer shield\n(< 100 K)",
+  // jcmtposition
+  "mount:az:enc": "azimuth\n(deg)",
+  "mount:el:enc": "elevation\n(deg",
 };
 
 export const titles: { [key: string]: string } = {
   jcmtweather: "JCMT Weather",
   jcmtscuba2: "JCMT SCUBA-2 Instrument Status",
   jcmtnamakanui: "JCMT Namakanui Instrument Status",
+  jcmtposition: "JCMT Position",
 };

@@ -37,6 +37,16 @@ export default function PlotsPage({
       >
         Namakanui Instrument Status
       </Link>
+      <br />
+      <Link
+        href={
+          "/plots/jcmtposition" +
+          (dateParam == "live" ? "" : `?date=${dateParam}`)
+        }
+        className="underline text-blue-500 hover:text-blue-700"
+      >
+        JCMT Position
+      </Link>
     </>
   );
 }

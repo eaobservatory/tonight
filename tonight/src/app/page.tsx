@@ -13,9 +13,6 @@ export default async function HomePage({
   return (
     <>
       <p>home page</p>
-      <Suspense fallback={<p>Loading comments...</p>}>
-        <Comments date={dateParam} /> <br />
-      </Suspense>
       {/* <div className="flex">
         <Suspense fallback={<p>Loading jcmtwx...</p>}>
           <VegaChart plot={"jcmtweather"} mark={"line"} date={dateParam} />

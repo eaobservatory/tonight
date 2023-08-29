@@ -29,7 +29,7 @@ export default function Navbar() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       router.refresh();
-      console.log("refreshed");
+      console.log(`refreshed @ ${new Date().toLocaleString()}`);
     }, 5 * 60 * 1000); // refresh current page every 5 minutes
 
     return () => clearInterval(intervalId); // cleanup on unmount

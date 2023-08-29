@@ -1,13 +1,14 @@
 import dotenv from "dotenv";
 import { getDateArray, getPrevDay } from "@/utils/date";
 import { labels } from "@/constants/plots";
+import { cache } from "react";
 
 dotenv.config({ path: "@/../env" });
 
 type PV = keyof typeof labels;
 
 // date should be a string in format YYYY-MM-DD
-export const getPV = async (pv: PV, date = "live") => {
+export const getPV = cache(async (pv: PV, date = "live") => {
   let dateArray;
   if (date == "live") {
     dateArray = getDateArray();
@@ -25,16 +26,57 @@ export const getPV = async (pv: PV, date = "live") => {
       headers: {
         Authorization: `Basic ${btoa(`${username}:${password}`)}`,
       },
-      next: {
-        revalidate: 60 * 5, // revalidate every 5 minutes
-      },
+      // next: {
+      //   revalidate: 60 * 5, // revalidate every 5 minutes
+      // },
     });
     const res = await response.text();
-    const data = res.split("\n").slice(18, -1); // split response into lines, remove header
+    const data = res
+      .split("\n") // split response into lines
+      .slice(18, -1); // remove header
+    // .filter((line) => !line.endsWith("#N/A")) // remove #N/A lines
+    // .filter((line) => !line.split("\t")[1].startsWith(" ")); // remove lines whose values start with a space
+    cleanPVData(data, pv);
     console.log(`${pv}: success!`);
     return { label: labels[pv], data: data };
   } catch (error: any) {
     console.log(`${pv}: ERROR -- ${error.message}`);
     return []; // plot should be blank if error occurs
+  }
+});
+
+const cleanPVData = (data: string[], pv: PV) => {
+  // remove #N/A and lines whose values start with a space
+  for (let i = data.length - 1; i >= 0; i--) {
+    const line = data[i];
+    if (
+      line.endsWith("#N/A") ||
+      (line.split("\t")[1] && line.split("\t")[1].startsWith(" "))
+    ) {
+      data.splice(i, 1);
+    }
+  }
+
+  // remove 0s
+  const removeZeroesList: PV[] = [
+    "ws:wxt510:stat:airTemp",
+    "ws:wxt510:stat:pressure",
+    "ws:wxt510:stat:humidity",
+    "scu2CCS:ls370c:chan:k",
+  ];
+
+  const removeZeroes = (data: string[]) => {
+    for (let i = 0; i < data.length; i++) {
+      const line = data[i];
+      const point = line.split("\t");
+      if (Number(point[1]) == 0) {
+        data.splice(i, 1);
+        i--;
+      }
+    }
+  };
+
+  if (removeZeroesList.includes(pv)) {
+    removeZeroes(data);
   }
 };
