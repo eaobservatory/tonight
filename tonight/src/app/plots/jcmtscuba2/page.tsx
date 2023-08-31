@@ -13,9 +13,14 @@ export default async function PlotsJCMTSCUBA2Page({
 }) {
   const dateParam = searchParams?.date || "live";
   return (
-    <div className="w-1/2">
-      <Suspense fallback={<VegaChartSkeleton plot="jcmtscuba2" />}>
-        <VegaChart plot={"jcmtscuba2"} mark={"line"} date={dateParam} />
+    <div>
+      <Suspense fallback={<VegaChartSkeleton plot="jcmtscuba2" snapshot />}>
+        <VegaChart
+          plot={"jcmtscuba2"}
+          mark={"line"}
+          date={dateParam}
+          snapshot
+        />
       </Suspense>
     </div>
   );

@@ -26,7 +26,7 @@ export default async function AllIndex({ date }: Props) {
     );
 
     return (
-      <Table className="border m-1 w-1/2">
+      <Table className="border m-1 w-auto">
         <TableHeader>
           <TableRow>
             <TableHead>Backend</TableHead>
@@ -34,9 +34,15 @@ export default async function AllIndex({ date }: Props) {
             <TableHead>Number</TableHead>
             <TableHead>Project</TableHead>
             <TableHead>Mode</TableHead>
-            <TableHead>In-Beam || Receiver</TableHead>
+            <TableHead className="whitespace-nowrap">
+              <span className="text-cyan-600">In-Beam</span> ||{" "}
+              <span className="text-indigo-700">Receiver</span>
+            </TableHead>
             <TableHead>Source</TableHead>
-            <TableHead>Map || Steptime</TableHead>
+            <TableHead className="whitespace-nowrap">
+              <span className="text-cyan-600">Map</span> ||{" "}
+              <span className="text-indigo-700">Steptime</span>
+            </TableHead>
             <TableHead>Tau</TableHead>
             <TableHead>WVM</TableHead>
             <TableHead>Seeing</TableHead>
@@ -47,37 +53,48 @@ export default async function AllIndex({ date }: Props) {
         <TableBody>
           {sortedObservations.length > 0 ? (
             sortedObservations.map(
-              (obs: SCUBA2Observation | ACSISObservation, i: number) => (
-                <TableRow key={i}>
-                  <TableCell>{obs.backend}</TableCell>
-                  <TableCell>{obs.obstime} </TableCell>
-                  <TableCell>{obs.obsnum}</TableCell>
-                  <TableCell>
-                    <Link
-                      href={`https://omp.eao.hawaii.edu/cgi-bin/projecthome.pl?project=${obs.project}`}
-                      target="_blank"
-                      className="underline text-blue-500 hover:text-blue-700"
-                    >
-                      {obs.project}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{obs.mode}</TableCell>
-                  <TableCell>
-                    {obs.inbeam ? obs.inbeam : obs.receiver}
-                  </TableCell>
-                  <TableCell>{obs.object}</TableCell>
-                  <TableCell>{obs.map ? obs.map : obs.steptime}</TableCell>
-                  <TableCell>{obs.tau225}</TableCell>
-                  <TableCell>{obs.wvmtau}</TableCell>
-                  <TableCell>{obs.seeing}</TableCell>
-                  <TableCell>{obs.roof}</TableCell>
-                  <TableCell>{obs.door}</TableCell>
-                </TableRow>
-              )
+              (obs: SCUBA2Observation | ACSISObservation, i: number) => {
+                const obsType = obs.backend == "SCUBA-2" ? "SCUBA2" : "ACSIS";
+                const color =
+                  obsType == "SCUBA2"
+                    ? "bg-cyan-50 hover:bg-cyan-100"
+                    : "bg-indigo-50 hover:bg-indigo-100";
+                return (
+                  <TableRow className={color} key={i}>
+                    <TableCell>{obs.backend}</TableCell>
+                    <TableCell>{obs.obstime}</TableCell>
+                    <TableCell>{obs.obsnum}</TableCell>
+                    <TableCell>
+                      <Link
+                        href={`https://omp.eao.hawaii.edu/cgi-bin/projecthome.pl?project=${obs.project}`}
+                        target="_blank"
+                        className="underline text-blue-500 hover:text-blue-700"
+                      >
+                        {obs.project}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{obs.mode}</TableCell>
+                    <TableCell>
+                      {obsType == "SCUBA2" ? obs.inbeam : obs.receiver}
+                    </TableCell>
+                    <TableCell>{obs.object}</TableCell>
+                    <TableCell>
+                      {obsType == "SCUBA2" ? obs.map : obs.steptime}
+                    </TableCell>
+                    <TableCell>{obs.tau225}</TableCell>
+                    <TableCell>{obs.wvmtau}</TableCell>
+                    <TableCell>{obs.seeing}</TableCell>
+                    <TableCell>{obs.roof}</TableCell>
+                    <TableCell>{obs.door}</TableCell>
+                  </TableRow>
+                );
+              }
             )
           ) : (
             <TableRow>
-              <TableCell>No observations found.</TableCell>
+              <TableCell className="text-center" colSpan={13}>
+                No observations found.
+              </TableCell>
             </TableRow>
           )}
         </TableBody>

@@ -13,9 +13,14 @@ export default async function PlotsJCMTPositionPage({
 }) {
   const dateParam = searchParams?.date || "live";
   return (
-    <div className="w-1/2">
-      <Suspense fallback={<VegaChartSkeleton plot="jcmtposition" />}>
-        <VegaChart plot={"jcmtposition"} mark={"line"} date={dateParam} />
+    <div>
+      <Suspense fallback={<VegaChartSkeleton plot="jcmtposition" snapshot />}>
+        <VegaChart
+          plot={"jcmtposition"}
+          mark={"line"}
+          date={dateParam}
+          snapshot
+        />
       </Suspense>
     </div>
   );

@@ -29,10 +29,16 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface Props {
+interface ChartProps {
   plot: string;
   mark: string;
   date: string;
+  snapshot?: boolean;
+}
+
+interface SkeletonProps {
+  plot: string;
+  snapshot?: boolean;
 }
 
 interface Value {
@@ -41,35 +47,6 @@ interface Value {
   subplot: string;
   label: string;
 }
-
-interface SkeletonProps {
-  plot: string;
-}
-
-// const cleanPVData = (pvData: { [key: string]: any }) => {
-//   // remove 0s
-//   const removeZero = (pv: string) => {
-//     if (pvData[pv]) {
-//       const data = pvData[pv]["data"];
-//       for (let i = 0; i < data.length; i++) {
-//         const line = data[i];
-//         const point = line.split("\t");
-//         if (Number(point[1]) == 0) {
-//           data.splice(i, 1);
-//           i--;
-//         }
-//       }
-//     }
-//   };
-
-//   // jcmtweather
-//   removeZero("ws:wxt510:stat:airTemp");
-//   removeZero("ws:wxt510:stat:pressure");
-//   removeZero("ws:wxt510:stat:humidity");
-
-//   //jcmtscuba2
-//   removeZero("scu2CCS:ls370c:chan:k");
-// };
 
 const getPVData = async (plot: string, date: string) => {
   const pvData: { [key: string]: any } = {};
@@ -80,11 +57,10 @@ const getPVData = async (plot: string, date: string) => {
       }
     }
   }
-  // cleanPVData(pvData);
   return pvData;
 };
 
-const createSpec = async (
+const createView = async (
   plot: string,
   mark: string,
   date: string,
@@ -108,7 +84,6 @@ const createSpec = async (
         if (data.length != 0) {
           for (const line of data) {
             const point = line.split("\t");
-            // if (!point[1].startsWith(" ")) {
             const value = {
               dateTime: point[0],
               value: point[1],
@@ -116,7 +91,6 @@ const createSpec = async (
               label: label,
             };
             values.push(value);
-            // }
           }
         } else {
           // if no data, add placeholder value
@@ -195,6 +169,8 @@ const createSpec = async (
               legend: {
                 orient: "bottom",
                 title: null,
+                columns: 5,
+                labelLimit: 500,
               },
               scale: {
                 range: [
@@ -261,7 +237,7 @@ const createSpec = async (
   return svgStr;
 };
 
-const createPopoverContent = (pvData: { [key: string]: any }) => {
+const createSnapshot = (pvData: { [key: string]: any }) => {
   return (
     <Table>
       <TableBody>
@@ -286,17 +262,22 @@ const createPopoverContent = (pvData: { [key: string]: any }) => {
   );
 };
 
-export async function VegaChart({ plot, mark, date }: Props) {
+export async function VegaChart({
+  plot,
+  mark,
+  date,
+  snapshot = false,
+}: ChartProps) {
   try {
     const pvData = await getPVData(plot, date);
-    const svgStr = await createSpec(plot, mark, date, pvData);
-    const popoverContent = createPopoverContent(pvData);
+    const svgStr = await createView(plot, mark, date, pvData);
+    const snapshotContent = createSnapshot(pvData);
     const ymd = getDateArray()[2].join("-");
 
     const dataStr = JSON.stringify(pvData, null, 2);
 
     return (
-      <>
+      <div className="flex justify-center">
         <div className="w-auto border py-4 pr-1 m-1">
           <div className="flex justify-center space-x-1">
             <p className="whitespace-nowrap">{titles[plot]}</p>
@@ -312,7 +293,7 @@ export async function VegaChart({ plot, mark, date }: Props) {
                 </TooltipProvider>
               </PopoverTrigger>
               <PopoverContent className="w-auto">
-                {popoverContent}
+                {snapshotContent}
               </PopoverContent>
             </Popover>
             {date == "live" ? (
@@ -340,10 +321,11 @@ export async function VegaChart({ plot, mark, date }: Props) {
             />
           </Link>
         </div>
+        {snapshot && <div className="max-w-content m-1">{snapshotContent}</div>}
         {/* <div>
           <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
         </div> */}
-      </>
+      </div>
     );
   } catch (e) {
     return (
@@ -355,12 +337,18 @@ export async function VegaChart({ plot, mark, date }: Props) {
   }
 }
 
-export function VegaChartSkeleton({ plot }: SkeletonProps) {
+export function VegaChartSkeleton({ plot, snapshot = false }: SkeletonProps) {
   return (
-    <div className="m-1 flex flex-col items-center border aspect-[8/5] pt-4 pb-6">
-      <p className="whitespace-nowrap">{titles[plot]}</p>
-      <div className="w-full h-full px-5 mt-2">
-        <Skeleton className="w-full h-full rounded-none" />
+    <div className={`${snapshot ? "flex justify-center" : ""}`}>
+      <div
+        className={`m-1 flex flex-col items-center border aspect-[8/5] pt-4 pb-6 ${
+          snapshot == true ? "w-1/2" : "w-auto"
+        }`}
+      >
+        <p className="whitespace-nowrap">{titles[plot]}</p>
+        <div className="w-full h-full px-5 mt-2">
+          <Skeleton className="w-full h-full rounded-none" />
+        </div>
       </div>
     </div>
   );

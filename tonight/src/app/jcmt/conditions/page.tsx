@@ -16,14 +16,9 @@ export default async function JCMTConditionsPage({
         <Suspense fallback={<VegaChartSkeleton plot="jcmtweather" />}>
           <VegaChart plot={"jcmtweather"} mark={"line"} date={dateParam} />
         </Suspense>
-        <Suspense fallback={<VegaChartSkeleton plot="jcmtscuba2" />}>
-          <VegaChart plot={"jcmtscuba2"} mark={"line"} date={dateParam} />
+        <Suspense fallback={<VegaChartSkeleton plot="jcmttemperature" />}>
+          <VegaChart plot={"jcmttemperature"} mark={"line"} date={dateParam} />
         </Suspense>
-        <Suspense fallback={<VegaChartSkeleton plot="jcmtnamakanui" />}>
-          <VegaChart plot={"jcmtnamakanui"} mark={"line"} date={dateParam} />
-        </Suspense>
-      </div>
-      <div className="grid grid-cols-3">
         <Suspense fallback={<VegaChartSkeleton plot="jcmtposition" />}>
           <VegaChart plot={"jcmtposition"} mark={"line"} date={dateParam} />
         </Suspense>

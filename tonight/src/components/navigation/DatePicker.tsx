@@ -29,7 +29,7 @@ export default function DatePicker() {
     } else {
       setDate(undefined); // reset calendar when 'Today' is clicked
     }
-  }, [dateParam]);
+  }, [dateParam, pathname]);
 
   return (
     <Popover>

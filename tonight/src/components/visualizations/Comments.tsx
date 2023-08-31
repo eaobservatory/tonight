@@ -19,10 +19,11 @@ export default async function Comments({ date }: Props) {
     const comments = await getComments(date);
 
     return (
-      <Table className="border m-1 w-1/2">
+      <Table className="border m-1 w-auto">
         <TableHeader>
           <TableRow>
             <TableHead>Operator</TableHead>
+            <TableHead className="whitespace-nowrap">Time (UTC)</TableHead>
             <TableHead>Comment</TableHead>
           </TableRow>
         </TableHeader>
@@ -30,17 +31,19 @@ export default async function Comments({ date }: Props) {
           {comments.length > 0 ? (
             comments.map((comment: Comment, i: number) => (
               <TableRow key={i}>
-                <TableCell>
-                  {comment.author} <br />
-                  {comment.date}
-                </TableCell>
+                <TableCell>{comment.author}</TableCell>
+                <TableCell>{comment.date}</TableCell>
                 <TableCell
                   dangerouslySetInnerHTML={{ __html: removeTags(comment.text) }}
                 />
               </TableRow>
             ))
           ) : (
-            <TableRow>No comments found.</TableRow>
+            <TableRow>
+              <TableCell className="text-center" colSpan={3}>
+                No comments found.
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

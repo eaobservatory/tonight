@@ -13,9 +13,14 @@ export default async function PlotsJCMTWeatherPage({
 }) {
   const dateParam = searchParams?.date || "live";
   return (
-    <div className="w-1/2">
-      <Suspense fallback={<VegaChartSkeleton plot="jcmtweather" />}>
-        <VegaChart plot={"jcmtweather"} mark={"line"} date={dateParam} />
+    <div>
+      <Suspense fallback={<VegaChartSkeleton plot="jcmtweather" snapshot />}>
+        <VegaChart
+          plot={"jcmtweather"}
+          mark={"line"}
+          date={dateParam}
+          snapshot
+        />
       </Suspense>
     </div>
   );

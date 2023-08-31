@@ -30,12 +30,31 @@ export default function PlotsPage({
       <br />
       <Link
         href={
+          "/plots/jcmtharp" + (dateParam == "live" ? "" : `?date=${dateParam}`)
+        }
+        className="underline text-blue-500 hover:text-blue-700"
+      >
+        HARP Instrument Status
+      </Link>
+      <br />
+      <Link
+        href={
           "/plots/jcmtnamakanui" +
           (dateParam == "live" ? "" : `?date=${dateParam}`)
         }
         className="underline text-blue-500 hover:text-blue-700"
       >
         Namakanui Instrument Status
+      </Link>
+      <br />
+      <Link
+        href={
+          "/plots/jcmttemperature" +
+          (dateParam == "live" ? "" : `?date=${dateParam}`)
+        }
+        className="underline text-blue-500 hover:text-blue-700"
+      >
+        JCMT Temperature
       </Link>
       <br />
       <Link
