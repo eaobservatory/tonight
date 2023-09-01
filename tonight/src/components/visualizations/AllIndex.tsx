@@ -16,6 +16,32 @@ interface Props {
 }
 
 export default async function AllIndex({ date }: Props) {
+  const Header = () => (
+    <TableHeader>
+      <TableRow>
+        <TableHead>Backend</TableHead>
+        <TableHead>Time (UTC)</TableHead>
+        <TableHead>Number</TableHead>
+        <TableHead>Project</TableHead>
+        <TableHead>Mode</TableHead>
+        <TableHead className="whitespace-nowrap">
+          <span className="text-cyan-600">In-Beam</span> ||{" "}
+          <span className="text-indigo-700">Receiver</span>
+        </TableHead>
+        <TableHead>Source</TableHead>
+        <TableHead className="whitespace-nowrap">
+          <span className="text-cyan-600">Map</span> ||{" "}
+          <span className="text-indigo-700">Steptime</span>
+        </TableHead>
+        <TableHead>Tau</TableHead>
+        <TableHead>WVM</TableHead>
+        <TableHead>Seeing</TableHead>
+        <TableHead>Roof</TableHead>
+        <TableHead>Doors</TableHead>
+      </TableRow>
+    </TableHeader>
+  );
+
   try {
     const scuba2Observations = await getSCUBA2Index(date);
     const acsisObservations = await getACSISIndex(date);
@@ -27,29 +53,7 @@ export default async function AllIndex({ date }: Props) {
 
     return (
       <Table className="border m-1 w-auto">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Backend</TableHead>
-            <TableHead>Time (UTC)</TableHead>
-            <TableHead>Number</TableHead>
-            <TableHead>Project</TableHead>
-            <TableHead>Mode</TableHead>
-            <TableHead className="whitespace-nowrap">
-              <span className="text-cyan-600">In-Beam</span> ||{" "}
-              <span className="text-indigo-700">Receiver</span>
-            </TableHead>
-            <TableHead>Source</TableHead>
-            <TableHead className="whitespace-nowrap">
-              <span className="text-cyan-600">Map</span> ||{" "}
-              <span className="text-indigo-700">Steptime</span>
-            </TableHead>
-            <TableHead>Tau</TableHead>
-            <TableHead>WVM</TableHead>
-            <TableHead>Seeing</TableHead>
-            <TableHead>Roof</TableHead>
-            <TableHead>Doors</TableHead>
-          </TableRow>
-        </TableHeader>
+        <Header />
         <TableBody>
           {sortedObservations.length > 0 ? (
             sortedObservations.map(
@@ -101,6 +105,17 @@ export default async function AllIndex({ date }: Props) {
       </Table>
     );
   } catch (e) {
-    return <p>Error rendering index: {(e as Error).message}</p>;
+    return (
+      <Table className="border m-1 w-auto">
+        <Header />
+        <TableBody>
+          <TableRow>
+            <TableCell className="text-center" colSpan={13}>
+              Error rendering index: {(e as Error).message}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
   }
 }

@@ -16,28 +16,32 @@ interface Props {
 }
 
 export default async function ACSISIndex({ date }: Props) {
+  const Header = () => (
+    <TableHeader>
+      <TableRow>
+        <TableHead>Backend</TableHead>
+        <TableHead>Time (UTC)</TableHead>
+        <TableHead>Number</TableHead>
+        <TableHead>Project</TableHead>
+        <TableHead>Mode</TableHead>
+        <TableHead>Receiver</TableHead>
+        <TableHead>Source</TableHead>
+        <TableHead>Steptime</TableHead>
+        <TableHead>Tau</TableHead>
+        <TableHead>WVM</TableHead>
+        <TableHead>Seeing</TableHead>
+        <TableHead>Roof</TableHead>
+        <TableHead>Doors</TableHead>
+      </TableRow>
+    </TableHeader>
+  );
+
   try {
     const observations = await getACSISIndex(date);
 
     return (
       <Table className="border m-1 w-auto">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Backend</TableHead>
-            <TableHead>Time (UTC)</TableHead>
-            <TableHead>Number</TableHead>
-            <TableHead>Project</TableHead>
-            <TableHead>Mode</TableHead>
-            <TableHead>Receiver</TableHead>
-            <TableHead>Source</TableHead>
-            <TableHead>Steptime</TableHead>
-            <TableHead>Tau</TableHead>
-            <TableHead>WVM</TableHead>
-            <TableHead>Seeing</TableHead>
-            <TableHead>Roof</TableHead>
-            <TableHead>Doors</TableHead>
-          </TableRow>
-        </TableHeader>
+        <Header />
         <TableBody>
           {observations.length > 0 ? (
             observations.map((obs: ACSISObservation, i: number) => (
@@ -76,6 +80,17 @@ export default async function ACSISIndex({ date }: Props) {
       </Table>
     );
   } catch (e) {
-    return <p>Error rendering ACSIS index: {(e as Error).message}</p>;
+    return (
+      <Table className="border m-1 w-auto">
+        <Header />
+        <TableBody>
+          <TableRow>
+            <TableCell className="text-center" colSpan={13}>
+              Error rendering ACSIS index: {(e as Error).message}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
   }
 }

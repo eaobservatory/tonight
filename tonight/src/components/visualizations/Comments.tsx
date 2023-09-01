@@ -15,18 +15,22 @@ interface Props {
 }
 
 export default async function Comments({ date }: Props) {
+  const Header = () => (
+    <TableHeader>
+      <TableRow>
+        <TableHead>Operator</TableHead>
+        <TableHead className="whitespace-nowrap">Time (UTC)</TableHead>
+        <TableHead>Comment</TableHead>
+      </TableRow>
+    </TableHeader>
+  );
+
   try {
     const comments = await getComments(date);
 
     return (
       <Table className="border m-1 w-auto">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Operator</TableHead>
-            <TableHead className="whitespace-nowrap">Time (UTC)</TableHead>
-            <TableHead>Comment</TableHead>
-          </TableRow>
-        </TableHeader>
+        <Header />
         <TableBody>
           {comments.length > 0 ? (
             comments.map((comment: Comment, i: number) => (
@@ -49,7 +53,18 @@ export default async function Comments({ date }: Props) {
       </Table>
     );
   } catch (e) {
-    return <p>Error rendering comments: {(e as Error).message}</p>;
+    return (
+      <Table className="border m-1 w-auto">
+        <Header />
+        <TableBody>
+          <TableRow>
+            <TableCell className="text-center" colSpan={3}>
+              Error rendering comments: {(e as Error).message}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
   }
 }
 

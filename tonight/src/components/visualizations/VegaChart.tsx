@@ -41,6 +41,17 @@ interface SkeletonProps {
   snapshot?: boolean;
 }
 
+interface ViewProps {
+  plot: string;
+  mark: string;
+  date: string;
+  pvData: { [key: string]: any };
+}
+
+interface SnapshotProps {
+  pvData: { [key: string]: any };
+}
+
 interface Value {
   dateTime: string;
   value: string;
@@ -60,12 +71,7 @@ const getPVData = async (plot: string, date: string) => {
   return pvData;
 };
 
-const createView = async (
-  plot: string,
-  mark: string,
-  date: string,
-  pvData: { [key: string]: any }
-) => {
+const View = async ({ plot, mark, date, pvData }: ViewProps) => {
   let dateArray;
   if (date == "live") {
     dateArray = getDateArray();
@@ -171,6 +177,7 @@ const createView = async (
                 title: null,
                 columns: 5,
                 labelLimit: 500,
+                columnPadding: 0,
               },
               scale: {
                 range: [
@@ -234,33 +241,39 @@ const createView = async (
   const vegaspec = lite.compile(spec, config).spec;
   const view = new vega.View(vega.parse(vegaspec), { renderer: "none" });
   const svgStr = await view.toSVG();
-  return svgStr;
-};
-
-const createSnapshot = (pvData: { [key: string]: any }) => {
   return (
-    <Table>
-      <TableBody>
-        {Object.keys(pvData).map((pv: string) => {
-          const { label, data } = pvData[pv];
-          let mostRecentValue;
-          try {
-            mostRecentValue = data[data.length - 1].split("\t")[1];
-            mostRecentValue = Number(mostRecentValue).toFixed(1);
-          } catch (e) {
-            mostRecentValue = "n/a";
-          }
-          return (
-            <TableRow>
-              <TableCell className="border">{label}</TableCell>
-              <TableCell className="border">{mostRecentValue}</TableCell>
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+    <Image
+      src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
+      alt={plot}
+      className="w-full"
+      width={200} // overridden by className
+      height={100} // overridden by className
+    />
   );
 };
+
+const Snapshot = ({ pvData }: SnapshotProps) => (
+  <Table>
+    <TableBody>
+      {Object.keys(pvData).map((pv: string) => {
+        const { label, data } = pvData[pv];
+        let mostRecentValue;
+        try {
+          mostRecentValue = data[data.length - 1].split("\t")[1];
+          mostRecentValue = Number(mostRecentValue).toFixed(1);
+        } catch (e) {
+          mostRecentValue = "n/a";
+        }
+        return (
+          <TableRow key={pv}>
+            <TableCell className="border">{label}</TableCell>
+            <TableCell className="border">{mostRecentValue}</TableCell>
+          </TableRow>
+        );
+      })}
+    </TableBody>
+  </Table>
+);
 
 export async function VegaChart({
   plot,
@@ -270,11 +283,7 @@ export async function VegaChart({
 }: ChartProps) {
   try {
     const pvData = await getPVData(plot, date);
-    const svgStr = await createView(plot, mark, date, pvData);
-    const snapshotContent = createSnapshot(pvData);
     const ymd = getDateArray()[2].join("-");
-
-    const dataStr = JSON.stringify(pvData, null, 2);
 
     return (
       <div className="flex justify-center">
@@ -293,7 +302,7 @@ export async function VegaChart({
                 </TooltipProvider>
               </PopoverTrigger>
               <PopoverContent className="w-auto">
-                {snapshotContent}
+                <Snapshot pvData={pvData} />
               </PopoverContent>
             </Popover>
             {date == "live" ? (
@@ -312,18 +321,18 @@ export async function VegaChart({
           <Link
             href={`/plots/${plot}` + (date == "live" ? "" : `?date=${date}`)}
           >
-            <Image
-              src={`data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`}
-              alt={plot}
-              className="w-full"
-              width={200} // overridden by className
-              height={100} // overridden by className
-            />
+            <View plot={plot} mark={mark} date={date} pvData={pvData} />
           </Link>
         </div>
-        {snapshot && <div className="max-w-content m-1">{snapshotContent}</div>}
+        {snapshot && (
+          <div className="max-w-content m-1">
+            <Snapshot pvData={pvData} />
+          </div>
+        )}
         {/* <div>
-          <pre style={{ fontSize: "10px" }}>{dataStr}</pre>
+          <pre style={{ fontSize: "10px" }}>
+            {JSON.stringify(pvData, null, 2)}
+          </pre>
         </div> */}
       </div>
     );

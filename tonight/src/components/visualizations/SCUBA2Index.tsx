@@ -16,28 +16,32 @@ interface Props {
 }
 
 export default async function SCUBA2Index({ date }: Props) {
+  const Header = () => (
+    <TableHeader>
+      <TableRow>
+        <TableHead>Backend</TableHead>
+        <TableHead>Time (UTC)</TableHead>
+        <TableHead>Number</TableHead>
+        <TableHead>Project</TableHead>
+        <TableHead>Mode</TableHead>
+        <TableHead>In-Beam</TableHead>
+        <TableHead>Source</TableHead>
+        <TableHead>Map</TableHead>
+        <TableHead>Tau</TableHead>
+        <TableHead>WVM</TableHead>
+        <TableHead>Seeing</TableHead>
+        <TableHead>Roof</TableHead>
+        <TableHead>Doors</TableHead>
+      </TableRow>
+    </TableHeader>
+  );
+
   try {
     const observations = await getSCUBA2Index(date);
 
     return (
       <Table className="border m-1 w-auto">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Backend</TableHead>
-            <TableHead>Time (UTC)</TableHead>
-            <TableHead>Number</TableHead>
-            <TableHead>Project</TableHead>
-            <TableHead>Mode</TableHead>
-            <TableHead>In-Beam</TableHead>
-            <TableHead>Source</TableHead>
-            <TableHead>Map</TableHead>
-            <TableHead>Tau</TableHead>
-            <TableHead>WVM</TableHead>
-            <TableHead>Seeing</TableHead>
-            <TableHead>Roof</TableHead>
-            <TableHead>Doors</TableHead>
-          </TableRow>
-        </TableHeader>
+        <Header />
         <TableBody>
           {observations.length > 0 ? (
             observations.map((obs: SCUBA2Observation, i: number) => (
@@ -76,6 +80,17 @@ export default async function SCUBA2Index({ date }: Props) {
       </Table>
     );
   } catch (e) {
-    return <p>Error rendering SCUBA-2 index: {(e as Error).message}</p>;
+    return (
+      <Table className="border m-1 w-auto">
+        <Header />
+        <TableBody>
+          <TableRow>
+            <TableCell className="text-center" colSpan={13}>
+              Error rendering SCUBA-2 index: {(e as Error).message}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
   }
 }

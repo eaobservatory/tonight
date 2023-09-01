@@ -34,13 +34,11 @@ export const getPV = cache(async (pv: PV, date = "live") => {
     const data = res
       .split("\n") // split response into lines
       .slice(18, -1); // remove header
-    // .filter((line) => !line.endsWith("#N/A")) // remove #N/A lines
-    // .filter((line) => !line.split("\t")[1].startsWith(" ")); // remove lines whose values start with a space
     cleanPVData(data, pv);
     console.log(`${pv}: success!`);
     return { label: labels[pv], data: data };
-  } catch (error: any) {
-    console.log(`${pv}: ERROR -- ${error.message}`);
+  } catch (e) {
+    console.log(`${pv}: ERROR -- ${(e as Error).message}`);
     return []; // plot should be blank if error occurs
   }
 });

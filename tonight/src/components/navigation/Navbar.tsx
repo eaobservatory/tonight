@@ -166,7 +166,7 @@ export default function Navbar() {
                 height={40}
                 className="pr-1"
               />
-              JCMT Tonight
+              <span className="text-base">JCMT Tonight</span>
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
