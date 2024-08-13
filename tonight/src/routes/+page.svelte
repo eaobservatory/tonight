@@ -3,3 +3,4 @@
 </script>
 
 <h1>{$date}</h1>
+<a href="./dog">dog</a>
